@@ -1,0 +1,315 @@
+Sub Week7compiler()
+Dim wb As Workbook
+Dim FileName As String
+Dim FileName2 As String
+FileName = "C:\Users\zachary.t.thoroughgo\DES\7_Day_Compile.xlsm"
+FirstDayName = "C:\Users\zachary.t.thoroughgo\DES\Environment\DESPurple08082022MAC.xlsm"
+SecondDayName = "C:\Users\zachary.t.thoroughgo\DES\DESPurple08112022.xlsm"
+Workbooks.Add
+ActiveWorkbook.SaveAs FileName:=FileName, FileFormat:=xlOpenXMLWorkbookMacroEnabled
+Workbooks.Open FirstDayName
+Sheets(1).Select
+Cells.Select
+Selection.Copy
+Workbooks.Open FileName
+Sheets(1).Select
+Cells.Select
+ActiveSheet.Paste
+Length = 2
+' Do While gets the total amount of rows used
+Value = True
+Do While (Value)
+    chari = "A" & CStr(Length)
+    place = Range(chari)
+    bool = IsEmpty(place)
+    ' MsgBox bool & chari
+    If bool = True Then
+        Value = False
+    End If
+    Final = place
+    Length = Length + 1
+Loop
+Length = Length - 1
+Workbooks.Open SecondDayName
+Sheets(1).Select
+Length2 = 2
+' Do While gets the total amount of rows used
+Value = True
+Do While (Value)
+    chari = "A" & CStr(Length2)
+    place = Range(chari)
+    bool = IsEmpty(place)
+    ' MsgBox bool & chari
+    If bool = True Then
+        Value = False
+    End If
+    Final = place
+    Length2 = Length2 + 1
+Loop
+Length2 = Length2 - 1
+Range("A2:" & "AD" & Length2).Select
+Selection.Copy
+Workbooks.Open FileName
+Sheets(1).Select
+Range("A" & Length).Select
+ActiveSheet.Paste
+Length = 2
+' Do While gets the total amount of rows used
+Value = True
+Do While (Value)
+    chari = "A" & CStr(Length)
+    place = Range(chari)
+    bool = IsEmpty(place)
+    ' MsgBox bool & chari
+    If bool = True Then
+        Value = False
+    End If
+    Final = place
+    Length = Length + 1
+Loop
+Length = Length - 1
+MsgBox Length
+End Sub
+
+Sub rolling()
+NumberSheets = Application.Sheets.Count
+StringFrag = "=IF(COUNT(I"
+StringFrag2 = ")>4.5,ROUND(AVERAGE(I"
+StringFrag3 = "),2),""NO AVG"")"
+For k = 2 To NumberSheets
+    Sheets(k).Select
+    Range("J1") = "Hourly Average"
+    Length2 = 2
+    ' Do While gets the total amount of rows used
+    Value = True
+    Do While (Value)
+        chari = "A" & CStr(Length2)
+        place = Range(chari)
+        bool = IsEmpty(place)
+        ' MsgBox bool & chari
+        If bool = True Then
+            Value = False
+        End If
+        Final = place
+        Length2 = Length2 + 1
+    Loop
+    Length2 = Length2 - 1
+    For i = 2 To Length2
+        tempval = i + 6
+        Range("J" & i) = StringFrag & i & ":I" & StringFrag2 & tempval & i & ":I" & tempval & StringFrag3
+        i = i + 1
+        Range("J" & i).Select
+        With Selection.Interior
+            .Pattern = xlLightDown
+            .PatternColorIndex = xlAutomatic
+            .ThemeColor = xlThemeColorDark1
+            .TintAndShade = -0.14996795556505
+            .PatternTintAndShade = 0
+        End With
+        i = i + 1
+        Range("J" & i).Select
+        With Selection.Interior
+            .Pattern = xlLightDown
+            .PatternColorIndex = xlAutomatic
+            .ThemeColor = xlThemeColorDark1
+            .TintAndShade = -0.14996795556505
+            .PatternTintAndShade = 0
+        End With
+        i = i + 1
+        Range("J" & i).Select
+        With Selection.Interior
+            .Pattern = xlLightDown
+            .PatternColorIndex = xlAutomatic
+            .ThemeColor = xlThemeColorDark1
+            .TintAndShade = -0.14996795556505
+            .PatternTintAndShade = 0
+        End With
+        i = i + 1
+        Range("J" & i).Select
+        With Selection.Interior
+            .Pattern = xlLightDown
+            .PatternColorIndex = xlAutomatic
+            .ThemeColor = xlThemeColorDark1
+            .TintAndShade = -0.14996795556505
+            .PatternTintAndShade = 0
+        End With
+        i = i + 1
+        Range("J" & i).Select
+        With Selection.Interior
+            .Pattern = xlLightDown
+            .PatternColorIndex = xlAutomatic
+            .ThemeColor = xlThemeColorDark1
+            .TintAndShade = -0.14996795556505
+            .PatternTintAndShade = 0
+        End With
+    Next i
+Next k
+End Sub
+
+Sub Macro1()
+'
+' Macro1 Macro
+'
+
+'
+Sheets(2).Select
+StringFrag = "=DATE(YEAR(A"
+StringFrag2 = "),MONTH(A"
+StringFrag3 = "),DAY(A"
+StringFrag4 = "))"
+Range("J1") = "Date"
+Range("K1") = "Hour"
+Range("L1") = "Minute"
+Range("M1") = "PM2.5"
+Length2 = 2
+accurateLength = 1008
+   ' Do While gets the total amount of rows used
+Value = True
+Do While (Value)
+    chari = "A" & CStr(Length2)
+    place = Range(chari)
+    bool = IsEmpty(place)
+    ' MsgBox bool & chari
+    If bool = True Then
+        Value = False
+    End If
+    Final = place
+    Length2 = Length2 + 1
+Loop
+Length2 = Length2 - 1
+For i = 2 To Length2
+    Range("J" & i) = StringFrag & i & StringFrag2 & i & StringFrag3 & i & StringFrag4
+    Range("K" & i) = "=HOUR(A" & i & ")"
+    Range("L" & i) = "=MINUTE(A" & i & ")"
+Next i
+For i = 2 To accurateLength
+    'myDate = Range("J" & i)
+    'myHour = Range("K" & i)
+    'myMinute = Range("L" & i)
+    For h = 0 To 23
+        For k = 1 To 6
+            myDate = Range("J" & i)
+            myHour = Range("K" & i)
+            myMinute = Range("L" & i)
+            If myHour = h Then
+                If myMinute < 10 And k > 1 Then
+                    Rows(i & ":" & i).Select
+                    Selection.Insert Shift:=xlDown, CopyOrigin:=xlFormatFromLeftOrAbove
+                    Range("A" & i).Select
+                    Range("J" & i) = myDate
+                    Range("K" & i) = h
+                    Range("L" & i) = 0
+                    i = i + 1
+                Else
+                    If myMinute >= 10 And myMinute <= 20 And k = 1 And Range("L" & i - 1) >= 20 And Range("K" & i - 1) <> myHour Then
+                        Rows(i & ":" & i).Select
+                        Selection.Insert Shift:=xlDown, CopyOrigin:=xlFormatFromLeftOrAbove
+                        Range("A" & i).Select
+                        Range("J" & i) = myDate
+                        Range("K" & i) = h
+                        Range("L" & i) = 0
+                        k = 0
+                        i = i - 1
+                    Else
+                        If myMinute >= 10 And myMinute <= 20 And k <= 2 And Range("L" & i - 1) >= 20 And Range("K" & i - 1) <> myHour Then
+                            Rows(i & ":" & i).Select
+                            Selection.Insert Shift:=xlDown, CopyOrigin:=xlFormatFromLeftOrAbove
+                            Range("A" & i).Select
+                            Range("J" & i) = myDate
+                            Range("K" & i) = h
+                            Range("L" & i) = 10
+                            k = 0
+                            i = i - 1
+                        Else
+                            If myMinute >= 20 And myMinute <= 30 And k <= 3 And Range("L" & i - 1) >= 30 And Range("K" & i - 1) <> myHour Then
+                                Rows(i & ":" & i).Select
+                                Selection.Insert Shift:=xlDown, CopyOrigin:=xlFormatFromLeftOrAbove
+                                Range("A" & i).Select
+                                Range("J" & i) = myDate
+                                Range("K" & i) = h
+                                Range("L" & i) = 20
+                                k = 0
+                                i = i - 1
+                            Else
+                                If myMinute >= 30 And myMinute <= 40 And k <= 4 And Range("L" & i - 1) >= 40 And Range("K" & i - 1) <> myHour Then
+                                    Rows(i & ":" & i).Select
+                                    Selection.Insert Shift:=xlDown, CopyOrigin:=xlFormatFromLeftOrAbove
+                                    Range("A" & i).Select
+                                    Range("J" & i) = myDate
+                                    Range("K" & i) = h
+                                    Range("L" & i) = 20
+                                    k = 0
+                                    i = i - 1
+                                Else
+                                    If myMinute >= 40 And myMinute <= 50 And k <= 5 And Range("L" & i - 1) >= 50 And Range("K" & i - 1) <> myHour Then
+                                        Rows(i & ":" & i).Select
+                                        Selection.Insert Shift:=xlDown, CopyOrigin:=xlFormatFromLeftOrAbove
+                                        Range("A" & i).Select
+                                        Range("J" & i) = myDate
+                                        Range("K" & i) = h
+                                        Range("L" & i) = 40
+                                        k = 0
+                                        i = i - 1
+                                    Else
+                                        If myMinute >= 50 And myMinute <= 60 And k <= 6 And Range("L" & i - 1) >= 60 And Range("K" & i - 1) <> myHour Then
+                                            Rows(i & ":" & i).Select
+                                            Selection.Insert Shift:=xlDown, CopyOrigin:=xlFormatFromLeftOrAbove
+                                            Range("A" & i).Select
+                                            Range("J" & i) = myDate
+                                            Range("K" & i) = h
+                                            Range("L" & i) = 50
+                                            k = 0
+                                            i = i - 1
+                                        End If
+                                    End If
+                                End If
+                            End If
+                        End If
+                    End If
+                End If
+                i = i + 1
+            Else
+                Rows(i & ":" & i).Select
+                Selection.Insert Shift:=xlDown, CopyOrigin:=xlFormatFromLeftOrAbove
+                Range("A" & i).Select
+                Range("J" & i) = myDate
+                Range("K" & i) = h
+                Range("L" & i) = 50
+                Rows(i & ":" & i).Select
+                Selection.Insert Shift:=xlDown, CopyOrigin:=xlFormatFromLeftOrAbove
+                Range("A" & i).Select
+                Range("J" & i) = myDate
+                Range("K" & i) = h
+                Range("L" & i) = 40
+                Rows(i & ":" & i).Select
+                Selection.Insert Shift:=xlDown, CopyOrigin:=xlFormatFromLeftOrAbove
+                Range("A" & i).Select
+                Range("J" & i) = myDate
+                Range("K" & i) = h
+                Range("L" & i) = 30
+                Rows(i & ":" & i).Select
+                Selection.Insert Shift:=xlDown, CopyOrigin:=xlFormatFromLeftOrAbove
+                Range("A" & i).Select
+                Range("J" & i) = myDate
+                Range("K" & i) = h
+                Range("L" & i) = 20
+                Rows(i & ":" & i).Select
+                Selection.Insert Shift:=xlDown, CopyOrigin:=xlFormatFromLeftOrAbove
+                Range("A" & i).Select
+                Range("J" & i) = myDate
+                Range("K" & i) = h
+                Range("L" & i) = 10
+                Rows(i & ":" & i).Select
+                Selection.Insert Shift:=xlDown, CopyOrigin:=xlFormatFromLeftOrAbove
+                Range("A" & i).Select
+                Range("J" & i) = myDate
+                Range("K" & i) = h
+                Range("L" & i) = 0
+                i = i + 6
+                k = 6
+            End If
+        Next k
+    Next h
+    i = i - 1
+Next i
+End Sub

@@ -1,0 +1,78 @@
+def mapMaking():
+    import folium
+    #import os
+    from folium.plugins import FloatImage
+    from folium.plugins import MarkerCluster
+    import json
+    from shapely.geometry import shape, Point
+    import PIL
+    from PIL import Image
+    #image_file = Image.open('Legend.png')
+    #image_file.putalpha(210)
+    #image_file = image_file.save("Legend.png")
+    #img = 'Legend.png'
+    image_file1 = Image.open('Colors.png')
+    image_file1.putalpha(190)
+    image_file1 = image_file1.save("Colors.png")
+    img1 = 'Colors.png'
+    with open('NH.geojson') as f:
+        NH = json.load(f)
+    with open('NHCounty.geojson') as r:
+        NH1 = json.load(r)
+    with open('NHCounty2.geojson') as j:
+        NH2 = json.load(j)
+    with open('NHCounty3.geojson') as l:
+        NH3 = json.load(l)
+    with open('NHCounty4.geojson') as p:
+        NH4 = json.load(p)
+    with open('NHCounty5.geojson') as t:
+        NH5 = json.load(t)
+    with open('NHCounty6.geojson') as z:
+        NH6 = json.load(z)
+    with open('NHCounty7.geojson') as k:
+        NH7 = json.load(k)
+    with open('NHCounty8.geojson') as kl:
+        NH8 = json.load(kl)
+    with open('NHCounty9.geojson') as klr:
+        NH9 = json.load(klr)
+    with open('NHCounty10.geojson') as klrz:
+        NH10 = json.load(klrz)
+    NH_map = folium.Map(location=[43.209568, -71.53729], zoom_start = 9, minZoom = 4, max_bounds = True)
+    style1 = {'fillColor': '#e6e6fa', 'color': '#ba55d3', 'fillOpacity': 0.4}
+    style2 = {'color': '#1e90ff', 'fillOpacity': 0.20}
+    style3 = {'color': '#0077be', 'fillOpacity': 0.20}
+    style4 = {'color': '#4682b4', 'fillOpacity': 0.20}
+    style5 = {'color': '#006db0', 'fillOpacity': 0.20}
+    style6 = {'color': '#0095b6', 'fillOpacity': 0.20}
+    style7 = {'color': '#006994', 'fillOpacity': 0.20}
+    style8 = {'color': '#0095b6', 'fillOpacity': 0.20}
+    style9 = {'color': '#72a0c1', 'fillOpacity': 0.20}
+    style10 = {'color': '#6ca0dc', 'fillOpacity': 0.20}
+    style11 = {'color': '#5b92e5', 'fillOpacity': 0.20}
+    layer = folium.GeoJson(NH,style_function=lambda x:style1, name = 'State Outline').add_to(NH_map)
+    layer1 = folium.GeoJson(NH1,style_function=lambda x:style2, name = 'Belknap County').add_to(NH_map)
+    layer7 = folium.GeoJson(NH7,style_function=lambda x:style8, name = 'Carroll County').add_to(NH_map)
+    layer4 = folium.GeoJson(NH4,style_function=lambda x:style5, name = 'Cheshire County').add_to(NH_map)
+    layer10 = folium.GeoJson(NH10,style_function=lambda x:style11, name = 'Coos County').add_to(NH_map)
+    layer9 = folium.GeoJson(NH9,style_function=lambda x:style10, name = 'Grafton County').add_to(NH_map)
+    layer3 = folium.GeoJson(NH3,style_function=lambda x:style4, name = 'Hillsborough County').add_to(NH_map)
+    layer2 = folium.GeoJson(NH2,style_function=lambda x:style3, name = 'Merrimack County').add_to(NH_map)
+    layer5 = folium.GeoJson(NH5,style_function=lambda x:style6, name = 'Rockingham County').add_to(NH_map)
+    layer6 = folium.GeoJson(NH6,style_function=lambda x:style7, name = 'Strafford County').add_to(NH_map)
+    layer8 = folium.GeoJson(NH8,style_function=lambda x:style9, name = 'Sullivan County').add_to(NH_map)
+    layer1.add_child(folium.Popup('Belknap County')).add_to(NH_map)
+    layer2.add_child(folium.Popup('Merrimack County')).add_to(NH_map)
+    layer3.add_child(folium.Popup('Hillsborough County')).add_to(NH_map)
+    layer4.add_child(folium.Popup('Cheshire County')).add_to(NH_map)
+    layer5.add_child(folium.Popup('Rockingham County')).add_to(NH_map)
+    layer6.add_child(folium.Popup('Strafford County')).add_to(NH_map)
+    layer7.add_child(folium.Popup('Carroll County')).add_to(NH_map)
+    layer8.add_child(folium.Popup('Sullivan County')).add_to(NH_map)
+    layer9.add_child(folium.Popup('Grafton County')).add_to(NH_map)
+    layer10.add_child(folium.Popup('Coos County')).add_to(NH_map)
+    #FloatImage(img, bottom = 2, left = 88).add_to(NH_map)
+    main = folium.FeatureGroup()
+    FloatImage(img1, bottom = 0, left = 0).add_to(NH_map)
+    folium.LayerControl().add_to(NH_map)
+    NH_map.save('nhPointMap.html')
+    #os.remove("1202API.json")

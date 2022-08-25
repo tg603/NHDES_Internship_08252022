@@ -1,0 +1,397 @@
+Sub FinalAutoFormat()
+' Beginning of formatting the units by seperate sheets
+    Current_time = Range("L2")
+    Value = True
+    Dim length As Integer
+    Dim chari As String
+    Dim final As String
+    Dim nameVar As Object
+    Dim indexVar As Object
+    Dim numVar As Object
+    Set numVar = CreateObject("System.Collections.ArrayList")
+    Set nameVar = CreateObject("System.Collections.ArrayList")
+    Set indexVar = CreateObject("System.Collections.ArrayList")
+    length = 2
+    ' Do While gets the total amount of rows used
+    Do While (Value)
+        chari = "A" & CStr(length)
+        place = Range(chari)
+        bool = IsEmpty(place)
+        ' MsgBox bool & chari
+        If bool = True Then
+            Value = False
+        End If
+        final = place
+        length = length + 1
+    Loop
+    length = length - 2
+    'MsgBox length
+    ' Total rows are now found as an anchor for our for loop
+    chari = "C"
+    final = "D"
+    Clock = 0
+    Start = True
+    For x = 2 To length
+        temp = chari & x
+        Temp1 = final & x
+        indexVal = Range(temp)
+        nameVal = Range(Temp1)
+        If Start = True Then
+            indexVar.Add (indexVal)
+            nameVar.Add (nameVal)
+            Clock = Clock + 1
+            'MsgBox indexVar(x - 1)
+            Start = False
+        Else
+            If indexVar.Contains(indexVal) Then
+                
+            Else
+                indexVar.Add (indexVal)
+                nameVar.Add (nameVal)
+                Clock = Clock + 1
+            End If
+        End If
+    Next x
+    Clock = Clock - 1
+    'MsgBox Clock
+    Start = True
+    increment = 2
+    For i = 0 To Clock
+        Main_Name = ActiveSheet.Name
+    '   Rows("1:1").Select
+        val0 = Range("A1")
+        val1 = Range("L1")
+        val2 = Range("M1")
+        val3 = Range("N1")
+        val4 = Range("V1")
+        val5 = Range("W1")
+        val6 = Range("T1")
+        val7 = Range("AB1")
+        val8 = Range("AD1")
+    '   Selection.Copy
+        Sheets.Add After:=ActiveSheet
+    '   ActiveSheet.Paste
+        Range("A1") = val0
+        Range("B1") = val1
+        Range("C1") = val2
+        Range("D1") = val3
+        Range("E1") = val4
+        Range("F1") = val5
+        Range("G1") = val6
+        Range("H1") = val7
+        Range("I1") = val8
+        Current_Name = ActiveSheet.Name
+    '   Range("A1").Select
+        Sheets(Main_Name).Select
+    '   Worksheets(Main_Name).Activate
+        Name = nameVar(i) & " " & i
+        val0 = Range("A" & increment)
+        val1 = Range("L" & increment)
+        val2 = Range("M" & increment)
+        val3 = Range("N" & increment)
+        val4 = Range("V" & increment)
+        val5 = Range("W" & increment)
+        val6 = Range("T" & increment)
+        val7 = Range("AB" & increment)
+        val8 = Range("AD" & increment)
+        Sheets(Current_Name).Select
+        Sheets(Current_Name).Name = Name
+        Sheets(Main_Name).Select
+        Placer = increment & ":" & increment
+    '   Rows(Placer).Select
+    '   Selection.Copy
+        Sheets(Name).Select
+    '   Worksheets(Name).Activate
+    '   Rows("2:2").Select
+        Range("A2") = val0
+        Range("B2") = val1
+        Range("C2") = val2
+        Range("D2") = val3
+        Range("E2") = val4
+        Range("F2") = val5
+        Range("G2") = val6
+        Range("H2") = val7
+        Range("I2") = val8
+    '   ActiveSheet.Paste
+        increment = increment + 1
+        numVar.Add (3)
+        Sheets(Main_Name).Select
+    Next i
+    chari = "C"
+    Main_Name = ActiveSheet.Name
+    For i = increment To length
+        Index = Range(chari & i)
+        IndexArr = indexVar.LastIndexOf(Index)
+        Temp_Name = nameVar(IndexArr) & " " & IndexArr
+        'Placer = increment & ":" & increment
+        val0 = Range("A" & i)
+        val1 = Range("L" & i)
+        val2 = Range("M" & i)
+        val3 = Range("N" & i)
+        val4 = Range("V" & i)
+        val5 = Range("W" & i)
+        val6 = Range("T" & i)
+        val7 = Range("AB" & i)
+        val8 = Range("AD" & i)
+        'Rows(Placer).Select
+        'Selection.Copy
+        Sheets(Temp_Name).Select
+        temp = numVar(IndexArr)
+        Range("A" & temp) = val0
+        Range("B" & temp) = val1
+        Range("C" & temp) = val2
+        Range("D" & temp) = val3
+        Range("E" & temp) = val4
+        Range("F" & temp) = val5
+        Range("G" & temp) = val6
+        Range("H" & temp) = val7
+        Range("I" & temp) = val8
+        'temper = temp & ":" & temp
+        'Rows(temper).Select
+        'Worksheets(Temp_Name).Activate
+        'ActiveSheet.Paste
+        numVar(IndexArr) = temp + 1
+        Sheets(Main_Name).Select
+        'Worksheets(Main_Name).Activate
+        'increment = increment + 1
+    Next i
+    For i = 0 To Clock
+        Name = nameVar(i) & " " & i
+        Sheets(Name).Select
+        Cells.Select
+        Cells.EntireColumn.AutoFit
+        Range("K2").Select
+    Next i
+' End of seperating units by seperate sheets
+' Beginning of filling in lost time slots
+NumberOfSheets = Application.Sheets.Count
+For Index = 2 To NumberOfSheets
+Sheets(Index).Select
+StringFrag = "=DATE(YEAR(A"
+StringFrag2 = "),MONTH(A"
+StringFrag3 = "),DAY(A"
+StringFrag4 = "))"
+Range("J1") = "Date"
+Range("K1") = "Hour"
+Range("L1") = "Minute"
+Range("M1") = "PM2.5"
+Length2 = 2
+accurateLength = 1008
+   ' Do While gets the total amount of rows used
+Value = True
+Do While (Value)
+    chari = "A" & CStr(Length2)
+    place = Range(chari)
+    bool = IsEmpty(place)
+    ' MsgBox bool & chari
+    If bool = True Then
+        Value = False
+    End If
+    final = place
+    Length2 = Length2 + 1
+Loop
+Length2 = Length2 - 1
+For i = 2 To Length2
+    Range("J" & i) = StringFrag & i & StringFrag2 & i & StringFrag3 & i & StringFrag4
+    Range("K" & i) = "=HOUR(A" & i & ")"
+    Range("L" & i) = "=MINUTE(A" & i & ")"
+Next i
+For i = 2 To accurateLength
+    'myDate = Range("J" & i)
+    'myHour = Range("K" & i)
+    'myMinute = Range("L" & i)
+    For h = 0 To 23
+            Bool1 = False
+            Bool2 = False
+            Bool3 = False
+            Bool4 = False
+            Bool5 = False
+            Bool6 = False
+        For k = 1 To 6
+            myDate = Range("J" & i)
+            myHour = Range("K" & i)
+            myMinute = Range("L" & i)
+            If myHour = h Then
+                If k = 1 And myMinute < 10 Then
+                    Bool1 = True
+                    i = i + 1
+                Else
+                    If k = 2 And myMinute >= 10 And myMinute < 20 Then
+                        Bool2 = True
+                        i = i + 1
+                    Else
+                        If k = 3 And myMinute >= 20 And myMinute < 30 Then
+                            Bool3 = True
+                            i = i + 1
+                        Else
+                            If k = 4 And myMinute >= 30 And myMinute < 40 Then
+                                Bool4 = True
+                                i = i + 1
+                            Else
+                                If k = 5 And myMinute >= 40 And myMinute < 50 Then
+                                    Bool5 = True
+                                    i = i + 1
+                                Else
+                                    If k = 6 And myMinute >= 50 And myMinute < 60 Then
+                                        Bool6 = True
+                                        i = i + 1
+                                    Else
+                                        If Bool1 = False Then
+                                        Rows(i & ":" & i).Select
+                                        Selection.Insert Shift:=xlUp, CopyOrigin:=xlFormatFromLeftOrAbove
+                                        Range("A" & i).Select
+                                        Range("B" & i) = myDate & " " & h & ":" & 0
+                                        Range("J" & i) = myDate
+                                        Range("K" & i) = h
+                                        Range("L" & i) = 0
+                                        Bool1 = True
+                                        i = i + 1
+                                    Else
+                                        If Bool2 = False Then
+                                            Rows(i & ":" & i).Select
+                                            Selection.Insert Shift:=xlUp, CopyOrigin:=xlFormatFromLeftOrAbove
+                                            Range("A" & i).Select
+                                            Range("B" & i) = myDate & " " & h & ":" & 10
+                                            Range("J" & i) = myDate
+                                            Range("K" & i) = h
+                                            Range("L" & i) = 10
+                                            Bool2 = True
+                                            i = i + 1
+                                        Else
+                                            If Bool3 = False Then
+                                                Rows(i & ":" & i).Select
+                                                Selection.Insert Shift:=xlUp, CopyOrigin:=xlFormatFromLeftOrAbove
+                                                Range("A" & i).Select
+                                                Range("B" & i) = myDate & " " & h & ":" & 20
+                                                Range("J" & i) = myDate
+                                                Range("K" & i) = h
+                                                Range("L" & i) = 20
+                                                Bool3 = True
+                                                i = i + 1
+                                            Else
+                                                If Bool4 = False Then
+                                                    Rows(i & ":" & i).Select
+                                                    Selection.Insert Shift:=xlUp, CopyOrigin:=xlFormatFromLeftOrAbove
+                                                    Range("A" & i).Select
+                                                    Range("B" & i) = myDate & " " & h & ":" & 0
+                                                    Range("J" & i) = myDate
+                                                    Range("K" & i) = h
+                                                    Range("L" & i) = 30
+                                                    Bool4 = True
+                                                    i = i + 1
+                                                Else
+                                                    If Bool5 = False Then
+                                                        Rows(i & ":" & i).Select
+                                                        Selection.Insert Shift:=xlUp, CopyOrigin:=xlFormatFromLeftOrAbove
+                                                        Range("A" & i).Select
+                                                        Range("B" & i) = myDate & " " & h & ":" & 40
+                                                        Range("J" & i) = myDate
+                                                        Range("K" & i) = h
+                                                        Range("L" & i) = 40
+                                                        Bool5 = True
+                                                        i = i + 1
+                                                    Else
+                                                        If Bool6 = False Then
+                                                            Rows(i & ":" & i).Select
+                                                            Selection.Insert Shift:=xlUp, CopyOrigin:=xlFormatFromLeftOrAbove
+                                                            Range("A" & i).Select
+                                                            Range("B" & i) = myDate & " " & h & ":" & 50
+                                                            Range("J" & i) = myDate
+                                                            Range("K" & i) = h
+                                                            Range("L" & i) = 50
+                                                            Bool6 = True
+                                                            i = i + 1
+                                                        End If
+                                                    End If
+                                                End If
+                                            End If
+                                        End If
+                                    End If
+                                End If
+                            End If
+                        End If
+                    End If
+                End If
+            End If
+            Else
+                If Bool1 = False Then
+                Rows(i & ":" & i).Select
+                Selection.Insert Shift:=xlUp, CopyOrigin:=xlFormatFromLeftOrAbove
+                Range("A" & i).Select
+                Range("B" & i) = myDate & " " & h & ":" & 0
+                Range("J" & i) = myDate
+                Range("K" & i) = h
+                Range("L" & i) = 0
+                Bool1 = True
+                i = i + 1
+                Else
+                    If Bool2 = False Then
+                        Rows(i & ":" & i).Select
+                        Selection.Insert Shift:=xlUp, CopyOrigin:=xlFormatFromLeftOrAbove
+                        Range("A" & i).Select
+                        Range("B" & i) = myDate & " " & h & ":" & 10
+                        Range("J" & i) = myDate
+                        Range("K" & i) = h
+                        Range("L" & i) = 10
+                        Bool2 = True
+                        i = i + 1
+                    Else
+                        If Bool3 = False Then
+                            Rows(i & ":" & i).Select
+                            Selection.Insert Shift:=xlUp, CopyOrigin:=xlFormatFromLeftOrAbove
+                            Range("A" & i).Select
+                            Range("B" & i) = myDate & " " & h & ":" & 20
+                            Range("J" & i) = myDate
+                            Range("K" & i) = h
+                            Range("L" & i) = 20
+                            Bool3 = True
+                            i = i + 1
+                        Else
+                            If Bool4 = False Then
+                                Rows(i & ":" & i).Select
+                                Selection.Insert Shift:=xlUp, CopyOrigin:=xlFormatFromLeftOrAbove
+                                Range("A" & i).Select
+                                Range("B" & i) = myDate & " " & h & ":" & 30
+                                Range("J" & i) = myDate
+                                Range("K" & i) = h
+                                Range("L" & i) = 30
+                                Bool4 = True
+                                i = i + 1
+                            Else
+                                If Bool5 = False Then
+                                    Rows(i & ":" & i).Select
+                                    Selection.Insert Shift:=xlUp, CopyOrigin:=xlFormatFromLeftOrAbove
+                                    Range("A" & i).Select
+                                    Range("B" & i) = myDate & " " & h & ":" & 40
+                                    Range("J" & i) = myDate
+                                    Range("K" & i) = h
+                                    Range("L" & i) = 40
+                                    Bool5 = True
+                                    i = i + 1
+                                Else
+                                    If Bool6 = False Then
+                                        Rows(i & ":" & i).Select
+                                        Selection.Insert Shift:=xlUp, CopyOrigin:=xlFormatFromLeftOrAbove
+                                        Range("A" & i).Select
+                                        Range("B" & i) = myDate & " " & h & ":" & 50
+                                        Range("J" & i) = myDate
+                                        Range("K" & i) = h
+                                        Range("L" & i) = 50
+                                        Bool6 = True
+                                        i = i + 1
+                                    End If
+                                End If
+                            End If
+                        End If
+                    End If
+                End If
+            End If
+        Next k
+    Next h
+    i = i - 1
+Next i
+Range("J1:M1010").Select
+Selection.Delete Shift:=xlToLeft
+Next Index
+' End of filling in the lost time stamps
+End Sub

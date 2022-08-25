@@ -1,0 +1,508 @@
+def mapMaking():
+    from folium.plugins import FloatImage
+    from folium.plugins import MarkerCluster
+    import json
+    from shapely.geometry import shape, Point
+    import PIL
+    from PIL import Image
+    #image_file = Image.open('Legend.png')
+    #image_file.putalpha(210)
+    #image_file = image_file.save("Legend.png")
+    #img = 'Legend.png'
+    image_file1 = Image.open('Colors.png')
+    image_file1.putalpha(190)
+    image_file1 = image_file1.save("Colors.png")
+    img1 = 'Colors.png'
+    with open('NH.geojson') as f:
+        NH = json.load(f)
+    with open('NHCounty.geojson') as r:
+        NH1 = json.load(r)
+    with open('NHCounty2.geojson') as j:
+        NH2 = json.load(j)
+    with open('NHCounty3.geojson') as l:
+        NH3 = json.load(l)
+    with open('NHCounty4.geojson') as p:
+        NH4 = json.load(p)
+    with open('NHCounty5.geojson') as t:
+        NH5 = json.load(t)
+    with open('NHCounty6.geojson') as z:
+        NH6 = json.load(z)
+    with open('NHCounty7.geojson') as k:
+        NH7 = json.load(k)
+    with open('NHCounty8.geojson') as kl:
+        NH8 = json.load(kl)
+    with open('NHCounty9.geojson') as klr:
+        NH9 = json.load(klr)
+    with open('NHCounty10.geojson') as klrz:
+        NH10 = json.load(klrz)
+    NH_map = folium.Map(location=[43.209568, -71.53729], zoom_start = 8, minZoom = 4, max_bounds = True)
+    style1 = {'fillColor': '#e6e6fa', 'color': '#ba55d3', 'fillOpacity': 0.4}
+    style2 = {'color': '#1e90ff', 'fillOpacity': 0.20}
+    style3 = {'color': '#0077be', 'fillOpacity': 0.20}
+    style4 = {'color': '#4682b4', 'fillOpacity': 0.20}
+    style5 = {'color': '#006db0', 'fillOpacity': 0.20}
+    style6 = {'color': '#0095b6', 'fillOpacity': 0.20}
+    style7 = {'color': '#006994', 'fillOpacity': 0.20}
+    style8 = {'color': '#0095b6', 'fillOpacity': 0.20}
+    style9 = {'color': '#72a0c1', 'fillOpacity': 0.20}
+    style10 = {'color': '#6ca0dc', 'fillOpacity': 0.20}
+    style11 = {'color': '#5b92e5', 'fillOpacity': 0.20}
+    layer = folium.GeoJson(NH,style_function=lambda x:style1, name = 'State Outline').add_to(NH_map)
+    layer1 = folium.GeoJson(NH1,style_function=lambda x:style2, name = 'Belknap County').add_to(NH_map)
+    layer7 = folium.GeoJson(NH7,style_function=lambda x:style8, name = 'Carroll County').add_to(NH_map)
+    layer4 = folium.GeoJson(NH4,style_function=lambda x:style5, name = 'Cheshire County').add_to(NH_map)
+    layer10 = folium.GeoJson(NH10,style_function=lambda x:style11, name = 'Coos County').add_to(NH_map)
+    layer9 = folium.GeoJson(NH9,style_function=lambda x:style10, name = 'Grafton County').add_to(NH_map)
+    layer3 = folium.GeoJson(NH3,style_function=lambda x:style4, name = 'Hillsborough County').add_to(NH_map)
+    layer2 = folium.GeoJson(NH2,style_function=lambda x:style3, name = 'Merrimack County').add_to(NH_map)
+    layer5 = folium.GeoJson(NH5,style_function=lambda x:style6, name = 'Rockingham County').add_to(NH_map)
+    layer6 = folium.GeoJson(NH6,style_function=lambda x:style7, name = 'Strafford County').add_to(NH_map)
+    layer8 = folium.GeoJson(NH8,style_function=lambda x:style9, name = 'Sullivan County').add_to(NH_map)
+    layer1.add_child(folium.Popup('Belknap County')).add_to(NH_map)
+    layer2.add_child(folium.Popup('Merrimack County')).add_to(NH_map)
+    layer3.add_child(folium.Popup('Hillsborough County')).add_to(NH_map)
+    layer4.add_child(folium.Popup('Cheshire County')).add_to(NH_map)
+    layer5.add_child(folium.Popup('Rockingham County')).add_to(NH_map)
+    layer6.add_child(folium.Popup('Strafford County')).add_to(NH_map)
+    layer7.add_child(folium.Popup('Carroll County')).add_to(NH_map)
+    layer8.add_child(folium.Popup('Sullivan County')).add_to(NH_map)
+    layer9.add_child(folium.Popup('Grafton County')).add_to(NH_map)
+    layer10.add_child(folium.Popup('Coos County')).add_to(NH_map)
+    #FloatImage(img, bottom = 2, left = 88).add_to(NH_map)
+    main = folium.FeatureGroup()
+    FloatImage(img1, bottom = 0, left = 0).add_to(NH_map)
+    folium.LayerControl().add_to(NH_map)
+    with open('NH.csv', newline='') as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            merrimack = False
+            belknap = False
+            if(row['pm2.5'] == '?'):
+                    point = Point(float(row['longitude']),float(row['latitude']))
+                    for features in NH['geometry']:
+                        polygon = shape(NH['geometry'])
+                        if polygon.contains(point):
+                            layer.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 15, weight = 3, color = 'black', fill_color='grey', fill_opacity=1).add_child(folium.Popup("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(4,9),html='<div style = "font-size: 10pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+            elif(float(row['pm2.5']) < 12):
+                if(float(row['pm2.5']) < 10):
+                    point = Point(float(row['longitude']),float(row['latitude']))
+                    for features in NH2['geometry']:
+                        polygon = shape(NH2['geometry'])
+                        if polygon.contains(point):
+                            layer2.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'green', fill_color='green', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer2.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(11,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH1['geometry']: 
+                        polygon = shape(NH1['geometry'])
+                        if polygon.contains(point):
+                            layer1.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'green', fill_color='green', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer1.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(11,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH3['geometry']: 
+                        polygon = shape(NH3['geometry'])
+                        if polygon.contains(point):
+                            layer3.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'green', fill_color='green', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer3.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(11,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH4['geometry']: 
+                        polygon = shape(NH4['geometry'])
+                        if polygon.contains(point):
+                            layer4.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'green', fill_color='green', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer4.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(11,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH5['geometry']: 
+                        polygon = shape(NH5['geometry'])
+                        if polygon.contains(point):
+                            layer5.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'green', fill_color='green', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer5.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(11,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH6['geometry']: 
+                        polygon = shape(NH6['geometry'])
+                        if polygon.contains(point):
+                            layer6.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'green', fill_color='green', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer6.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(11,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH7['geometry']: 
+                        polygon = shape(NH7['geometry'])
+                        if polygon.contains(point):
+                            layer7.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'green', fill_color='green', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer7.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(11,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH8['geometry']: 
+                        polygon = shape(NH8['geometry'])
+                        if polygon.contains(point):
+                            layer8.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'green', fill_color='green', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer8.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(11,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH9['geometry']: 
+                        polygon = shape(NH9['geometry'])
+                        if polygon.contains(point):
+                            layer9.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'green', fill_color='green', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer9.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(11,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH10['geometry']: 
+                        polygon = shape(NH10['geometry'])
+                        if polygon.contains(point):
+                            layer10.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'green', fill_color='green', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer10.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(11,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                        #else:
+                            #folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'green', fill_color='green', fill_opacity=1).add_child(folium.Popup("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map)
+                            #folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(11,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map)
+                else:
+                    point = Point(float(row['longitude']),float(row['latitude']))
+                    for features in NH2['geometry']:
+                        polygon = shape(NH2['geometry'])
+                        if polygon.contains(point):
+                            layer2.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'green', fill_color='green', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer2.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH1['geometry']:
+                        polygon = shape(NH1['geometry'])
+                        if polygon.contains(point):
+                            layer1.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'green', fill_color='green', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer1.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH3['geometry']:
+                        polygon = shape(NH3['geometry'])
+                        if polygon.contains(point):
+                            layer3.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'green', fill_color='green', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer3.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH4['geometry']:
+                        polygon = shape(NH4['geometry'])
+                        if polygon.contains(point):
+                            layer4.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'green', fill_color='green', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer4.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH5['geometry']:
+                        polygon = shape(NH5['geometry'])
+                        if polygon.contains(point):
+                            layer5.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'green', fill_color='green', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer5.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH6['geometry']:
+                        polygon = shape(NH6['geometry'])
+                        if polygon.contains(point):
+                            layer6.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'green', fill_color='green', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer6.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH7['geometry']:
+                        polygon = shape(NH7['geometry'])
+                        if polygon.contains(point):
+                            layer7.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'green', fill_color='green', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer7.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH8['geometry']:
+                        polygon = shape(NH8['geometry'])
+                        if polygon.contains(point):
+                            layer8.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'green', fill_color='green', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer8.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH9['geometry']:
+                        polygon = shape(NH9['geometry'])
+                        if polygon.contains(point):
+                            layer9.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'green', fill_color='green', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer9.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH10['geometry']:
+                        polygon = shape(NH10['geometry'])
+                        if polygon.contains(point):
+                            layer10.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'green', fill_color='green', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer10.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+            elif(float(row['pm2.5']) < 35.4):
+                    point = Point(float(row['longitude']),float(row['latitude']))
+                    for features in NH2['geometry']:
+                        polygon = shape(NH2['geometry'])
+                        if polygon.contains(point):
+                            layer2.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'yellow', fill_color='yellow', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer2.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: red;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH1['geometry']:
+                        polygon = shape(NH1['geometry'])
+                        if polygon.contains(point):
+                            layer1.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'yellow', fill_color='yellow', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer1.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: red;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH3['geometry']:
+                        polygon = shape(NH3['geometry'])
+                        if polygon.contains(point):
+                            layer3.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'yellow', fill_color='yellow', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer3.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: red;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH4['geometry']:
+                        polygon = shape(NH4['geometry'])
+                        if polygon.contains(point):
+                            layer4.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'yellow', fill_color='yellow', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer4.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: red;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH5['geometry']:
+                        polygon = shape(NH5['geometry'])
+                        if polygon.contains(point):
+                            layer5.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'yellow', fill_color='yellow', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer5.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: red;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH6['geometry']:
+                        polygon = shape(NH6['geometry'])
+                        if polygon.contains(point):
+                            layer6.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'yellow', fill_color='yellow', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer6.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: red;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH7['geometry']:
+                        polygon = shape(NH7['geometry'])
+                        if polygon.contains(point):
+                            layer7.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'yellow', fill_color='yellow', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer7.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: red;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH8['geometry']:
+                        polygon = shape(NH8['geometry'])
+                        if polygon.contains(point):
+                            layer8.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'yellow', fill_color='yellow', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer8.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: red;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH9['geometry']:
+                        polygon = shape(NH9['geometry'])
+                        if polygon.contains(point):
+                            layer9.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'yellow', fill_color='yellow', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer9.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: red;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH10['geometry']:
+                        polygon = shape(NH10['geometry'])
+                        if polygon.contains(point):
+                            layer10.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'yellow', fill_color='yellow', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer10.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: red;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+            elif(float(row['pm2.5']) < 55.4):
+                    point = Point(float(row['longitude']),float(row['latitude']))
+                    for features in NH2['geometry']:
+                        polygon = shape(NH2['geometry'])
+                        if polygon.contains(point):
+                            layer2.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'orange', fill_color='orange', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer2.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH1['geometry']:
+                        polygon = shape(NH1['geometry'])
+                        if polygon.contains(point):
+                            layer1.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'orange', fill_color='orange', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer1.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH3['geometry']:
+                        polygon = shape(NH3['geometry'])
+                        if polygon.contains(point):
+                            layer3.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'orange', fill_color='orange', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer3.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH4['geometry']:
+                        polygon = shape(NH4['geometry'])
+                        if polygon.contains(point):
+                            layer4.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'orange', fill_color='orange', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer4.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH5['geometry']:
+                        polygon = shape(NH5['geometry'])
+                        if polygon.contains(point):
+                            layer5.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'orange', fill_color='orange', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer5.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH6['geometry']:
+                        polygon = shape(NH6['geometry'])
+                        if polygon.contains(point):
+                            layer6.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'orange', fill_color='orange', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer6.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH7['geometry']:
+                        polygon = shape(NH7['geometry'])
+                        if polygon.contains(point):
+                            layer7.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'orange', fill_color='orange', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer7.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH8['geometry']:
+                        polygon = shape(NH8['geometry'])
+                        if polygon.contains(point):
+                            layer8.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'orange', fill_color='orange', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer8.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH9['geometry']:
+                        polygon = shape(NH9['geometry'])
+                        if polygon.contains(point):
+                            layer9.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'orange', fill_color='orange', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer9.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH10['geometry']:
+                        polygon = shape(NH10['geometry'])
+                        if polygon.contains(point):
+                            layer10.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'orange', fill_color='orange', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer10.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+            elif(float(row['pm2.5']) < 150.4):
+                if(float(row['pm2.5']) < 100):
+                    point = Point(float(row['longitude']),float(row['latitude']))
+                    for features in NH2['geometry']:
+                        polygon = shape(NH2['geometry'])
+                        if polygon.contains(point):
+                            layer2.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'red', fill_color='red', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer2.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH1['geometry']:
+                        polygon = shape(NH1['geometry'])
+                        if polygon.contains(point):
+                            layer1.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'red', fill_color='red', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer1.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH3['geometry']:
+                        polygon = shape(NH3['geometry'])
+                        if polygon.contains(point):
+                            layer3.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'red', fill_color='red', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer3.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH4['geometry']:
+                        polygon = shape(NH4['geometry'])
+                        if polygon.contains(point):
+                            layer4.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'red', fill_color='red', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer4.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH5['geometry']:
+                        polygon = shape(NH5['geometry'])
+                        if polygon.contains(point):
+                            layer5.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'red', fill_color='red', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer5.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH6['geometry']:
+                        polygon = shape(NH6['geometry'])
+                        if polygon.contains(point):
+                            layer6.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'red', fill_color='red', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer6.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH7['geometry']:
+                        polygon = shape(NH7['geometry'])
+                        if polygon.contains(point):
+                            layer7.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'red', fill_color='red', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer7.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH8['geometry']:
+                        polygon = shape(NH8['geometry'])
+                        if polygon.contains(point):
+                            layer8.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'red', fill_color='red', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer8.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH9['geometry']:
+                        polygon = shape(NH9['geometry'])
+                        if polygon.contains(point):
+                            layer9.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'red', fill_color='red', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer9.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                    for features in NH10['geometry']:
+                        polygon = shape(NH10['geometry'])
+                        if polygon.contains(point):
+                            layer10.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'red', fill_color='red', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer10.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(13,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+                else:
+                    point = Point(float(row['longitude']),float(row['latitude']))
+                    for features in NH2['geometry']:
+                        polygon = shape(NH2['geometry'])
+                        if polygon.contains(point):
+                            layer2.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'red', fill_color='red', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer2.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(16,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))                    
+                    for features in NH1['geometry']:
+                        polygon = shape(NH1['geometry'])
+                        if polygon.contains(point):
+                            layer1.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'red', fill_color='red', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer1.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(16,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))                    
+                    for features in NH3['geometry']:
+                        polygon = shape(NH3['geometry'])
+                        if polygon.contains(point):
+                            layer3.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'red', fill_color='red', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer3.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(16,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))                    
+                    for features in NH4['geometry']:
+                        polygon = shape(NH4['geometry'])
+                        if polygon.contains(point):
+                            layer4.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'red', fill_color='red', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer4.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(16,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))                    
+                    for features in NH5['geometry']:
+                        polygon = shape(NH5['geometry'])
+                        if polygon.contains(point):
+                            layer5.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'red', fill_color='red', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer5.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(16,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))                    
+                    for features in NH6['geometry']:
+                        polygon = shape(NH6['geometry'])
+                        if polygon.contains(point):
+                            layer6.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'red', fill_color='red', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer6.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(16,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))                    
+                    for features in NH7['geometry']:
+                        polygon = shape(NH7['geometry'])
+                        if polygon.contains(point):
+                            layer7.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'red', fill_color='red', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer7.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(16,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))                    
+                    for features in NH8['geometry']:
+                        polygon = shape(NH8['geometry'])
+                        if polygon.contains(point):
+                            layer8.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'red', fill_color='red', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer8.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(16,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))                    
+                    for features in NH9['geometry']:
+                        polygon = shape(NH9['geometry'])
+                        if polygon.contains(point):
+                            layer9.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'red', fill_color='red', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer9.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(16,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))                    
+                    for features in NH10['geometry']:
+                        polygon = shape(NH10['geometry'])
+                        if polygon.contains(point):
+                            layer10.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'red', fill_color='red', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer10.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(16,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+            elif(float(row['pm2.5']) < 250.4):
+                    point = Point(float(row['longitude']),float(row['latitude']))
+                    for features in NH2['geometry']:
+                        polygon = shape(NH2['geometry'])
+                        if polygon.contains(point):
+                            layer2.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'purple', fill_color='purple', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer2.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(16,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))                    
+                    for features in NH1['geometry']:
+                        polygon = shape(NH1['geometry'])
+                        if polygon.contains(point):
+                            layer1.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'purple', fill_color='purple', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer1.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(16,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))                    
+                    for features in NH3['geometry']:
+                        polygon = shape(NH3['geometry'])
+                        if polygon.contains(point):
+                            layer3.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'purple', fill_color='purple', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer3.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(16,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))                    
+                    for features in NH4['geometry']:
+                        polygon = shape(NH4['geometry'])
+                        if polygon.contains(point):
+                            layer4.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'purple', fill_color='purple', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer4.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(16,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))                    
+                    for features in NH5['geometry']:
+                        polygon = shape(NH5['geometry'])
+                        if polygon.contains(point):
+                            layer5.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'purple', fill_color='purple', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer5.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(16,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))                    
+                    for features in NH6['geometry']:
+                        polygon = shape(NH6['geometry'])
+                        if polygon.contains(point):
+                            layer6.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'purple', fill_color='purple', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer6.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(16,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))                    
+                    for features in NH7['geometry']:
+                        polygon = shape(NH7['geometry'])
+                        if polygon.contains(point):
+                            layer7.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'purple', fill_color='purple', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer7.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(16,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))                    
+                    for features in NH8['geometry']:
+                        polygon = shape(NH8['geometry'])
+                        if polygon.contains(point):
+                            layer8.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'purple', fill_color='purple', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer8.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(16,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))                    
+                    for features in NH9['geometry']:
+                        polygon = shape(NH9['geometry'])
+                        if polygon.contains(point):
+                            layer9.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'purple', fill_color='purple', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer9.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(16,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))                    
+                    for features in NH10['geometry']:
+                        polygon = shape(NH10['geometry'])
+                        if polygon.contains(point):
+                            layer10.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'purple', fill_color='purple', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer10.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(16,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+            elif(float(row['pm2.5']) > 250.5):
+                    point = Point(float(row['longitude']),float(row['latitude']))
+                    for features in NH2['geometry']:
+                        polygon = shape(NH2['geometry'])
+                        if polygon.contains(point):
+                            layer2.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'maroon', fill_color='maroon', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer2.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(16,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))                    
+                    for features in NH1['geometry']:
+                        polygon = shape(NH1['geometry'])
+                        if polygon.contains(point):
+                            layer1.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'maroon', fill_color='maroon', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer1.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(16,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))                    
+                    for features in NH3['geometry']:
+                        polygon = shape(NH3['geometry'])
+                        if polygon.contains(point):
+                            layer3.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'maroon', fill_color='maroon', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer3.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(16,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))                    
+                    for features in NH4['geometry']:
+                        polygon = shape(NH4['geometry'])
+                        if polygon.contains(point):
+                            layer4.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'maroon', fill_color='maroon', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer4.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(16,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))                    
+                    for features in NH5['geometry']:
+                        polygon = shape(NH5['geometry'])
+                        if polygon.contains(point):
+                            layer5.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'maroon', fill_color='maroon', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer5.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(16,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))                    
+                    for features in NH6['geometry']:
+                        polygon = shape(NH6['geometry'])
+                        if polygon.contains(point):
+                            layer6.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'maroon', fill_color='maroon', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer6.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(16,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))                    
+                    for features in NH7['geometry']:
+                        polygon = shape(NH7['geometry'])
+                        if polygon.contains(point):
+                            layer7.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'maroon', fill_color='maroon', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer7.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(16,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))                    
+                    for features in NH8['geometry']:
+                        polygon = shape(NH8['geometry'])
+                        if polygon.contains(point):
+                            layer8.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'maroon', fill_color='maroon', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer8.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(16,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))                    
+                    for features in NH9['geometry']:
+                        polygon = shape(NH9['geometry'])
+                        if polygon.contains(point):
+                            layer9.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'maroon', fill_color='maroon', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer9.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(16,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))                    
+                    for features in NH10['geometry']:
+                        polygon = shape(NH10['geometry'])
+                        if polygon.contains(point):
+                            layer10.add_child(folium.CircleMarker((row['latitude'],row['longitude']), radius = 20, weight = 2, color = 'maroon', fill_color='maroon', fill_opacity=1).add_child(folium.Tooltip("Name: " + row['name'] + "\n" + "pm2.5: " + '\n' + row['pm2.5'])).add_to(NH_map))
+                            layer10.add_child(folium.map.Marker([float(row['latitude']), float(row['longitude'])], icon = DivIcon(icon_size=(15,15),icon_anchor=(16,10),html='<div style = "font-size: 8pt; color: white;">%s</div>' % row['pm2.5'],)).add_to(NH_map))
+        NH_map.save('nhPointMap.html')

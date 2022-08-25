@@ -1,0 +1,8 @@
+Description:
+Bug consists of duplicate names being referenced only by the first case every time. This includes (but isn't limited to time_stamp, pm2.5, etc.)
+Side effect:
+We lose the correct data for those duplicated keywords
+How to fix:
+We need a counter that will mark which duplicated word we're on 
+Where the bug is occuring:
+In the csv file within the column ranges of CK - CV and DE - EB.

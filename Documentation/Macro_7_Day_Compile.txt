@@ -1,0 +1,116 @@
+Sub WeekCompiler()
+Dim wb As Workbook
+Dim FileName As String
+Dim FileName2 As String
+Dim First As Workbook, Book1 As Workbook, Book2 As Workbook
+Dim namVar As Object
+Set namVar = CreateObject("System.Collections.ArrayList")
+Dim namVar1 As Object
+Set namVar1 = CreateObject("System.Collections.ArrayList")
+Dim namVar2 As Object
+Set namVar2 = CreateObject("System.Collections.ArrayList")
+Dim namVar3 As Object
+Set namVar3 = CreateObject("System.Collections.ArrayList")
+Dim namVar4 As Object
+Set namVar4 = CreateObject("System.Collections.ArrayList")
+Dim namVar5 As Object
+Set namVar5 = CreateObject("System.Collections.ArrayList")
+Dim namVar6 As Object
+Set namVar6 = CreateObject("System.Collections.ArrayList")
+Dim finalName As Object
+Set finalName = CreateObject("System.Collections.ArrayList")
+FinalLength = 0
+FileName = "C:\Users\zachary.t.thoroughgo\DES\7_Day_Compile.xlsm"
+FirstDayName = "C:\Users\zachary.t.thoroughgo\DES\Environment\DESPurple08082022MAC.xlsm"
+SecondDayName = "C:\Users\zachary.t.thoroughgo\DES\DESPurple08112022.xlsm"
+Workbooks.Add
+ActiveWorkbook.SaveAs FileName:=FileName, FileFormat:=xlOpenXMLWorkbookMacroEnabled
+' Opens and looks gets each sheet name for first sheet
+Set Book1 = Workbooks.Open(FirstDayName)
+Set First = Workbooks.Open(FileName)
+Workbooks.Open FirstDayName
+WorkSheetsAmount = ActiveWorkbook.Sheets.Count
+For i = WorkSheetsAmount To 1 Step -1
+    SheetName = Sheets(i).Name
+    If i = 1 Then
+        
+    Else
+        If namVar.Contains(SheetName) Then
+            
+        Else
+            namVar.Add (SheetName)
+        End If
+    End If
+Next i
+MsgBox ActiveWorkbook.Sheets.Count
+Workbooks.Open SecondDayName
+Set Book2 = ThisWorkbook
+TempWork = ActiveWorkbook.Sheets.Count
+    If TempWork > WorkSheetsAmount Then
+        FinalLength = TempWork
+    Else
+        FinalLength = WorkSheetsAmount
+    End If
+WorkSheetsAmount = ActiveWorkbook.Sheets.Count
+For i = WorkSheetsAmount To 1 Step -1
+    SheetName = Sheets(i).Name
+    If i = 1 Then
+        
+    Else
+        If namVar.Contains(SheetName) Then
+            
+        Else
+            namVar.Add (SheetName)
+        End If
+    End If
+Next i
+Workbooks.Open FileName
+FinalLength = FinalLength - 2
+For i = 0 To FinalLength
+    Sheets.Add After:=ActiveSheet
+    Current_Name = ActiveSheet.Name
+    Sheets(Current_Name).Select
+    Sheets(Current_Name).Name = namVar(i)
+Next i
+'Workbooks.Open FirstDayName
+For i = 0 To FinalLength
+    On Error GoTo Line
+    Workbooks.Open FirstDayName
+    Sheets(namVar(i)).Select
+    Cells.Select
+    Selection.Copy
+    Workbooks.Open FileName
+    Sheets(namVar(i)).Select
+    Cells.Select
+    ActiveSheet.Paste
+    'Workbooks.Open FirstDayName
+    'Windows(FirstDayName).Activate
+    'Book1.Activate
+    'Book1.Sheets (namVar(i))
+    'Cells.Select
+    'Selection.Copy
+    'First.Activate
+    'Workbooks.Open FileName
+    'Windows(FileName).Activate
+    'First.Sheets (namVar(i))
+    'First.Sheets(namVar(i)).Select.Range ("A1")
+    'Selection.Paste
+    'Book1.Sheets(namVar(i)).Activate
+    'Book1.Sheets(namVar(i)).Copy
+    'Cells.Select
+    'Selection.Copy
+    'First.Open
+    'First.Activate
+    'First.Sheets(namVar(i)).Activate
+    'First.Sheets(namVar(i)).Select.Range ("A1")
+    'Workbooks.Open FileName
+    'Workbooks(FileName).Activate
+    'Sheets(namVar(i)).Select
+    'Selection.Paste
+    'Workbooks.Open FirstDayName
+    'Workbooks(FirstDayName).Activate
+Next i
+'MsgBox namVar(20)
+MsgBox Length
+'MsgBox ActiveWorkbook.Sheets.Count
+End Sub

@@ -1,0 +1,1037 @@
+Sub Experiment()
+Dim prevVar As Object
+Set prevVar = CreateObject("System.Collections.ArrayList")
+Dim rollVar As Object
+Set rollVar = CreateObject("System.Collections.ArrayList")
+FileNamez = InputBox("Please enter the address of the previous day compilation", "Previous compile destination xlsm address", "C:\Users\zachary.t.thoroughgo\DES\week_test\7_day_compiled.xlsm")
+Workbooks.Open FileNamez
+NumberSheetz = Application.Sheets.Count
+Filezz = "C:\Users\zachary.t.thoroughgo\DES\week_test\7_day_compiled.xlsm"
+lengthing = 0
+For amt = 2 To NumberSheetz
+    Sheets(amt).Select
+    TempValue = Range("I1005").Value
+    prevVar.Add (TempValue)
+    TempValue = Range("I1006").Value
+    prevVar.Add (TempValue)
+    TempValue = Range("I1007").Value
+    prevVar.Add (TempValue)
+    TempValue = Range("I1008").Value
+    prevVar.Add (TempValue)
+    TempValue = Range("I1009").Value
+    prevVar.Add (TempValue)
+    lengthing = lengthing + 5
+    
+    TempValue1 = Range("I872").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I878").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I884").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I890").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I896").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I902").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I908").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I914").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I920").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I926").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I932").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I938").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I944").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I950").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I956").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I962").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I968").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I974").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I980").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I986").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I992").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I998").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I1004").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I1010").Value
+    rollVar.Add (TempValue)
+Next amt
+TempName = ActiveWorkbook.Name
+Workbooks(TempName).Close SaveChanges:=False
+Workbooks.Open Filezz
+NumberSheets = Application.Sheets.Count
+StringFrag = "=IF(COUNT(I"
+StringFrag2 = ")>3.5,ROUND(AVERAGE(I"
+StringFrag3 = "),2),"""")"
+indexz = 0
+Boolz0 = False
+Boolz1 = False
+Boolz2 = False
+Boolz3 = False
+Boolz4 = False
+Boolz5 = False
+For k = 2 To NumberSheets
+    indexzLength = indexz + 5
+    Sheets(k).Select
+    Range("J1") = "Rolling Hourly Average"
+    Range("K1") = "Rolling 24 Hour Average"
+    Length2 = 2
+    ' Do While gets the total amount of rows used
+    Value = True
+    Do While (Value)
+        chari = "B" & CStr(Length2)
+        place = Range(chari)
+        bool = IsEmpty(place)
+        ' MsgBox bool & chari
+        If bool = True Then
+            Value = False
+        End If
+        final = place
+        Length2 = Length2 + 1
+    Loop
+    Length2 = Length2 - 1
+        TempValue0 = prevVar(indexz)
+        indexz = indexz + 1
+        TempValue1 = prevVar(indexz)
+        indexz = indexz + 1
+        TempValue2 = prevVar(indexz)
+        indexz = indexz + 1
+        TempValue3 = prevVar(indexz)
+        indexz = indexz + 1
+        TempValue4 = prevVar(indexz)
+        indexz = indexz + 1
+        TempValue5 = Range("I2").Value
+        Yes = 0
+        No = 0
+        Amount = 0
+        Amount = CDbl(Amount)
+        Divide = 0
+        For thing = 0 To 5
+            If thing = 0 Then
+                If TempValue0 = "" Then
+                    Boolz0 = False
+                    No = No + 1
+                Else
+                    Boolz0 = True
+                    TempValue0 = CDbl(TempValue0)
+                    Amount = Amount + TempValue0
+                    Divide = Divide + 1
+                    Yes = Yes + 1
+                End If
+            Else
+                If thing = 1 Then
+                    If TempValue1 = "" Then
+                        Boolz1 = False
+                        No = No + 1
+                    Else
+                        Boolz1 = True
+                        TempValue1 = CDbl(TempValue1)
+                        Amount = Amount + TempValue1
+                        Divide = Divide + 1
+                        Yes = Yes + 1
+                    End If
+                Else
+                    If thing = 2 Then
+                        If TempValue2 = "" Then
+                            Boolz2 = False
+                            No = No + 1
+                        Else
+                            Boolz2 = True
+                            TempValue2 = CDbl(TempValue2)
+                            Amount = Amount + TempValue2
+                            Divide = Divide + 1
+                            Yes = Yes + 1
+                        End If
+                    Else
+                        If thing = 3 Then
+                            If TempValue3 = "" Then
+                                Boolz3 = False
+                                No = No + 1
+                            Else
+                                Boolz3 = True
+                                TempValue3 = CDbl(TempValue3)
+                                Amount = Amount + TempValue3
+                                Divide = Divide + 1
+                                Yes = Yes + 1
+                            End If
+                        Else
+                            If thing = 4 Then
+                                If TempValue4 = "" Then
+                                    Boolz4 = False
+                                    No = No + 1
+                                Else
+                                    Boolz4 = True
+                                    TempValue4 = CDbl(TempValue4)
+                                    Amount = Amount + TempValue4
+                                    Divide = Divide + 1
+                                    Yes = Yes + 1
+                                End If
+                            Else
+                                If thing = 5 Then
+                                    If TempValue5 = "" Then
+                                        Boolz5 = False
+                                        No = No + 1
+                                    Else
+                                        Boolz5 = True
+                                        TempValue5 = CDbl(TempValue5)
+                                        Amount = Amount + TempValue5
+                                        Divide = Divide + 1
+                                        Yes = Yes + 1
+                                    End If
+                                Else
+                                End If
+                            End If
+                        End If
+                    End If
+                End If
+            End If
+        Next thing
+        If No > 2 Then
+            Range("J2") = ""
+            Range("J3").Select
+            With Selection.Interior
+                .Pattern = xlLightDown
+                .PatternColorIndex = xlAutomatic
+                .ThemeColor = xlThemeColorDark1
+                .TintAndShade = -0.14996795556505
+                .PatternTintAndShade = 0
+            End With
+            Range("J4").Select
+            With Selection.Interior
+                .Pattern = xlLightDown
+                .PatternColorIndex = xlAutomatic
+                .ThemeColor = xlThemeColorDark1
+                .TintAndShade = -0.14996795556505
+                .PatternTintAndShade = 0
+            End With
+            Range("J5").Select
+            With Selection.Interior
+                .Pattern = xlLightDown
+                .PatternColorIndex = xlAutomatic
+                .ThemeColor = xlThemeColorDark1
+                .TintAndShade = -0.14996795556505
+                .PatternTintAndShade = 0
+            End With
+            Range("J6").Select
+            With Selection.Interior
+                .Pattern = xlLightDown
+                .PatternColorIndex = xlAutomatic
+                .ThemeColor = xlThemeColorDark1
+                .TintAndShade = -0.14996795556505
+                .PatternTintAndShade = 0
+            End With
+            Range("J7").Select
+            With Selection.Interior
+                .Pattern = xlLightDown
+                .PatternColorIndex = xlAutomatic
+                .ThemeColor = xlThemeColorDark1
+                .TintAndShade = -0.14996795556505
+                .PatternTintAndShade = 0
+            End With
+            Else
+                Amount = Amount / Divide
+                Amount = Round(Amount, 2)
+                Range("J2") = Amount
+            Range("J3").Select
+            With Selection.Interior
+                .Pattern = xlLightDown
+                .PatternColorIndex = xlAutomatic
+                .ThemeColor = xlThemeColorDark1
+                .TintAndShade = -0.14996795556505
+                .PatternTintAndShade = 0
+            End With
+            Range("J4").Select
+            With Selection.Interior
+                .Pattern = xlLightDown
+                .PatternColorIndex = xlAutomatic
+                .ThemeColor = xlThemeColorDark1
+                .TintAndShade = -0.14996795556505
+                .PatternTintAndShade = 0
+            End With
+            Range("J5").Select
+            With Selection.Interior
+                .Pattern = xlLightDown
+                .PatternColorIndex = xlAutomatic
+                .ThemeColor = xlThemeColorDark1
+                .TintAndShade = -0.14996795556505
+                .PatternTintAndShade = 0
+            End With
+            Range("J6").Select
+            With Selection.Interior
+                .Pattern = xlLightDown
+                .PatternColorIndex = xlAutomatic
+                .ThemeColor = xlThemeColorDark1
+                .TintAndShade = -0.14996795556505
+                .PatternTintAndShade = 0
+            End With
+            Range("J7").Select
+            With Selection.Interior
+                .Pattern = xlLightDown
+                .PatternColorIndex = xlAutomatic
+                .ThemeColor = xlThemeColorDark1
+                .TintAndShade = -0.14996795556505
+                .PatternTintAndShade = 0
+            End With
+        End If
+    For i = 8 To Length2
+        Start = i - 5
+        tempval = Start + 5
+        Range("J" & i) = StringFrag & Start & ":I" & tempval & StringFrag2 & Start & ":I" & tempval & StringFrag3
+        i = i + 1
+        Range("J" & i).Select
+        With Selection.Interior
+            .Pattern = xlLightDown
+            .PatternColorIndex = xlAutomatic
+            .ThemeColor = xlThemeColorDark1
+            .TintAndShade = -0.14996795556505
+            .PatternTintAndShade = 0
+        End With
+        i = i + 1
+        Range("J" & i).Select
+        With Selection.Interior
+            .Pattern = xlLightDown
+            .PatternColorIndex = xlAutomatic
+            .ThemeColor = xlThemeColorDark1
+            .TintAndShade = -0.14996795556505
+            .PatternTintAndShade = 0
+        End With
+        i = i + 1
+        Range("J" & i).Select
+        With Selection.Interior
+            .Pattern = xlLightDown
+            .PatternColorIndex = xlAutomatic
+            .ThemeColor = xlThemeColorDark1
+            .TintAndShade = -0.14996795556505
+            .PatternTintAndShade = 0
+        End With
+        i = i + 1
+        Range("J" & i).Select
+        With Selection.Interior
+            .Pattern = xlLightDown
+            .PatternColorIndex = xlAutomatic
+            .ThemeColor = xlThemeColorDark1
+            .TintAndShade = -0.14996795556505
+            .PatternTintAndShade = 0
+        End With
+        i = i + 1
+        Range("J" & i).Select
+        With Selection.Interior
+            .Pattern = xlLightDown
+            .PatternColorIndex = xlAutomatic
+            .ThemeColor = xlThemeColorDark1
+            .TintAndShade = -0.14996795556505
+            .PatternTintAndShade = 0
+        End With
+        tempval = 0
+    Next i
+Next k
+End Sub
+
+
+Sub Time()
+CurrentDate = Date
+CurrentDate = Format(Date, "mmddyyyy")
+FileName = "DESPurple" & CurrentDate & ".csv"
+Application.DisplayAlerts = False
+FileLocation = "C:\Users\zachary.t.thoroughgo\DES\Environment\DESPurple08102022.csv"
+Workbooks.Open FileLocation
+ActiveWorkbook.SaveAs FileName:=FileLocation, FileFormat:=xlOpenXMLWorkbookMacroEnabled
+Call AutoFormatter4Map
+MsgBox FileName
+End Sub
+Sub AutoFormatter4Map()
+'
+' Macro1 Macro
+'
+
+'
+    Current_time = Range("L2")
+    Value = True
+    Dim length As Integer
+    Dim chari As String
+    Dim final As String
+    Dim nameVar As Object
+    Dim indexVar As Object
+    Dim numVar As Object
+    Set numVar = CreateObject("System.Collections.ArrayList")
+    Set nameVar = CreateObject("System.Collections.ArrayList")
+    Set indexVar = CreateObject("System.Collections.ArrayList")
+    length = 2
+    ' Do While gets the total amount of rows used
+    Do While (Value)
+        chari = "A" & CStr(length)
+        place = Range(chari)
+        bool = IsEmpty(place)
+        ' MsgBox bool & chari
+        If bool = True Then
+            Value = False
+        End If
+        final = place
+        length = length + 1
+    Loop
+    length = length - 2
+    'MsgBox length
+    ' Total rows are now found as an anchor for our for loop
+    chari = "C"
+    final = "D"
+    Clock = 0
+    Start = True
+    For x = 2 To length
+        temp = chari & x
+        Temp1 = final & x
+        indexVal = Range(temp)
+        nameVal = Range(Temp1)
+        If Start = True Then
+            indexVar.Add (indexVal)
+            nameVar.Add (nameVal)
+            Clock = Clock + 1
+            'MsgBox indexVar(x - 1)
+            Start = False
+        Else
+            If indexVar.Contains(indexVal) Then
+                
+            Else
+                indexVar.Add (indexVal)
+                nameVar.Add (nameVal)
+                Clock = Clock + 1
+            End If
+        End If
+    Next x
+    Clock = Clock - 1
+    'MsgBox Clock
+    Start = True
+    increment = 2
+    For i = 0 To Clock
+        Main_Name = ActiveSheet.Name
+    '   Rows("1:1").Select
+        val0 = Range("A1")
+        valz = Range("H1")
+        valzz = Range("I1")
+        val1 = Range("L1")
+        val2 = Range("M1")
+        val3 = Range("N1")
+        val4 = Range("V1")
+        val5 = Range("W1")
+        val6 = Range("T1")
+        val7 = Range("AB1")
+        val8 = Range("AD1")
+    '   Selection.Copy
+        Sheets.Add After:=ActiveSheet
+    '   ActiveSheet.Paste
+        Range("A1") = val0
+        Range("B1") = val1
+        Range("C1") = val2
+        Range("D1") = val3
+        Range("E1") = val4
+        Range("F1") = val5
+        Range("G1") = val6
+        Range("H1") = val7
+        Range("I1") = val8
+        Range("T1") = valz
+        Range("U1") = valzz
+        Current_Name = ActiveSheet.Name
+    '   Range("A1").Select
+        Sheets(Main_Name).Select
+    '   Worksheets(Main_Name).Activate
+        Name = nameVar(i) & " " & i
+        val0 = Range("A" & increment)
+        val1 = Range("L" & increment)
+        val2 = Range("M" & increment)
+        val3 = Range("N" & increment)
+        val4 = Range("V" & increment)
+        val5 = Range("W" & increment)
+        val6 = Range("T" & increment)
+        val7 = Range("AB" & increment)
+        val8 = Range("AD" & increment)
+        valz = Range("H" & increment)
+        valzz = Range("I" & increment)
+        Sheets(Current_Name).Select
+        Sheets(Current_Name).Name = Name
+        Sheets(Main_Name).Select
+        Placer = increment & ":" & increment
+    '   Rows(Placer).Select
+    '   Selection.Copy
+        Sheets(Name).Select
+    '   Worksheets(Name).Activate
+    '   Rows("2:2").Select
+        Range("A2") = val0
+        Range("B2") = val1
+        Range("C2") = val2
+        Range("D2") = val3
+        Range("E2") = val4
+        Range("F2") = val5
+        Range("G2") = val6
+        Range("H2") = val7
+        Range("I2") = val8
+        Range("T2") = valz
+        Range("U2") = valzz
+    '   ActiveSheet.Paste
+        increment = increment + 1
+        numVar.Add (3)
+        Sheets(Main_Name).Select
+    Next i
+    chari = "C"
+    Main_Name = ActiveSheet.Name
+    For i = increment To length
+        Index = Range(chari & i)
+        IndexArr = indexVar.LastIndexOf(Index)
+        Temp_Name = nameVar(IndexArr) & " " & IndexArr
+        'Placer = increment & ":" & increment
+        val0 = Range("A" & i)
+        val1 = Range("L" & i)
+        val2 = Range("M" & i)
+        val3 = Range("N" & i)
+        val4 = Range("V" & i)
+        val5 = Range("W" & i)
+        val6 = Range("T" & i)
+        val7 = Range("AB" & i)
+        val8 = Range("AD" & i)
+        valz = Range("H" & i)
+        valzz = Range("I" & i)
+        'Rows(Placer).Select
+        'Selection.Copy
+        Sheets(Temp_Name).Select
+        temp = numVar(IndexArr)
+        Range("A" & temp) = val0
+        Range("B" & temp) = val1
+        Range("C" & temp) = val2
+        Range("D" & temp) = val3
+        Range("E" & temp) = val4
+        Range("F" & temp) = val5
+        Range("G" & temp) = val6
+        Range("H" & temp) = val7
+        Range("I" & temp) = val8
+        Range("T" & temp) = valz
+        Range("U" & temp) = valzz
+        'temper = temp & ":" & temp
+        'Rows(temper).Select
+        'Worksheets(Temp_Name).Activate
+        'ActiveSheet.Paste
+        numVar(IndexArr) = temp + 1
+        Sheets(Main_Name).Select
+        'Worksheets(Main_Name).Activate
+        'increment = increment + 1
+    Next i
+    For i = 0 To Clock
+        Name = nameVar(i) & " " & i
+        Sheets(Name).Select
+        Cells.Select
+        Cells.EntireColumn.AutoFit
+        Range("K2").Select
+    Next i
+End Sub
+Sub Experiment()
+Dim prevVar As Object
+Set prevVar = CreateObject("System.Collections.ArrayList")
+Dim rollVar As Object
+Set rollVar = CreateObject("System.Collections.ArrayList")
+FileNamez = InputBox("Please enter the address of the previous day compilation", "Previous compile destination xlsm address", "C:\Users\zachary.t.thoroughgo\DES\week_test\7_day_compiled.xlsm")
+Workbooks.Open FileNamez
+NumberSheetz = Application.Sheets.Count
+Filezz = "C:\Users\zachary.t.thoroughgo\DES\week_test\7_day_compiled.xlsm"
+lengthing = 0
+For amt = 2 To NumberSheetz
+    Sheets(amt).Select
+    TempValue = Range("I1005").Value
+    prevVar.Add (TempValue)
+    TempValue = Range("I1006").Value
+    prevVar.Add (TempValue)
+    TempValue = Range("I1007").Value
+    prevVar.Add (TempValue)
+    TempValue = Range("I1008").Value
+    prevVar.Add (TempValue)
+    TempValue = Range("I1009").Value
+    prevVar.Add (TempValue)
+    lengthing = lengthing + 5
+    
+    TempValue1 = Range("I872").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I878").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I884").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I890").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I896").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I902").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I908").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I914").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I920").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I926").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I932").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I938").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I944").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I950").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I956").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I962").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I968").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I974").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I980").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I986").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I992").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I998").Value
+    rollVar.Add (TempValue)
+    TempValue1 = Range("I1004").Value
+    rollVar.Add (TempValue)
+    ' 0 to 22
+    'TempValue1 = Range("I1010").Value
+    'rollVar.Add (TempValue)
+Next amt
+TempName = ActiveWorkbook.Name
+Workbooks(TempName).Close SaveChanges:=False
+Workbooks.Open Filezz
+NumberSheets = Application.Sheets.Count
+StringFrag = "=IF(COUNT(I"
+StringFrag2 = ")>3.5,ROUND(AVERAGE(I"
+StringFrag3 = "),2),"""")"
+indexz = 0
+Boolz0 = False
+Boolz1 = False
+Boolz2 = False
+Boolz3 = False
+Boolz4 = False
+Boolz5 = False
+For k = 2 To NumberSheets
+    num = 2
+    indexzLength = indexz + 5
+    Sheets(k).Select
+    Range("J1") = "Rolling Hourly Average"
+    Range("K1") = "Rolling 24 Hour Average"
+    Length2 = 2
+    ' Do While gets the total amount of rows used
+    Value = True
+    Do While (Value)
+        chari = "B" & CStr(Length2)
+        place = Range(chari)
+        bool = IsEmpty(place)
+        ' MsgBox bool & chari
+        If bool = True Then
+            Value = False
+        End If
+        final = place
+        Length2 = Length2 + 1
+    Loop
+    Length2 = Length2 - 1
+    Str1 = "=IF(COUNT("
+    Str2 = ")>17.5,ROUND(AVERAGE("
+    str3 = "),2),""NO AVG"")"
+    Fin = Str1
+    Fin2 = Str2
+    thingz = 2
+    For things = 2 To 145
+        Fin = Str1
+        Fin2 = Str2
+        Clock = 0
+        For i = thingz - 2 To 23
+            If i = 23 Then
+                Fin = Fin & rollVar(i)
+                Clock = Clock + 1
+                If Clock <> 24 Then
+                    For l = 0 To Abs(23 - Clock)
+                        temp = (6 * l) + 2
+                        temporary = Range("J" & temp)
+                        If temporary = "NO AVG" Or temporary = "" Then
+                            temporary = "0"
+                            Fin = Fin & ", " & temporary
+                        Else
+                            Fin = Fin & ", " & Range("J" & temp)
+                        End If
+                    Next l
+                Else
+                End If
+            Else
+                Fin = Fin & rollVar(i) & ", "
+                Clock = Clock + 1
+            End If
+        Next i
+        Clock = 0
+        For x = thingz - 2 To 23
+            If x = 23 Then
+                Fin2 = Fin2 & rollVar(i)
+                Clock = Clock + 1
+                    If Clock <> 24 Then
+                    For l = 0 To Abs(23 - Clock)
+                        temp = (6 * l) + 2
+                        temporary = Range("J" & temp)
+                        If temporary = "NO AVG" Or temporary = "" Then
+                            temporary = "0"
+                            Fin2 = Fin2 & ", " & temporary
+                        Else
+                            Fin2 = Fin2 & ", " & Range("J" & temp)
+                        End If
+                    Next l
+                Else
+                End If
+            Else
+                Fin2 = Fin2 & rollVar(i) & ", "
+                Clock = Clock + 1
+            End If
+        Next x
+        Fin = Fin & Fin2 & str3
+        Range("K" & num) = Fin
+        num = num + 6
+        things = things + 5
+        thingz = thingz + 1
+    Next things
+    For thingers = 146 To Length2
+        Fin = Str1
+        Fin2 = Str2
+        For i = (thingers - (thingers - 2)) To (thingers - 6)
+            If i = (things - 6) Then
+                temporary = Range("J" & i)
+                If temporary = "NO AVG" Or temporary = "" Then
+                    temporary = "0"
+                    Fin = Fin & temporary
+                Else
+                    Fin = Fin & Range("J" & i)
+                End If
+            Else
+                temporary = Range("J" & i)
+                If temporary = "NO AVG" Or temporary = "" Then
+                    temporary = "0"
+                    Fin = Fin & temporary & ", "
+                Else
+                    Fin = Fin & Range("J" & i) & ", "
+                End If
+            End If
+            i = i + 5
+        Next i
+        For x = (thingers - (thingers - 2)) To (thingers - 6)
+            If x = (thingers - 6) Then
+                temporary = Range("J" & x)
+                If temporary = "NO AVG" Or temporary = "" Then
+                    temporary = "0"
+                    Fin2 = Fin2 & temporary
+                Else
+                    Fin2 = Fin2 & Range("J" & x)
+                End If
+            Else
+                temporary = Range("J" & x)
+                If temporary = "NO AVG" Or temporary = "" Then
+                    temporary = "0"
+                    Fin2 = Fin2 & temporary & ", "
+                Else
+                    Fin2 = Fin2 & Range("J" & x) & ", "
+                End If
+            End If
+            x = x + 5
+        Next x
+        Fin = Fin & Fin2 & str3
+        Range("K" & thingers) = Fin
+        thingers = thingers + 5
+    Next thingers
+        TempValue0 = prevVar(indexz)
+        indexz = indexz + 1
+        TempValue1 = prevVar(indexz)
+        indexz = indexz + 1
+        TempValue2 = prevVar(indexz)
+        indexz = indexz + 1
+        TempValue3 = prevVar(indexz)
+        indexz = indexz + 1
+        TempValue4 = prevVar(indexz)
+        indexz = indexz + 1
+        TempValue5 = Range("I2").Value
+        Yes = 0
+        NO = 0
+        Amount = 0
+        Amount = CDbl(Amount)
+        Divide = 0
+        For thing = 0 To 5
+            If thing = 0 Then
+                If TempValue0 = "" Then
+                    Boolz0 = False
+                    NO = NO + 1
+                Else
+                    Boolz0 = True
+                    TempValue0 = CDbl(TempValue0)
+                    Amount = Amount + TempValue0
+                    Divide = Divide + 1
+                    Yes = Yes + 1
+                End If
+            Else
+                If thing = 1 Then
+                    If TempValue1 = "" Then
+                        Boolz1 = False
+                        NO = NO + 1
+                    Else
+                        Boolz1 = True
+                        TempValue1 = CDbl(TempValue1)
+                        Amount = Amount + TempValue1
+                        Divide = Divide + 1
+                        Yes = Yes + 1
+                    End If
+                Else
+                    If thing = 2 Then
+                        If TempValue2 = "" Then
+                            Boolz2 = False
+                            NO = NO + 1
+                        Else
+                            Boolz2 = True
+                            TempValue2 = CDbl(TempValue2)
+                            Amount = Amount + TempValue2
+                            Divide = Divide + 1
+                            Yes = Yes + 1
+                        End If
+                    Else
+                        If thing = 3 Then
+                            If TempValue3 = "" Then
+                                Boolz3 = False
+                                NO = NO + 1
+                            Else
+                                Boolz3 = True
+                                TempValue3 = CDbl(TempValue3)
+                                Amount = Amount + TempValue3
+                                Divide = Divide + 1
+                                Yes = Yes + 1
+                            End If
+                        Else
+                            If thing = 4 Then
+                                If TempValue4 = "" Then
+                                    Boolz4 = False
+                                    NO = NO + 1
+                                Else
+                                    Boolz4 = True
+                                    TempValue4 = CDbl(TempValue4)
+                                    Amount = Amount + TempValue4
+                                    Divide = Divide + 1
+                                    Yes = Yes + 1
+                                End If
+                            Else
+                                If thing = 5 Then
+                                    If TempValue5 = "" Then
+                                        Boolz5 = False
+                                        NO = NO + 1
+                                    Else
+                                        Boolz5 = True
+                                        TempValue5 = CDbl(TempValue5)
+                                        Amount = Amount + TempValue5
+                                        Divide = Divide + 1
+                                        Yes = Yes + 1
+                                    End If
+                                Else
+                                End If
+                            End If
+                        End If
+                    End If
+                End If
+            End If
+        Next thing
+        If NO > 2 Then
+            Range("J2") = ""
+            Range("J3").Select
+            With Selection.Interior
+                .Pattern = xlLightDown
+                .PatternColorIndex = xlAutomatic
+                .ThemeColor = xlThemeColorDark1
+                .TintAndShade = -0.14996795556505
+                .PatternTintAndShade = 0
+            End With
+            Range("J4").Select
+            With Selection.Interior
+                .Pattern = xlLightDown
+                .PatternColorIndex = xlAutomatic
+                .ThemeColor = xlThemeColorDark1
+                .TintAndShade = -0.14996795556505
+                .PatternTintAndShade = 0
+            End With
+            Range("J5").Select
+            With Selection.Interior
+                .Pattern = xlLightDown
+                .PatternColorIndex = xlAutomatic
+                .ThemeColor = xlThemeColorDark1
+                .TintAndShade = -0.14996795556505
+                .PatternTintAndShade = 0
+            End With
+            Range("J6").Select
+            With Selection.Interior
+                .Pattern = xlLightDown
+                .PatternColorIndex = xlAutomatic
+                .ThemeColor = xlThemeColorDark1
+                .TintAndShade = -0.14996795556505
+                .PatternTintAndShade = 0
+            End With
+            Range("J7").Select
+            With Selection.Interior
+                .Pattern = xlLightDown
+                .PatternColorIndex = xlAutomatic
+                .ThemeColor = xlThemeColorDark1
+                .TintAndShade = -0.14996795556505
+                .PatternTintAndShade = 0
+            End With
+            Else
+                Amount = Amount / Divide
+                Amount = Round(Amount, 2)
+                Range("J2") = Amount
+            Range("J3").Select
+            With Selection.Interior
+                .Pattern = xlLightDown
+                .PatternColorIndex = xlAutomatic
+                .ThemeColor = xlThemeColorDark1
+                .TintAndShade = -0.14996795556505
+                .PatternTintAndShade = 0
+            End With
+            Range("J4").Select
+            With Selection.Interior
+                .Pattern = xlLightDown
+                .PatternColorIndex = xlAutomatic
+                .ThemeColor = xlThemeColorDark1
+                .TintAndShade = -0.14996795556505
+                .PatternTintAndShade = 0
+            End With
+            Range("J5").Select
+            With Selection.Interior
+                .Pattern = xlLightDown
+                .PatternColorIndex = xlAutomatic
+                .ThemeColor = xlThemeColorDark1
+                .TintAndShade = -0.14996795556505
+                .PatternTintAndShade = 0
+            End With
+            Range("J6").Select
+            With Selection.Interior
+                .Pattern = xlLightDown
+                .PatternColorIndex = xlAutomatic
+                .ThemeColor = xlThemeColorDark1
+                .TintAndShade = -0.14996795556505
+                .PatternTintAndShade = 0
+            End With
+            Range("J7").Select
+            With Selection.Interior
+                .Pattern = xlLightDown
+                .PatternColorIndex = xlAutomatic
+                .ThemeColor = xlThemeColorDark1
+                .TintAndShade = -0.14996795556505
+                .PatternTintAndShade = 0
+            End With
+        End If
+    For i = 8 To Length2
+        Start = i - 5
+        tempval = Start + 5
+        Range("J" & i) = StringFrag & Start & ":I" & tempval & StringFrag2 & Start & ":I" & tempval & StringFrag3
+        i = i + 1
+        Range("J" & i).Select
+        With Selection.Interior
+            .Pattern = xlLightDown
+            .PatternColorIndex = xlAutomatic
+            .ThemeColor = xlThemeColorDark1
+            .TintAndShade = -0.14996795556505
+            .PatternTintAndShade = 0
+        End With
+        i = i + 1
+        Range("J" & i).Select
+        With Selection.Interior
+            .Pattern = xlLightDown
+            .PatternColorIndex = xlAutomatic
+            .ThemeColor = xlThemeColorDark1
+            .TintAndShade = -0.14996795556505
+            .PatternTintAndShade = 0
+        End With
+        i = i + 1
+        Range("J" & i).Select
+        With Selection.Interior
+            .Pattern = xlLightDown
+            .PatternColorIndex = xlAutomatic
+            .ThemeColor = xlThemeColorDark1
+            .TintAndShade = -0.14996795556505
+            .PatternTintAndShade = 0
+        End With
+        i = i + 1
+        Range("J" & i).Select
+        With Selection.Interior
+            .Pattern = xlLightDown
+            .PatternColorIndex = xlAutomatic
+            .ThemeColor = xlThemeColorDark1
+            .TintAndShade = -0.14996795556505
+            .PatternTintAndShade = 0
+        End With
+        i = i + 1
+        Range("J" & i).Select
+        With Selection.Interior
+            .Pattern = xlLightDown
+            .PatternColorIndex = xlAutomatic
+            .ThemeColor = xlThemeColorDark1
+            .TintAndShade = -0.14996795556505
+            .PatternTintAndShade = 0
+        End With
+        tempval = 0
+    Next i
+Next k
+End Sub
+
+
+ For i = Thingz To Thingzz
+            If i = Thingzz Then
+                Fin = Fin & rollVar(i)
+                Clock = Clock + 1
+                If Clock <> 23 Then
+                    For l = 0 To Abs(23 - Clock)
+                        temp = ((6 * l) + 2)
+                        temporary = Range("J" & temp).Value
+                        If temporary = "NO AVG" Or temporary = "" Then
+                            temporary = "0"
+                            Fin = Fin & ", " & temporary
+                        Else
+                            Fin = Fin & ", " & Range("J" & temp)
+                        End If
+                    Next l
+                Else
+                End If
+            Else
+                Fin = Fin & rollVar(i) & ", "
+                Clock = Clock + 1
+            End If
+        Next i
+        Clock = 0
+        For x = Thingz To Thingzz
+            If x = Thingzz Then
+                Fin2 = Fin2 & rollVar(x)
+                Clock = Clock + 1
+                    If Clock <> 23 Then
+                    For l = 0 To Abs(23 - Clock)
+                        temp = ((6 * l) + 2)
+                        temporary = Range("J" & temp).Value
+                        If temporary = "NO AVG" Or temporary = "" Then
+                            temporary = "0"
+                            Fin2 = Fin2 & ", " & temporary
+                        Else
+                            Fin2 = Fin2 & ", " & Range("J" & temp)
+                        End If
+                    Next l
+                Else
+                End If
+            Else
+                Fin2 = Fin2 & rollVar(x) & ", "
+                Clock = Clock + 1
+            End If
+        Next x

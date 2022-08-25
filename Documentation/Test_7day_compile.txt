@@ -1,0 +1,460 @@
+Sub Week7compiler()
+Dim wb As Workbook
+Dim FileName As String
+Dim FileName2 As String
+FileName = InputBox("Please enter the address of the final compilation destination", "Final compile destination xlsm address", "C:\Users\zachary.t.thoroughgo\DES\week_test\7_day_compile.xlsm")
+FirstDayName = InputBox("Please enter the address of the first day's pull", "First day xlsm address", "C:\Users\zachary.t.thoroughgo\DES\week_test\DESPurple08092022.xlsm")
+SecondDayName = InputBox("Please enter the address of the second day's pull", "Second day xlsm address", "C:\Users\zachary.t.thoroughgo\DES\week_test\DESPurple08102022.xlsm")
+ThirdDayName = InputBox("Please enter the address of the third day's pull", "Third day xlsm address", "C:\Users\zachary.t.thoroughgo\DES\week_test\DESPurple08112022.xlsm")
+FourthDayName = InputBox("Please enter the address of the fourth day's pull", "Fourth day xlsm address", "C:\Users\zachary.t.thoroughgo\DES\week_test\DESPurple08122022.xlsm")
+FifthDayName = InputBox("Please enter the address of the fifth day's pull", "Fifth day xlsm address", "C:\Users\zachary.t.thoroughgo\DES\week_test\DESPurple08132022.xlsm")
+SixthDayName = InputBox("Please enter the address of the sixth day's pull", "Sixth day xlsm address", "C:\Users\zachary.t.thoroughgo\DES\week_test\DESPurple08142022.xlsm")
+SeventhDayName = InputBox("Please enter the address of the seventh day's pull", "Seventh day xlsm address", "C:\Users\zachary.t.thoroughgo\DES\week_test\DESPurple08152022.xlsm")
+'First = InputBox("Please enter the address of the first day's pull", "First day xlsm address", "C:\Users\zachary.t.thoroughgo\DES\Environment\DESPurple08082022MAC.xlsm")
+Workbooks.Add
+ActiveWorkbook.SaveAs FileName:=FileName, FileFormat:=xlOpenXMLWorkbookMacroEnabled
+Workbooks.Open FirstDayName
+Sheets(1).Select
+Cells.Select
+Selection.Copy
+TempName = ActiveWorkbook.Name
+Workbooks.Open FileName
+Sheets(1).Select
+Cells.Select
+ActiveSheet.Paste
+length = 2
+' Do While gets the total amount of rows used
+Value = True
+Do While (Value)
+    chari = "A" & CStr(length)
+    place = Range(chari)
+    bool = IsEmpty(place)
+    ' MsgBox bool & chari
+    If bool = True Then
+        Value = False
+    End If
+    final = place
+    length = length + 1
+Loop
+length = length - 1
+Workbooks(TempName).Close SaveChanges:=False
+
+Workbooks.Open SecondDayName
+Sheets(1).Select
+Length2 = 2
+' Do While gets the total amount of rows used
+Value = True
+Do While (Value)
+    chari = "A" & CStr(Length2)
+    place = Range(chari)
+    bool = IsEmpty(place)
+    ' MsgBox bool & chari
+    If bool = True Then
+        Value = False
+    End If
+    final = place
+    Length2 = Length2 + 1
+Loop
+Length2 = Length2 - 1
+Range("A2:" & "AD" & Length2).Select
+Selection.Copy
+TempName = ActiveWorkbook.Name
+Workbooks.Open FileName
+Sheets(1).Select
+Range("A" & length).Select
+ActiveSheet.Paste
+length = 2
+' Do While gets the total amount of rows used
+Value = True
+Do While (Value)
+    chari = "A" & CStr(length)
+    place = Range(chari)
+    bool = IsEmpty(place)
+    ' MsgBox bool & chari
+    If bool = True Then
+        Value = False
+    End If
+    final = place
+    length = length + 1
+Loop
+length = length - 1
+Workbooks(TempName).Close SaveChanges:=False
+
+Workbooks.Open ThirdDayName
+Sheets(1).Select
+Length2 = 2
+' Do While gets the total amount of rows used
+Value = True
+Do While (Value)
+    chari = "A" & CStr(Length2)
+    place = Range(chari)
+    bool = IsEmpty(place)
+    ' MsgBox bool & chari
+    If bool = True Then
+        Value = False
+    End If
+    final = place
+    Length2 = Length2 + 1
+Loop
+Length2 = Length2 - 1
+Range("A2:" & "AD" & Length2).Select
+Selection.Copy
+TempName = ActiveWorkbook.Name
+Workbooks.Open FileName
+Sheets(1).Select
+Range("A" & length).Select
+ActiveSheet.Paste
+length = 2
+' Do While gets the total amount of rows used
+Value = True
+Do While (Value)
+    chari = "A" & CStr(length)
+    place = Range(chari)
+    bool = IsEmpty(place)
+    ' MsgBox bool & chari
+    If bool = True Then
+        Value = False
+    End If
+    final = place
+    length = length + 1
+Loop
+length = length - 1
+Workbooks(TempName).Close SaveChanges:=False
+
+Workbooks.Open FourthDayName
+Sheets(1).Select
+Length2 = 2
+' Do While gets the total amount of rows used
+Value = True
+Do While (Value)
+    chari = "A" & CStr(Length2)
+    place = Range(chari)
+    bool = IsEmpty(place)
+    ' MsgBox bool & chari
+    If bool = True Then
+        Value = False
+    End If
+    final = place
+    Length2 = Length2 + 1
+Loop
+Length2 = Length2 - 1
+Range("A2:" & "AD" & Length2).Select
+Selection.Copy
+TempName = ActiveWorkbook.Name
+Workbooks.Open FileName
+Sheets(1).Select
+Range("A" & length).Select
+ActiveSheet.Paste
+length = 2
+' Do While gets the total amount of rows used
+Value = True
+Do While (Value)
+    chari = "A" & CStr(length)
+    place = Range(chari)
+    bool = IsEmpty(place)
+    ' MsgBox bool & chari
+    If bool = True Then
+        Value = False
+    End If
+    final = place
+    length = length + 1
+Loop
+length = length - 1
+Workbooks(TempName).Close SaveChanges:=False
+
+Workbooks.Open FifthDayName
+Sheets(1).Select
+Length2 = 2
+' Do While gets the total amount of rows used
+Value = True
+Do While (Value)
+    chari = "A" & CStr(Length2)
+    place = Range(chari)
+    bool = IsEmpty(place)
+    ' MsgBox bool & chari
+    If bool = True Then
+        Value = False
+    End If
+    final = place
+    Length2 = Length2 + 1
+Loop
+Length2 = Length2 - 1
+Range("A2:" & "AD" & Length2).Select
+Selection.Copy
+TempName = ActiveWorkbook.Name
+Workbooks.Open FileName
+Sheets(1).Select
+Range("A" & length).Select
+ActiveSheet.Paste
+length = 2
+' Do While gets the total amount of rows used
+Value = True
+Do While (Value)
+    chari = "A" & CStr(length)
+    place = Range(chari)
+    bool = IsEmpty(place)
+    ' MsgBox bool & chari
+    If bool = True Then
+        Value = False
+    End If
+    final = place
+    length = length + 1
+Loop
+length = length - 1
+Workbooks(TempName).Close SaveChanges:=False
+
+Workbooks.Open SixthDayName
+Sheets(1).Select
+Length2 = 2
+' Do While gets the total amount of rows used
+Value = True
+Do While (Value)
+    chari = "A" & CStr(Length2)
+    place = Range(chari)
+    bool = IsEmpty(place)
+    ' MsgBox bool & chari
+    If bool = True Then
+        Value = False
+    End If
+    final = place
+    Length2 = Length2 + 1
+Loop
+Length2 = Length2 - 1
+Range("A2:" & "AD" & Length2).Select
+Selection.Copy
+TempName = ActiveWorkbook.Name
+Workbooks.Open FileName
+Sheets(1).Select
+Range("A" & length).Select
+ActiveSheet.Paste
+length = 2
+' Do While gets the total amount of rows used
+Value = True
+Do While (Value)
+    chari = "A" & CStr(length)
+    place = Range(chari)
+    bool = IsEmpty(place)
+    ' MsgBox bool & chari
+    If bool = True Then
+        Value = False
+    End If
+    final = place
+    length = length + 1
+Loop
+length = length - 1
+Workbooks(TempName).Close SaveChanges:=False
+
+Workbooks.Open SeventhDayName
+Sheets(1).Select
+Length2 = 2
+' Do While gets the total amount of rows used
+Value = True
+Do While (Value)
+    chari = "A" & CStr(Length2)
+    place = Range(chari)
+    bool = IsEmpty(place)
+    ' MsgBox bool & chari
+    If bool = True Then
+        Value = False
+    End If
+    final = place
+    Length2 = Length2 + 1
+Loop
+Length2 = Length2 - 1
+Range("A2:" & "AD" & Length2).Select
+Selection.Copy
+TempName = ActiveWorkbook.Name
+Workbooks.Open FileName
+Sheets(1).Select
+Range("A" & length).Select
+ActiveSheet.Paste
+length = 2
+' Do While gets the total amount of rows used
+Value = True
+Do While (Value)
+    chari = "A" & CStr(length)
+    place = Range(chari)
+    bool = IsEmpty(place)
+    ' MsgBox bool & chari
+    If bool = True Then
+        Value = False
+    End If
+    final = place
+    length = length + 1
+Loop
+length = length - 1
+Workbooks(TempName).Close SaveChanges:=False
+Call AutoFormatter
+MsgBox "Compilation Is Complete"
+'MsgBox Length
+'MsgBox Length
+End Sub
+Sub AutoFormatter()
+'
+' Macro1 Macro
+'
+
+'
+    Current_time = Range("L2")
+    Value = True
+    Dim length As Integer
+    Dim chari As String
+    Dim final As String
+    Dim nameVar As Object
+    Dim indexVar As Object
+    Dim numVar As Object
+    Set numVar = CreateObject("System.Collections.ArrayList")
+    Set nameVar = CreateObject("System.Collections.ArrayList")
+    Set indexVar = CreateObject("System.Collections.ArrayList")
+    length = 2
+    ' Do While gets the total amount of rows used
+    Do While (Value)
+        chari = "A" & CStr(length)
+        place = Range(chari)
+        bool = IsEmpty(place)
+        ' MsgBox bool & chari
+        If bool = True Then
+            Value = False
+        End If
+        final = place
+        length = length + 1
+    Loop
+    length = length - 2
+    'MsgBox length
+    ' Total rows are now found as an anchor for our for loop
+    chari = "C"
+    final = "D"
+    Clock = 0
+    Start = True
+    For x = 2 To length
+        temp = chari & x
+        Temp1 = final & x
+        indexVal = Range(temp)
+        nameVal = Range(Temp1)
+        If Start = True Then
+            indexVar.Add (indexVal)
+            nameVar.Add (nameVal)
+            Clock = Clock + 1
+            'MsgBox indexVar(x - 1)
+            Start = False
+        Else
+            If indexVar.Contains(indexVal) Then
+                
+            Else
+                indexVar.Add (indexVal)
+                nameVar.Add (nameVal)
+                Clock = Clock + 1
+            End If
+        End If
+    Next x
+    Clock = Clock - 1
+    'MsgBox Clock
+    Start = True
+    increment = 2
+    For i = 0 To Clock
+        Main_Name = ActiveSheet.Name
+    '   Rows("1:1").Select
+        val0 = Range("A1")
+        val1 = Range("L1")
+        val2 = Range("M1")
+        val3 = Range("N1")
+        val4 = Range("V1")
+        val5 = Range("W1")
+        val6 = Range("T1")
+        val7 = Range("AB1")
+        val8 = Range("AD1")
+    '   Selection.Copy
+        Sheets.Add After:=ActiveSheet
+    '   ActiveSheet.Paste
+        Range("A1") = val0
+        Range("B1") = val1
+        Range("C1") = val2
+        Range("D1") = val3
+        Range("E1") = val4
+        Range("F1") = val5
+        Range("G1") = val6
+        Range("H1") = val7
+        Range("I1") = val8
+        Current_Name = ActiveSheet.Name
+    '   Range("A1").Select
+        Sheets(Main_Name).Select
+    '   Worksheets(Main_Name).Activate
+        Name = nameVar(i) & " " & i
+        val0 = Range("A" & increment)
+        val1 = Range("L" & increment)
+        val2 = Range("M" & increment)
+        val3 = Range("N" & increment)
+        val4 = Range("V" & increment)
+        val5 = Range("W" & increment)
+        val6 = Range("T" & increment)
+        val7 = Range("AB" & increment)
+        val8 = Range("AD" & increment)
+        Sheets(Current_Name).Select
+        Sheets(Current_Name).Name = Name
+        Sheets(Main_Name).Select
+        Placer = increment & ":" & increment
+    '   Rows(Placer).Select
+    '   Selection.Copy
+        Sheets(Name).Select
+    '   Worksheets(Name).Activate
+    '   Rows("2:2").Select
+        Range("A2") = val0
+        Range("B2") = val1
+        Range("C2") = val2
+        Range("D2") = val3
+        Range("E2") = val4
+        Range("F2") = val5
+        Range("G2") = val6
+        Range("H2") = val7
+        Range("I2") = val8
+    '   ActiveSheet.Paste
+        increment = increment + 1
+        numVar.Add (3)
+        Sheets(Main_Name).Select
+    Next i
+    chari = "C"
+    Main_Name = ActiveSheet.Name
+    For i = increment To length
+        Index = Range(chari & i)
+        IndexArr = indexVar.LastIndexOf(Index)
+        Temp_Name = nameVar(IndexArr) & " " & IndexArr
+        'Placer = increment & ":" & increment
+        val0 = Range("A" & i)
+        val1 = Range("L" & i)
+        val2 = Range("M" & i)
+        val3 = Range("N" & i)
+        val4 = Range("V" & i)
+        val5 = Range("W" & i)
+        val6 = Range("T" & i)
+        val7 = Range("AB" & i)
+        val8 = Range("AD" & i)
+        'Rows(Placer).Select
+        'Selection.Copy
+        Sheets(Temp_Name).Select
+        temp = numVar(IndexArr)
+        Range("A" & temp) = val0
+        Range("B" & temp) = val1
+        Range("C" & temp) = val2
+        Range("D" & temp) = val3
+        Range("E" & temp) = val4
+        Range("F" & temp) = val5
+        Range("G" & temp) = val6
+        Range("H" & temp) = val7
+        Range("I" & temp) = val8
+        'temper = temp & ":" & temp
+        'Rows(temper).Select
+        'Worksheets(Temp_Name).Activate
+        'ActiveSheet.Paste
+        numVar(IndexArr) = temp + 1
+        Sheets(Main_Name).Select
+        'Worksheets(Main_Name).Activate
+        'increment = increment + 1
+    Next i
+    For i = 0 To Clock
+        Name = nameVar(i) & " " & i
+        Sheets(Name).Select
+        Cells.Select
+        Cells.EntireColumn.AutoFit
+        Range("K2").Select
+    Next i
+End Sub

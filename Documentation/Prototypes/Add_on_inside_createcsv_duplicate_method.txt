@@ -1,0 +1,44 @@
+if(number == '1'):
+                            if(jsonObject1.get(i) == "last_modified" or jsonObject1.get(i) == "date_created" or jsonObject1.get(i) == "last_seen" or jsonObject1.get(i) == "data_time_stamp" or jsonObject1.get(i) == "time_stamp"):
+                                #We assign the value of temporary to the epoch value found when given the key through our json dicitionary object
+                                temporary = jsonObject1.get(i)
+                                #We set the string value of d equal to the string of the datetime converting our temporary and formatting it with strftime to fit our needs
+                                d = str(datetime.fromtimestamp(temporary).strftime('%m-%d-%Y %H:%M:%S')) 
+                                #We now put that into our array of values
+                                arrayValues.append(d)
+                            else:
+                                temporary = str(jsonObject1.get(i))
+                                arrayValues.append(temporary)
+                        elif(number == '2'):
+                            if(jsonObject2.get(i) == "last_modified" or jsonObject2.get(i) == "date_created" or jsonObject2.get(i) == "last_seen" or jsonObject2.get(i) == "data_time_stamp" or jsonObject2.get(i) == "time_stamp"):
+                                #We assign the value of temporary to the epoch value found when given the key through our json dicitionary object
+                                temporary = jsonObject2.get(i)
+                                #We set the string value of d equal to the string of the datetime converting our temporary and formatting it with strftime to fit our needs
+                                d = str(datetime.fromtimestamp(temporary).strftime('%m-%d-%Y %H:%M:%S')) 
+                                #We now put that into our array of values
+                                arrayValues.append(d)
+                            else:
+                                temporary = str(jsonObject2.get(i))
+                                arrayValues.append(temporary)
+                        elif(number == '3'):
+                            if(jsonObject3.get(i) == "last_modified" or jsonObject3.get(i) == "date_created" or jsonObject3.get(i) == "last_seen" or jsonObject3.get(i) == "data_time_stamp" or jsonObject3.get(i) == "time_stamp"):
+                                #We assign the value of temporary to the epoch value found when given the key through our json dicitionary object
+                                temporary = jsonObject3.get(i)
+                                #We set the string value of d equal to the string of the datetime converting our temporary and formatting it with strftime to fit our needs
+                                d = str(datetime.fromtimestamp(temporary).strftime('%m-%d-%Y %H:%M:%S')) 
+                                #We now put that into our array of values
+                                arrayValues.append(d)
+                            else:
+                                temporary = str(jsonObject3.get(i))
+                                arrayValues.append(temporary)
+                        elif(number == '4'):
+                            if(jsonObject4.get(i) == "last_modified" or jsonObject4.get(i) == "date_created" or jsonObject4.get(i) == "last_seen" or jsonObject4.get(i) == "data_time_stamp" or jsonObject4.get(i) == "time_stamp"):
+                                #We assign the value of temporary to the epoch value found when given the key through our json dicitionary object
+                                temporary = jsonObject4.get(i)
+                                #We set the string value of d equal to the string of the datetime converting our temporary and formatting it with strftime to fit our needs
+                                d = str(datetime.fromtimestamp(temporary).strftime('%m-%d-%Y %H:%M:%S')) 
+                                #We now put that into our array of values
+                                arrayValues.append(d)
+                            else:
+                                temporary = str(jsonObject4.get(i))
+                                arrayValues.append(temporary)
