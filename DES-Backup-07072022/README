@@ -1,0 +1,5 @@
+This is a backup of around the time I first started to get my ideas for my own python program that would fit NHDES's system. The files of Fetch are Keene State's
+system and the Demo files are my own. Demo.py is really the starting gate for me and when compared to the last stages of the python program you can see how it evolved 
+over time through trial and error. In this when you run the file of Demo.py; you'll find that is successfully creates a json from the api call to purple air
+which was tricky because I had to use dictionary's to unstick every part of the json retrieved. Than, it'll take the default headers I put in through the use of 
+code/ini file and create a csv. This was the stepping stone for the project and was a huge milestone. 
