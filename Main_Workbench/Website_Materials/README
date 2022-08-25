@@ -1,0 +1,4 @@
+This folder includes all the website materials used on my version of the html map created by my python Pull.py script. The images are legends needed for 
+PM2.5 data and the geojsons (aside from NH.geojson) were created by myself after hours of mapping coordinates with the help of https://www.latlong.net/. 
+This was because I couldn't find all the counties geojsons anywhere; so I had to do them myself and I plan on releasing them for anyone else to use and save 
+themselves the hassle of recreating these county geojson files for mapping.
