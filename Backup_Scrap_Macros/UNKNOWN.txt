@@ -1,0 +1,1129 @@
+Sub SingleDayAutoFormatter()
+'
+' Macro1 Macro
+'
+
+'
+    FileName = InputBox("Please enter the address of the .xlsm single day pull file you wish to autoformat", "Single day pull destination xlsm address autoformat", "S:\ARD-Atmospheric\MonitorData\PurpleAir\Testing_CSVs\DESPurple08212022.xlsm")
+    Workbooks.Open FileName
+    Current_time = Range("L2")
+    Value = True
+    Dim length As Integer
+    Dim chari As String
+    Dim final As String
+    Dim nameVar As Object
+    Dim indexVar As Object
+    Dim numVar As Object
+    Set numVar = CreateObject("System.Collections.ArrayList")
+    Set nameVar = CreateObject("System.Collections.ArrayList")
+    Set indexVar = CreateObject("System.Collections.ArrayList")
+    length = 2
+    ' Do While gets the total amount of rows used
+    Do While (Value)
+        chari = "A" & CStr(length)
+        place = Range(chari)
+        bool = IsEmpty(place)
+        ' MsgBox bool & chari
+        If bool = True Then
+            Value = False
+        End If
+        final = place
+        length = length + 1
+    Loop
+    length = length - 2
+    'MsgBox length
+    ' Total rows are now found as an anchor for our for loop
+    chari = "C"
+    final = "D"
+    Clock = 0
+    Start = True
+    For x = 2 To length
+        temp = chari & x
+        Temp1 = final & x
+        indexVal = Range(temp)
+        nameVal = Range(Temp1)
+        If Start = True Then
+            indexVar.Add (indexVal)
+            nameVar.Add (nameVal)
+            Clock = Clock + 1
+            'MsgBox indexVar(x - 1)
+            Start = False
+        Else
+            If indexVar.Contains(indexVal) Then
+                
+            Else
+                indexVar.Add (indexVal)
+                nameVar.Add (nameVal)
+                Clock = Clock + 1
+            End If
+        End If
+    Next x
+    Clock = Clock - 1
+    'MsgBox Clock
+    Start = True
+    increment = 2
+    For i = 0 To Clock
+        Main_Name = ActiveSheet.Name
+    '   Rows("1:1").Select
+        val0 = Range("A1")
+        val1 = Range("L1")
+        val2 = Range("M1")
+        val3 = Range("N1")
+        val4 = Range("V1")
+        val5 = Range("W1")
+        val6 = Range("T1")
+        val7 = Range("AB1")
+        val8 = Range("AD1")
+    '   Selection.Copy
+        Sheets.Add After:=ActiveSheet
+    '   ActiveSheet.Paste
+        Range("A1") = val0
+        Range("B1") = val1
+        Range("C1") = val2
+        Range("D1") = val3
+        Range("E1") = val4
+        Range("F1") = val5
+        Range("G1") = val6
+        Range("H1") = val7
+        Range("I1") = val8
+        Current_Name = ActiveSheet.Name
+    '   Range("A1").Select
+        Sheets(Main_Name).Select
+    '   Worksheets(Main_Name).Activate
+        Name = nameVar(i) & " " & i
+        val0 = Range("A" & increment)
+        val1 = Range("L" & increment)
+        val2 = Range("M" & increment)
+        val3 = Range("N" & increment)
+        val4 = Range("V" & increment)
+        val5 = Range("W" & increment)
+        val6 = Range("T" & increment)
+        val7 = Range("AB" & increment)
+        val8 = Range("AD" & increment)
+        Sheets(Current_Name).Select
+        Sheets(Current_Name).Name = Name
+        Sheets(Main_Name).Select
+        Placer = increment & ":" & increment
+    '   Rows(Placer).Select
+    '   Selection.Copy
+        Sheets(Name).Select
+    '   Worksheets(Name).Activate
+    '   Rows("2:2").Select
+        Range("A2") = val0
+        Range("B2") = val1
+        Range("C2") = val2
+        Range("D2") = val3
+        Range("E2") = val4
+        Range("F2") = val5
+        Range("G2") = val6
+        Range("H2") = val7
+        Range("I2") = val8
+    '   ActiveSheet.Paste
+        increment = increment + 1
+        numVar.Add (3)
+        Sheets(Main_Name).Select
+    Next i
+    chari = "C"
+    Main_Name = ActiveSheet.Name
+    For i = increment To length
+        Index = Range(chari & i)
+        IndexArr = indexVar.LastIndexOf(Index)
+        Temp_Name = nameVar(IndexArr) & " " & IndexArr
+        'Placer = increment & ":" & increment
+        val0 = Range("A" & i)
+        val1 = Range("L" & i)
+        val2 = Range("M" & i)
+        val3 = Range("N" & i)
+        val4 = Range("V" & i)
+        val5 = Range("W" & i)
+        val6 = Range("T" & i)
+        val7 = Range("AB" & i)
+        val8 = Range("AD" & i)
+        'Rows(Placer).Select
+        'Selection.Copy
+        Sheets(Temp_Name).Select
+        temp = numVar(IndexArr)
+        Range("A" & temp) = val0
+        Range("B" & temp) = val1
+        Range("C" & temp) = val2
+        Range("D" & temp) = val3
+        Range("E" & temp) = val4
+        Range("F" & temp) = val5
+        Range("G" & temp) = val6
+        Range("H" & temp) = val7
+        Range("I" & temp) = val8
+        'temper = temp & ":" & temp
+        'Rows(temper).Select
+        'Worksheets(Temp_Name).Activate
+        'ActiveSheet.Paste
+        numVar(IndexArr) = temp + 1
+        Sheets(Main_Name).Select
+        'Worksheets(Main_Name).Activate
+        'increment = increment + 1
+    Next i
+    For i = 0 To Clock
+        Name = nameVar(i) & " " & i
+        Sheets(Name).Select
+        Cells.Select
+        Cells.EntireColumn.AutoFit
+        Range("K2").Select
+    Next i
+    
+    'End of autoformating different sheets
+    'Start of filling in missing time blocks
+        NumberOfSheets = Application.Sheets.Count
+        For Index = 2 To NumberOfSheets
+        Sheets(Index).Select
+        StringFrag = "=DATE(YEAR(A"
+        StringFrag2 = "),MONTH(A"
+        StringFrag3 = "),DAY(A"
+        StringFrag4 = "))"
+        Range("J1") = "Date"
+        Range("K1") = "Hour"
+        Range("L1") = "Minute"
+        Range("M1") = "PM2.5"
+        Length2 = 2
+        accurateLength = 145
+           ' Do While gets the total amount of rows used
+        Value = True
+        Do While (Value)
+            chari = "A" & CStr(Length2)
+            place = Range(chari)
+            bool = IsEmpty(place)
+            ' MsgBox bool & chari
+            If bool = True Then
+                Value = False
+            End If
+            final = place
+            Length2 = Length2 + 1
+        Loop
+        Length2 = Length2 - 1
+        For i = 2 To Length2
+            Range("J" & i) = StringFrag & i & StringFrag2 & i & StringFrag3 & i & StringFrag4
+            Range("K" & i) = "=HOUR(A" & i & ")"
+            Range("L" & i) = "=MINUTE(A" & i & ")"
+        Next i
+        For i = 2 To accurateLength
+            'myDate = Range("J" & i)
+            'myHour = Range("K" & i)
+            'myMinute = Range("L" & i)
+            For h = 0 To 23
+                    Bool1 = False
+                    Bool2 = False
+                    Bool3 = False
+                    Bool4 = False
+                    Bool5 = False
+                    Bool6 = False
+                For k = 1 To 6
+                    myDate = Range("J" & i)
+                    myHour = Range("K" & i)
+                    myMinute = Range("L" & i)
+                    If myHour = h Then
+                        If k = 1 And myMinute < 10 Then
+                            Bool1 = True
+                            i = i + 1
+                        Else
+                            If k = 2 And myMinute >= 10 And myMinute < 20 Then
+                                Bool2 = True
+                                i = i + 1
+                            Else
+                                If k = 3 And myMinute >= 20 And myMinute < 30 Then
+                                    Bool3 = True
+                                    i = i + 1
+                                Else
+                                    If k = 4 And myMinute >= 30 And myMinute < 40 Then
+                                        Bool4 = True
+                                        i = i + 1
+                                    Else
+                                        If k = 5 And myMinute >= 40 And myMinute < 50 Then
+                                            Bool5 = True
+                                            i = i + 1
+                                        Else
+                                            If k = 6 And myMinute >= 50 And myMinute < 60 Then
+                                                Bool6 = True
+                                                i = i + 1
+                                            Else
+                                                If Bool1 = False Then
+                                                Rows(i & ":" & i).Select
+                                                Selection.Insert Shift:=xlUp, CopyOrigin:=xlFormatFromLeftOrAbove
+                                                Range("A" & i).Select
+                                                Range("B" & i) = myDate & " " & h & ":" & 0
+                                                Range("J" & i) = myDate
+                                                Range("K" & i) = h
+                                                Range("L" & i) = 0
+                                                Bool1 = True
+                                                i = i + 1
+                                            Else
+                                                If Bool2 = False Then
+                                                    Rows(i & ":" & i).Select
+                                                    Selection.Insert Shift:=xlUp, CopyOrigin:=xlFormatFromLeftOrAbove
+                                                    Range("A" & i).Select
+                                                    Range("B" & i) = myDate & " " & h & ":" & 10
+                                                    Range("J" & i) = myDate
+                                                    Range("K" & i) = h
+                                                    Range("L" & i) = 10
+                                                    Bool2 = True
+                                                    i = i + 1
+                                                Else
+                                                    If Bool3 = False Then
+                                                        Rows(i & ":" & i).Select
+                                                        Selection.Insert Shift:=xlUp, CopyOrigin:=xlFormatFromLeftOrAbove
+                                                        Range("A" & i).Select
+                                                        Range("B" & i) = myDate & " " & h & ":" & 20
+                                                        Range("J" & i) = myDate
+                                                        Range("K" & i) = h
+                                                        Range("L" & i) = 20
+                                                        Bool3 = True
+                                                        i = i + 1
+                                                    Else
+                                                        If Bool4 = False Then
+                                                            Rows(i & ":" & i).Select
+                                                            Selection.Insert Shift:=xlUp, CopyOrigin:=xlFormatFromLeftOrAbove
+                                                            Range("A" & i).Select
+                                                            Range("B" & i) = myDate & " " & h & ":" & 0
+                                                            Range("J" & i) = myDate
+                                                            Range("K" & i) = h
+                                                            Range("L" & i) = 30
+                                                            Bool4 = True
+                                                            i = i + 1
+                                                        Else
+                                                            If Bool5 = False Then
+                                                                Rows(i & ":" & i).Select
+                                                                Selection.Insert Shift:=xlUp, CopyOrigin:=xlFormatFromLeftOrAbove
+                                                                Range("A" & i).Select
+                                                                Range("B" & i) = myDate & " " & h & ":" & 40
+                                                                Range("J" & i) = myDate
+                                                                Range("K" & i) = h
+                                                                Range("L" & i) = 40
+                                                                Bool5 = True
+                                                                i = i + 1
+                                                            Else
+                                                                If Bool6 = False Then
+                                                                    Rows(i & ":" & i).Select
+                                                                    Selection.Insert Shift:=xlUp, CopyOrigin:=xlFormatFromLeftOrAbove
+                                                                    Range("A" & i).Select
+                                                                    Range("B" & i) = myDate & " " & h & ":" & 50
+                                                                    Range("J" & i) = myDate
+                                                                    Range("K" & i) = h
+                                                                    Range("L" & i) = 50
+                                                                    Bool6 = True
+                                                                    i = i + 1
+                                                                End If
+                                                            End If
+                                                        End If
+                                                    End If
+                                                End If
+                                            End If
+                                        End If
+                                    End If
+                                End If
+                            End If
+                        End If
+                    End If
+                    Else
+                        If Bool1 = False Then
+                        Rows(i & ":" & i).Select
+                        Selection.Insert Shift:=xlUp, CopyOrigin:=xlFormatFromLeftOrAbove
+                        Range("A" & i).Select
+                        Range("B" & i) = myDate & " " & h & ":" & 0
+                        Range("J" & i) = myDate
+                        Range("K" & i) = h
+                        Range("L" & i) = 0
+                        Bool1 = True
+                        i = i + 1
+                        Else
+                            If Bool2 = False Then
+                                Rows(i & ":" & i).Select
+                                Selection.Insert Shift:=xlUp, CopyOrigin:=xlFormatFromLeftOrAbove
+                                Range("A" & i).Select
+                                Range("B" & i) = myDate & " " & h & ":" & 10
+                                Range("J" & i) = myDate
+                                Range("K" & i) = h
+                                Range("L" & i) = 10
+                                Bool2 = True
+                                i = i + 1
+                            Else
+                                If Bool3 = False Then
+                                    Rows(i & ":" & i).Select
+                                    Selection.Insert Shift:=xlUp, CopyOrigin:=xlFormatFromLeftOrAbove
+                                    Range("A" & i).Select
+                                    Range("B" & i) = myDate & " " & h & ":" & 20
+                                    Range("J" & i) = myDate
+                                    Range("K" & i) = h
+                                    Range("L" & i) = 20
+                                    Bool3 = True
+                                    i = i + 1
+                                Else
+                                    If Bool4 = False Then
+                                        Rows(i & ":" & i).Select
+                                        Selection.Insert Shift:=xlUp, CopyOrigin:=xlFormatFromLeftOrAbove
+                                        Range("A" & i).Select
+                                        Range("B" & i) = myDate & " " & h & ":" & 30
+                                        Range("J" & i) = myDate
+                                        Range("K" & i) = h
+                                        Range("L" & i) = 30
+                                        Bool4 = True
+                                        i = i + 1
+                                    Else
+                                        If Bool5 = False Then
+                                            Rows(i & ":" & i).Select
+                                            Selection.Insert Shift:=xlUp, CopyOrigin:=xlFormatFromLeftOrAbove
+                                            Range("A" & i).Select
+                                            Range("B" & i) = myDate & " " & h & ":" & 40
+                                            Range("J" & i) = myDate
+                                            Range("K" & i) = h
+                                            Range("L" & i) = 40
+                                            Bool5 = True
+                                            i = i + 1
+                                        Else
+                                            If Bool6 = False Then
+                                                Rows(i & ":" & i).Select
+                                                Selection.Insert Shift:=xlUp, CopyOrigin:=xlFormatFromLeftOrAbove
+                                                Range("A" & i).Select
+                                                Range("B" & i) = myDate & " " & h & ":" & 50
+                                                Range("J" & i) = myDate
+                                                Range("K" & i) = h
+                                                Range("L" & i) = 50
+                                                Bool6 = True
+                                                i = i + 1
+                                            End If
+                                        End If
+                                    End If
+                                End If
+                            End If
+                        End If
+                    End If
+                Next k
+            Next h
+            i = i - 1
+        Next i
+        Range("J1:M1010").Select
+        Selection.Delete Shift:=xlToLeft
+        Next Index
+    'End of filling in missing time blocks
+    'Start of finding rolling hourly average
+        Dim prevVar As Object
+        Filezz = ActiveWorkbook.Name
+        Set prevVar = CreateObject("System.Collections.ArrayList")
+        FileNamez = InputBox("Please enter the address of the previous day compilation", "Previous compile destination xlsm address", "S:\ARD-Atmospheric\MonitorData\PurpleAir\Testing_CSVs\DESPurple08212022.xlsm")
+        Workbooks.Open FileNamez
+        NumberSheetz = Application.Sheets.Count
+        lengthing = 0
+        guard = 0
+        For amt = 2 To NumberSheetz
+            Sheets(amt).Select
+            TempValue = Range("I142").Value
+            prevVar.Add (TempValue)
+            TempValue = Range("I143").Value
+            prevVar.Add (TempValue)
+            TempValue = Range("I144").Value
+            prevVar.Add (TempValue)
+            TempValue = Range("I145").Value
+            prevVar.Add (TempValue)
+            TempValue = Range("I146").Value
+            prevVar.Add (TempValue)
+            lengthing = lengthing + 5
+        Next amt
+        TempName = ActiveWorkbook.Name
+        Workbooks(TempName).Close SaveChanges:=False
+        Workbooks.Open Filezz
+        NumberSheets = Application.Sheets.Count
+        StringFrag = "=IF(COUNT(I"
+        StringFrag2 = ")>3.5,ROUND(AVERAGE(I"
+        StringFrag3 = "),2),"""")"
+        indexz = 0
+        Boolz0 = False
+        Boolz1 = False
+        Boolz2 = False
+        Boolz3 = False
+        Boolz4 = False
+        Boolz5 = False
+        Thingz = 0
+        Thingzz = 22
+        For k = 2 To NumberSheets
+            num = 2
+            indexzLength = indexz + 5
+            Sheets(k).Select
+            Range("J1") = "Rolling Hourly Average"
+            Range("K1") = "Rolling 24 Hour Average"
+            Length2 = 2
+            ' Do While gets the total amount of rows used
+            Value = True
+            Do While (Value)
+                chari = "B" & CStr(Length2)
+                place = Range(chari)
+                bool = IsEmpty(place)
+                ' MsgBox bool & chari
+                If bool = True Then
+                    Value = False
+                End If
+                final = place
+                Length2 = Length2 + 1
+            Loop
+            Length2 = Length2 - 1
+
+        TempValue0 = prevVar(indexz)
+        indexz = indexz + 1
+        TempValue1 = prevVar(indexz)
+        indexz = indexz + 1
+        TempValue2 = prevVar(indexz)
+        indexz = indexz + 1
+        TempValue3 = prevVar(indexz)
+        indexz = indexz + 1
+        TempValue4 = prevVar(indexz)
+        indexz = indexz + 1
+        TempValue5 = Range("I2").Value
+        Yes = 0
+        NO = 0
+        Amount = 0
+        Amount = CDbl(Amount)
+        Divide = 0
+        For thing = 0 To 5
+            If thing = 0 Then
+                If TempValue0 = "" Then
+                    Boolz0 = False
+                    NO = NO + 1
+                Else
+                    Boolz0 = True
+                    TempValue0 = CDbl(TempValue0)
+                    Amount = Amount + TempValue0
+                    Divide = Divide + 1
+                    Yes = Yes + 1
+                End If
+            Else
+                If thing = 1 Then
+                    If TempValue1 = "" Then
+                        Boolz1 = False
+                        NO = NO + 1
+                    Else
+                        Boolz1 = True
+                        TempValue1 = CDbl(TempValue1)
+                        Amount = Amount + TempValue1
+                        Divide = Divide + 1
+                        Yes = Yes + 1
+                    End If
+                Else
+                    If thing = 2 Then
+                        If TempValue2 = "" Then
+                            Boolz2 = False
+                            NO = NO + 1
+                        Else
+                            Boolz2 = True
+                            TempValue2 = CDbl(TempValue2)
+                            Amount = Amount + TempValue2
+                            Divide = Divide + 1
+                            Yes = Yes + 1
+                        End If
+                    Else
+                        If thing = 3 Then
+                            If TempValue3 = "" Then
+                                Boolz3 = False
+                                NO = NO + 1
+                            Else
+                                Boolz3 = True
+                                TempValue3 = CDbl(TempValue3)
+                                Amount = Amount + TempValue3
+                                Divide = Divide + 1
+                                Yes = Yes + 1
+                            End If
+                        Else
+                            If thing = 4 Then
+                                If TempValue4 = "" Then
+                                    Boolz4 = False
+                                    NO = NO + 1
+                                Else
+                                    Boolz4 = True
+                                    TempValue4 = CDbl(TempValue4)
+                                    Amount = Amount + TempValue4
+                                    Divide = Divide + 1
+                                    Yes = Yes + 1
+                                End If
+                            Else
+                                If thing = 5 Then
+                                    If TempValue5 = "" Then
+                                        Boolz5 = False
+                                        NO = NO + 1
+                                    Else
+                                        Boolz5 = True
+                                        TempValue5 = CDbl(TempValue5)
+                                        Amount = Amount + TempValue5
+                                        Divide = Divide + 1
+                                        Yes = Yes + 1
+                                    End If
+                                Else
+                                End If
+                            End If
+                        End If
+                    End If
+                End If
+            End If
+        Next thing
+        If NO > 2 Then
+            Range("J2") = ""
+            Range("J3").Select
+            With Selection.Interior
+                .Pattern = xlLightDown
+                .PatternColorIndex = xlAutomatic
+                .ThemeColor = xlThemeColorDark1
+                .TintAndShade = -0.14996795556505
+                .PatternTintAndShade = 0
+            End With
+            Range("J4").Select
+            With Selection.Interior
+                .Pattern = xlLightDown
+                .PatternColorIndex = xlAutomatic
+                .ThemeColor = xlThemeColorDark1
+                .TintAndShade = -0.14996795556505
+                .PatternTintAndShade = 0
+            End With
+            Range("J5").Select
+            With Selection.Interior
+                .Pattern = xlLightDown
+                .PatternColorIndex = xlAutomatic
+                .ThemeColor = xlThemeColorDark1
+                .TintAndShade = -0.14996795556505
+                .PatternTintAndShade = 0
+            End With
+            Range("J6").Select
+            With Selection.Interior
+                .Pattern = xlLightDown
+                .PatternColorIndex = xlAutomatic
+                .ThemeColor = xlThemeColorDark1
+                .TintAndShade = -0.14996795556505
+                .PatternTintAndShade = 0
+            End With
+            Range("J7").Select
+            With Selection.Interior
+                .Pattern = xlLightDown
+                .PatternColorIndex = xlAutomatic
+                .ThemeColor = xlThemeColorDark1
+                .TintAndShade = -0.14996795556505
+                .PatternTintAndShade = 0
+            End With
+            Else
+                Amount = Amount / Divide
+                Amount = Round(Amount, 2)
+                Range("J2") = Amount
+            Range("J3").Select
+            With Selection.Interior
+                .Pattern = xlLightDown
+                .PatternColorIndex = xlAutomatic
+                .ThemeColor = xlThemeColorDark1
+                .TintAndShade = -0.14996795556505
+                .PatternTintAndShade = 0
+            End With
+            Range("J4").Select
+            With Selection.Interior
+                .Pattern = xlLightDown
+                .PatternColorIndex = xlAutomatic
+                .ThemeColor = xlThemeColorDark1
+                .TintAndShade = -0.14996795556505
+                .PatternTintAndShade = 0
+            End With
+            Range("J5").Select
+            With Selection.Interior
+                .Pattern = xlLightDown
+                .PatternColorIndex = xlAutomatic
+                .ThemeColor = xlThemeColorDark1
+                .TintAndShade = -0.14996795556505
+                .PatternTintAndShade = 0
+            End With
+            Range("J6").Select
+            With Selection.Interior
+                .Pattern = xlLightDown
+                .PatternColorIndex = xlAutomatic
+                .ThemeColor = xlThemeColorDark1
+                .TintAndShade = -0.14996795556505
+                .PatternTintAndShade = 0
+            End With
+            Range("J7").Select
+            With Selection.Interior
+                .Pattern = xlLightDown
+                .PatternColorIndex = xlAutomatic
+                .ThemeColor = xlThemeColorDark1
+                .TintAndShade = -0.14996795556505
+                .PatternTintAndShade = 0
+            End With
+        End If
+    For i = 8 To Length2
+        Start = i - 5
+        tempval = Start + 5
+        Range("J" & i) = StringFrag & Start & ":I" & tempval & StringFrag2 & Start & ":I" & tempval & StringFrag3
+        i = i + 1
+        Range("J" & i).Select
+        With Selection.Interior
+            .Pattern = xlLightDown
+            .PatternColorIndex = xlAutomatic
+            .ThemeColor = xlThemeColorDark1
+            .TintAndShade = -0.14996795556505
+            .PatternTintAndShade = 0
+        End With
+        i = i + 1
+        Range("J" & i).Select
+        With Selection.Interior
+            .Pattern = xlLightDown
+            .PatternColorIndex = xlAutomatic
+            .ThemeColor = xlThemeColorDark1
+            .TintAndShade = -0.14996795556505
+            .PatternTintAndShade = 0
+        End With
+        i = i + 1
+        Range("J" & i).Select
+        With Selection.Interior
+            .Pattern = xlLightDown
+            .PatternColorIndex = xlAutomatic
+            .ThemeColor = xlThemeColorDark1
+            .TintAndShade = -0.14996795556505
+            .PatternTintAndShade = 0
+        End With
+        i = i + 1
+        Range("J" & i).Select
+        With Selection.Interior
+            .Pattern = xlLightDown
+            .PatternColorIndex = xlAutomatic
+            .ThemeColor = xlThemeColorDark1
+            .TintAndShade = -0.14996795556505
+            .PatternTintAndShade = 0
+        End With
+        i = i + 1
+        Range("J" & i).Select
+        With Selection.Interior
+            .Pattern = xlLightDown
+            .PatternColorIndex = xlAutomatic
+            .ThemeColor = xlThemeColorDark1
+            .TintAndShade = -0.14996795556505
+            .PatternTintAndShade = 0
+        End With
+        tempval = 0
+    Next i
+    'Thingz = Thingz + 23
+    'Thingzz = Thingzz + 23
+Next k
+'End of finding rolling hourly average
+'Start of Rolling hourly average
+    TempName = ActiveWorkbook.Name
+    Workbooks(TempName).Close SaveChanges:=True
+    Workbooks.Open FileNamez
+    Filezz = ActiveWorkbook.Name
+    NumberSheetz = Application.Sheets.Count
+    Dim rollVar As Object
+    Set rollVar = CreateObject("System.Collections.ArrayList")
+    lengthing = 0
+    guard = 0
+    For amt = 2 To NumberSheetz
+        TempValue1 = Range("J8").Value
+        rollVar.Add (TempValue1)
+        TempValue1 = Range("J14").Value
+        rollVar.Add (TempValue1)
+        TempValue1 = Range("J20").Value
+        rollVar.Add (TempValue1)
+        TempValue1 = Range("J26").Value
+        rollVar.Add (TempValue1)
+        TempValue1 = Range("J32").Value
+        rollVar.Add (TempValue1)
+        TempValue1 = Range("J38").Value
+        rollVar.Add (TempValue1)
+        TempValue1 = Range("J44").Value
+        rollVar.Add (TempValue1)
+        TempValue1 = Range("J50").Value
+        rollVar.Add (TempValue1)
+        TempValue1 = Range("J56").Value
+        rollVar.Add (TempValue1)
+        TempValue1 = Range("J62").Value
+        rollVar.Add (TempValue1)
+        TempValue1 = Range("J68").Value
+        rollVar.Add (TempValue1)
+        TempValue1 = Range("J74").Value
+        rollVar.Add (TempValue1)
+        TempValue1 = Range("J80").Value
+        rollVar.Add (TempValue1)
+        TempValue1 = Range("J86").Value
+        rollVar.Add (TempValue1)
+        TempValue1 = Range("J92").Value
+        rollVar.Add (TempValue1)
+        TempValue1 = Range("J98").Value
+        rollVar.Add (TempValue1)
+        TempValue1 = Range("J104").Value
+        rollVar.Add (TempValue1)
+        TempValue1 = Range("J110").Value
+        rollVar.Add (TempValue1)
+        TempValue1 = Range("J116").Value
+        rollVar.Add (TempValue1)
+        TempValue1 = Range("J122").Value
+        rollVar.Add (TempValue1)
+        TempValue1 = Range("J128").Value
+        rollVar.Add (TempValue1)
+        TempValue1 = Range("J134").Value
+        rollVar.Add (TempValue1)
+        TempValue1 = Range("J140").Value
+        rollVar.Add (TempValue1)
+        guard = guard + 23
+    Next amt
+    Workbooks(Filezz).Close SaveChanges:=False
+    Workbooks.Open TempName
+    Thingz = 0
+    Thingzz = 22
+    For k = 2 To NumberSheets
+        num = 2
+        indexzLength = indexz + 5
+        Sheets(k).Select
+        Length2 = 2
+        ' Do While gets the total amount of rows used
+        Value = True
+        Do While (Value)
+            chari = "B" & CStr(Length2)
+            place = Range(chari)
+            bool = IsEmpty(place)
+            ' MsgBox bool & chari
+            If bool = True Then
+                Value = False
+            End If
+            final = place
+            Length2 = Length2 + 1
+        Loop
+        Length2 = Length2 - 1
+        Str1 = "=IF(COUNT("
+        Str2 = ")>17.5,ROUND(AVERAGE("
+        Str23 = ")>17.5,ROUND(AVERAGE("
+        Str3 = "),2),""NO AVG"")"
+        Fin = Str1
+        Fin2 = Str2
+        'Thingz = Thingz - 1
+        'Thingzz = Thingzz + 1
+        ran = 8
+        If rollVar(Thingz) = "" Then
+            Number_1 = "N/A"
+            Thingz = Thingz + 1
+        Else
+            Number_1 = rollVar(Thingz)
+            Thingz = Thingz + 1
+        End If
+        If rollVar(Thingz) = "" Then
+            Number_2 = "N/A"
+            Thingz = Thingz + 1
+        Else
+            Number_2 = rollVar(Thingz)
+            Thingz = Thingz + 1
+        End If
+        If rollVar(Thingz) = "" Then
+            Number_3 = "N/A"
+            Thingz = Thingz + 1
+        Else
+            Number_3 = rollVar(Thingz)
+            Thingz = Thingz + 1
+        End If
+        If rollVar(Thingz) = "" Then
+            Number_4 = "N/A"
+            Thingz = Thingz + 1
+        Else
+            Number_4 = rollVar(Thingz)
+            Thingz = Thingz + 1
+        End If
+        If rollVar(Thingz) = "" Then
+            Number_5 = "N/A"
+            Thingz = Thingz + 1
+        Else
+            Number_5 = rollVar(Thingz)
+            Thingz = Thingz + 1
+        End If
+        If rollVar(Thingz) = "" Then
+            Number_6 = "N/A"
+            Thingz = Thingz + 1
+        Else
+            Number_6 = rollVar(Thingz)
+            Thingz = Thingz + 1
+        End If
+        If rollVar(Thingz) = "" Then
+            Number_7 = "N/A"
+            Thingz = Thingz + 1
+        Else
+            Number_7 = rollVar(Thingz)
+            Thingz = Thingz + 1
+        End If
+        If rollVar(Thingz) = "" Then
+            Number_8 = "N/A"
+            Thingz = Thingz + 1
+        Else
+            Number_8 = rollVar(Thingz)
+            Thingz = Thingz + 1
+        End If
+        If rollVar(Thingz) = "" Then
+            Number_9 = "N/A"
+            Thingz = Thingz + 1
+        Else
+            Number_9 = rollVar(Thingz)
+            Thingz = Thingz + 1
+        End If
+        If rollVar(Thingz) = "" Then
+            Number_10 = "N/A"
+            Thingz = Thingz + 1
+        Else
+            Number_10 = rollVar(Thingz)
+            Thingz = Thingz + 1
+        End If
+        If rollVar(Thingz) = "" Then
+            Number_11 = "N/A"
+            Thingz = Thingz + 1
+        Else
+            Number_11 = rollVar(Thingz)
+            Thingz = Thingz + 1
+        End If
+        If rollVar(Thingz) = "" Then
+            Number_12 = "N/A"
+            Thingz = Thingz + 1
+        Else
+            Number_12 = rollVar(Thingz)
+            Thingz = Thingz + 1
+        End If
+        If rollVar(Thingz) = "" Then
+            Number_13 = "N/A"
+            Thingz = Thingz + 1
+        Else
+            Number_13 = rollVar(Thingz)
+            Thingz = Thingz + 1
+        End If
+        If rollVar(Thingz) = "" Then
+            Number_14 = "N/A"
+            Thingz = Thingz + 1
+        Else
+            Number_14 = rollVar(Thingz)
+            Thingz = Thingz + 1
+        End If
+        If rollVar(Thingz) = "" Then
+            Number_15 = "N/A"
+            Thingz = Thingz + 1
+        Else
+            Number_15 = rollVar(Thingz)
+            Thingz = Thingz + 1
+        End If
+        If rollVar(Thingz) = "" Then
+            Number_16 = "N/A"
+            Thingz = Thingz + 1
+        Else
+            Number_16 = rollVar(Thingz)
+            Thingz = Thingz + 1
+        End If
+        If rollVar(Thingz) = "" Then
+            Number_17 = "N/A"
+            Thingz = Thingz + 1
+        Else
+            Number_17 = rollVar(Thingz)
+            Thingz = Thingz + 1
+        End If
+        If rollVar(Thingz) = "" Then
+            Number_18 = "N/A"
+            Thingz = Thingz + 1
+        Else
+            Number_18 = rollVar(Thingz)
+            Thingz = Thingz + 1
+        End If
+        If rollVar(Thingz) = "" Then
+            Number_19 = "N/A"
+            Thingz = Thingz + 1
+        Else
+            Number_19 = rollVar(Thingz)
+            Thingz = Thingz + 1
+        End If
+        If rollVar(Thingz) = "" Then
+            Number_20 = "N/A"
+            Thingz = Thingz + 1
+        Else
+            Number_20 = rollVar(Thingz)
+            Thingz = Thingz + 1
+        End If
+        If rollVar(Thingz) = "" Then
+            Number_21 = "N/A"
+            Thingz = Thingz + 1
+        Else
+            Number_21 = rollVar(Thingz)
+            Thingz = Thingz + 1
+        End If
+        If rollVar(Thingz) = "" Then
+            Number_22 = "N/A"
+            Thingz = Thingz + 1
+        Else
+            Number_22 = rollVar(Thingz)
+            Thingz = Thingz + 1
+        End If
+        If rollVar(Thingz) = "" Then
+            Number_23 = "N/A"
+            Thingz = Thingz + 1
+        Else
+            Number_23 = rollVar(Thingz)
+            Thingz = Thingz + 1
+        End If
+        
+    SecondState = Str1 & Range("J2") & ", " & Number_1 & ", " & Number_2 & ", " & Number_3 & ", " & Number_4 & ", " & Number_5 & ", " & Number_6 & ", " & Number_7 & ", " & Number_8 & ", " & Number_9 & ", " & Number_10 & ", " & Number_11 & ", " & Number_12 & ", " & Number_13
+    SecondState = SecondState & ", " & Number_14 & ", " & Number_15 & ", " & Number_16 & ", " & Number_17 & ", " & Number_18 & ", " & Number_19 & ", " & Number_20 & ", " & Number_21 & ", " & Number_2 & ", " & Number_23 & Str2
+    SecondState = SecondState & Range("J2") & ", " & Number_1 & ", " & Number_2 & ", " & Number_3 & ", " & Number_4 & ", " & Number_5 & ", " & Number_6 & ", " & Number_7 & ", " & Number_8 & ", " & Number_9 & ", " & Number_10 & ", " & Number_11 & ", " & Number_12 & ", " & Number_13 & ", " & Number_14 & ", " & Number_15 & ", " & Number_16 & ", " & Number_17 & ", " & Number_18 & ", " & Number_19 & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str3
+    
+    ThirdState = Str1 & Range("J2") & ", " & Range("J8") & ", " & Number_2 & ", " & Number_3 & ", " & Number_4 & ", " & Number_5 & ", " & Number_6 & ", " & Number_7 & ", " & Number_8 & ", " & Number_9 & ", " & Number_10 & ", " & Number_11 & ", " & Number_12 & ", " & Number_13
+    ThirdState = ThirdState & ", " & Number_14 & ", " & Number_15 & ", " & Number_16 & ", " & Number_17 & ", " & Number_18 & ", " & Number_19 & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str2
+    ThirdState = ThirdState & Range("J2") & ", " & Range("J8") & ", " & Number_2 & ", " & Number_3 & ", " & Number_4 & ", " & Number_5 & ", " & Number_6 & ", " & Number_7 & ", " & Number_8 & ", " & Number_9 & ", " & Number_10 & ", " & Number_11 & ", " & Number_12 & ", " & Number_13 & ", " & Number_14 & ", " & Number_15 & ", " & Number_16 & ", " & Number_17 & ", " & Number_18 & ", " & Number_19 & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str3
+    
+    FourthState = Str1 & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Number_3 & ", " & Number_4 & ", " & Number_5 & ", " & Number_6 & ", " & Number_7 & ", " & Number_8 & ", " & Number_9 & ", " & Number_10 & ", " & Number_11 & ", " & Number_12 & ", " & Number_13
+    FourthState = FourthState & ", " & Number_14 & ", " & Number_15 & ", " & Number_16 & ", " & Number_17 & ", " & Number_18 & ", " & Number_19 & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str2
+    FourthState = FourthState & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Number_3 & ", " & Number_4 & ", " & Number_5 & ", " & Number_6 & ", " & Number_7 & ", " & Number_8 & ", " & Number_9 & ", " & Number_10 & ", " & Number_11 & ", " & Number_12 & ", " & Number_13 & ", " & Number_14 & ", " & Number_15 & ", " & Number_16 & ", " & Number_17 & ", " & Number_18 & ", " & Number_19 & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str3
+    
+    FifthState = Str1 & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Number_4 & ", " & Number_5 & ", " & Number_6 & ", " & Number_7 & ", " & Number_8 & ", " & Number_9 & ", " & Number_10 & ", " & Number_11 & ", " & Number_12 & ", " & Number_13
+    FifthState = FifthState & ", " & Number_14 & ", " & Number_15 & ", " & Number_16 & ", " & Number_17 & ", " & Number_18 & ", " & Number_19 & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str2
+    FifthState = FifthState & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Number_4 & ", " & Number_5 & ", " & Number_6 & ", " & Number_7 & ", " & Number_8 & ", " & Number_9 & ", " & Number_10 & ", " & Number_11 & ", " & Number_12 & ", " & Number_13 & ", " & Number_14 & ", " & Number_15 & ", " & Number_16 & ", " & Number_17 & ", " & Number_18 & ", " & Number_19 & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str3
+     
+    SixthState = Str1 & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Number_5 & ", " & Number_6 & ", " & Number_7 & ", " & Number_8 & ", " & Number_9 & ", " & Number_10 & ", " & Number_11 & ", " & Number_12 & ", " & Number_13
+    SixthState = SixthState & ", " & Number_14 & ", " & Number_15 & ", " & Number_16 & ", " & Number_17 & ", " & Number_18 & ", " & Number_19 & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str2
+    SixthState = SixthState & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Number_5 & ", " & Number_6 & ", " & Number_7 & ", " & Number_8 & ", " & Number_9 & ", " & Number_10 & ", " & Number_11 & ", " & Number_12 & ", " & Number_13 & ", " & Number_14 & ", " & Number_15 & ", " & Number_16 & ", " & Number_17 & ", " & Number_18 & ", " & Number_19 & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str3
+          
+    SeventhState = Str1 & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Range("J32") & ", " & Number_6 & ", " & Number_7 & ", " & Number_8 & ", " & Number_9 & ", " & Number_10 & ", " & Number_11 & ", " & Number_12 & ", " & Number_13
+    SeventhState = SeventhState & ", " & Number_14 & ", " & Number_15 & ", " & Number_16 & ", " & Number_17 & ", " & Number_18 & ", " & Number_19 & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str2
+    SeventhState = SeventhState & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Range("J32") & ", " & Number_6 & ", " & Number_7 & ", " & Number_8 & ", " & Number_9 & ", " & Number_10 & ", " & Number_11 & ", " & Number_12 & ", " & Number_13 & ", " & Number_14 & ", " & Number_15 & ", " & Number_16 & ", " & Number_17 & ", " & Number_18 & ", " & Number_19 & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str3
+    
+    EighthState = Str1 & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Range("J32") & ", " & Range("J38") & ", " & Number_7 & ", " & Number_8 & ", " & Number_9 & ", " & Number_10 & ", " & Number_11 & ", " & Number_12 & ", " & Number_13
+    EighthState = EighthState & ", " & Number_14 & ", " & Number_15 & ", " & Number_16 & ", " & Number_17 & ", " & Number_18 & ", " & Number_19 & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str2
+    EighthState = EighthState & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Range("J32") & ", " & Range("J38") & ", " & Number_7 & ", " & Number_8 & ", " & Number_9 & ", " & Number_10 & ", " & Number_11 & ", " & Number_12 & ", " & Number_13 & ", " & Number_14 & ", " & Number_15 & ", " & Number_16 & ", " & Number_17 & ", " & Number_18 & ", " & Number_19 & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str3
+        
+    NinethState = Str1 & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Range("J32") & ", " & Range("J38") & ", " & Range("J44") & ", " & Number_8 & ", " & Number_9 & ", " & Number_10 & ", " & Number_11 & ", " & Number_12 & ", " & Number_13
+    NinethState = NinethState & ", " & Number_14 & ", " & Number_15 & ", " & Number_16 & ", " & Number_17 & ", " & Number_18 & ", " & Number_19 & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str2
+    NinethState = NinethState & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Range("J32") & ", " & Range("J38") & ", " & Range("J44") & ", " & Number_8 & ", " & Number_9 & ", " & Number_10 & ", " & Number_11 & ", " & Number_12 & ", " & Number_13 & ", " & Number_14 & ", " & Number_15 & ", " & Number_16 & ", " & Number_17 & ", " & Number_18 & ", " & Number_19 & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str3
+    
+    TenthState = Str1 & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Range("J32") & ", " & Range("J38") & ", " & Range("J44") & ", " & Range("J50") & ", " & Number_9 & ", " & Number_10 & ", " & Number_11 & ", " & Number_12 & ", " & Number_13
+    TenthState = TenthState & ", " & Number_14 & ", " & Number_15 & ", " & Number_16 & ", " & Number_17 & ", " & Number_18 & ", " & Number_19 & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str2
+    TenthState = TenthState & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Range("J32") & ", " & Range("J38") & ", " & Range("J44") & ", " & Range("J50") & ", " & Number_9 & ", " & Number_10 & ", " & Number_11 & ", " & Number_12 & ", " & Number_13 & ", " & Number_14 & ", " & Number_15 & ", " & Number_16 & ", " & Number_17 & ", " & Number_18 & ", " & Number_19 & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str3
+
+    EleventhState = Str1 & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Range("J32") & ", " & Range("J38") & ", " & Range("J44") & ", " & Range("J50") & ", " & Range("J56") & ", " & Number_10 & ", " & Number_11 & ", " & Number_12 & ", " & Number_13
+    EleventhState = EleventhState & ", " & Number_14 & ", " & Number_15 & ", " & Number_16 & ", " & Number_17 & ", " & Number_18 & ", " & Number_19 & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str2
+    EleventhState = EleventhState & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Range("J32") & ", " & Range("J38") & ", " & Range("J44") & ", " & Range("J50") & ", " & Range("J56") & ", " & Number_10 & ", " & Number_11 & ", " & Number_12 & ", " & Number_13 & ", " & Number_14 & ", " & Number_15 & ", " & Number_16 & ", " & Number_17 & ", " & Number_18 & ", " & Number_19 & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str3
+
+    TwelvethState = Str1 & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Range("J32") & ", " & Range("J38") & ", " & Range("J44") & ", " & Range("J50") & ", " & Range("J56") & ", " & Range("J62") & ", " & Number_11 & ", " & Number_12 & ", " & Number_13
+    TwelvethState = TwelvethState & ", " & Number_14 & ", " & Number_15 & ", " & Number_16 & ", " & Number_17 & ", " & Number_18 & ", " & Number_19 & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str2
+    TwelvethState = TwelvethState & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Range("J32") & ", " & Range("J38") & ", " & Range("J44") & ", " & Range("J50") & ", " & Range("J56") & ", " & Range("J62") & ", " & Number_11 & ", " & Number_12 & ", " & Number_13 & ", " & Number_14 & ", " & Number_15 & ", " & Number_16 & ", " & Number_17 & ", " & Number_18 & ", " & Number_19 & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str3
+
+    ThirteenthState = Str1 & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Range("J32") & ", " & Range("J38") & ", " & Range("J44") & ", " & Range("J50") & ", " & Range("J56") & ", " & Range("J62") & ", " & Range("J68") & ", " & Number_12
+    ThirteenthState = ThirteenthState & ", " & Number_13 & ", " & Number_14 & ", " & Number_15 & ", " & Number_16 & ", " & Number_17 & ", " & Number_18 & ", " & Number_19 & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str2
+    ThirteenthState = ThirteenthState & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Range("J32") & ", " & Range("J38") & ", " & Range("J44") & ", " & Range("J50") & ", " & Range("J56") & ", " & Range("J62") & ", " & Range("J68") & ", " & Number_12 & ", " & Number_13 & ", " & Number_14 & ", " & Number_15 & ", " & Number_16 & ", " & Number_17 & ", " & Number_18 & ", " & Number_19 & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str3
+
+    FourteenthState = Str1 & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Range("J32") & ", " & Range("J38") & ", " & Range("J44") & ", " & Range("J50") & ", " & Range("J56") & ", " & Range("J62") & ", " & Range("J68") & ", " & Range("J74")
+    FourteenthState = FourteenthState & ", " & Number_13 & ", " & Number_14 & ", " & Number_15 & ", " & Number_16 & ", " & Number_17 & ", " & Number_18 & ", " & Number_19 & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str2
+    FourteenthState = FourteenthState & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Range("J32") & ", " & Range("J38") & ", " & Range("J44") & ", " & Range("J50") & ", " & Range("J56") & ", " & Range("J62") & ", " & Range("J68") & ", " & Range("J74") & ", " & Number_13 & ", " & Number_14 & ", " & Number_15 & ", " & Number_16 & ", " & Number_17 & ", " & Number_18 & ", " & Number_19 & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str3
+
+    FifthteenthState = Str1 & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Range("J32") & ", " & Range("J38") & ", " & Range("J44") & ", " & Range("J50") & ", " & Range("J56") & ", " & Range("J62") & ", " & Range("J68") & ", " & Range("J74")
+    FifthteenthState = FifthteenthState & ", " & Range("J80") & ", " & Number_14 & ", " & Number_15 & ", " & Number_16 & ", " & Number_17 & ", " & Number_18 & ", " & Number_19 & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str2
+    FifthteenthState = FifthteenthState & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Range("J32") & ", " & Range("J38") & ", " & Range("J44") & ", " & Range("J50") & ", " & Range("J56") & ", " & Range("J62") & ", " & Range("J68") & ", " & Range("J74") & ", " & Range("J80") & ", " & Number_14 & ", " & Number_15 & ", " & Number_16 & ", " & Number_17 & ", " & Number_18 & ", " & Number_19 & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str3
+
+
+    SixteenthState = Str1 & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Range("J32") & ", " & Range("J38") & ", " & Range("J44") & ", " & Range("J50") & ", " & Range("J56") & ", " & Range("J62") & ", " & Range("J68") & ", " & Range("J74")
+    SixteenthState = SixteenthState & ", " & Range("J80") & ", " & Range("J86") & ", " & Number_15 & ", " & Number_16 & ", " & Number_17 & ", " & Number_18 & ", " & Number_19 & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str2
+    SixteenthState = SixteenthState & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Range("J32") & ", " & Range("J38") & ", " & Range("J44") & ", " & Range("J50") & ", " & Range("J56") & ", " & Range("J62") & ", " & Range("J68") & ", " & Range("J74") & ", " & Range("J80") & ", " & Range("J86") & ", " & Number_15 & ", " & Number_16 & ", " & Number_17 & ", " & Number_18 & ", " & Number_19 & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str3
+
+    SeventeenthState = Str1 & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Range("J32") & ", " & Range("J38") & ", " & Range("J44") & ", " & Range("J50") & ", " & Range("J56") & ", " & Range("J62") & ", " & Range("J68") & ", " & Range("J74")
+    SeventeenthState = SeventeenthState & ", " & Range("J80") & ", " & Range("J86") & ", " & Range("J92") & ", " & Number_16 & ", " & Number_17 & ", " & Number_18 & ", " & Number_19 & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str2
+    SeventeenthState = SeventeenthState & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Range("J32") & ", " & Range("J38") & ", " & Range("J44") & ", " & Range("J50") & ", " & Range("J56") & ", " & Range("J62") & ", " & Range("J68") & ", " & Range("J74") & ", " & Range("J80") & ", " & Range("J86") & ", " & Range("J92") & ", " & Number_16 & ", " & Number_17 & ", " & Number_18 & ", " & Number_19 & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str3
+
+    EightteenthState = Str1 & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Range("J32") & ", " & Range("J38") & ", " & Range("J44") & ", " & Range("J50") & ", " & Range("J56") & ", " & Range("J62") & ", " & Range("J68") & ", " & Range("J74")
+    EightteenthState = EightteenthState & ", " & Range("J80") & ", " & Range("J86") & ", " & Range("J92") & ", " & Range("J98") & ", " & Number_17 & ", " & Number_18 & ", " & Number_19 & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str2
+    EightteenthState = EightteenthState & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Range("J32") & ", " & Range("J38") & ", " & Range("J44") & ", " & Range("J50") & ", " & Range("J56") & ", " & Range("J62") & ", " & Range("J68") & ", " & Range("J74") & ", " & Range("J80") & ", " & Range("J86") & ", " & Range("J92") & ", " & Range("J98") & ", " & Number_17 & ", " & Number_18 & ", " & Number_19 & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str3
+
+    NineteenthState = Str1 & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Range("J32") & ", " & Range("J38") & ", " & Range("J44") & ", " & Range("J50") & ", " & Range("J56") & ", " & Range("J62") & ", " & Range("J68") & ", " & Range("J74")
+    NineteenthState = NineteenthState & ", " & Range("J80") & ", " & Range("J86") & ", " & Range("J92") & ", " & Range("J98") & ", " & Range("J104") & ", " & Number_18 & ", " & Number_19 & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str2
+    NineteenthState = NineteenthState & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Range("J32") & ", " & Range("J38") & ", " & Range("J44") & ", " & Range("J50") & ", " & Range("J56") & ", " & Range("J62") & ", " & Range("J68") & ", " & Range("J74") & ", " & Range("J80") & ", " & Range("J86") & ", " & Range("J92") & ", " & Range("J98") & ", " & Range("J104") & ", " & Number_18 & ", " & Number_19 & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str3
+
+    TwentyState = Str1 & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Range("J32") & ", " & Range("J38") & ", " & Range("J44") & ", " & Range("J50") & ", " & Range("J56") & ", " & Range("J62") & ", " & Range("J68") & ", " & Range("J74")
+    TwentyState = TwentyState & ", " & Range("J80") & ", " & Range("J86") & ", " & Range("J92") & ", " & Range("J98") & ", " & Range("J104") & ", " & Range("J110") & ", " & Number_19 & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str2
+    TwentyState = TwentyState & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Range("J32") & ", " & Range("J38") & ", " & Range("J44") & ", " & Range("J50") & ", " & Range("J56") & ", " & Range("J62") & ", " & Range("J68") & ", " & Range("J74") & ", " & Range("J80") & ", " & Range("J86") & ", " & Range("J92") & ", " & Range("J98") & ", " & Range("J104") & ", " & Range("J110") & ", " & Number_19 & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str3
+
+    TwentyOneState = Str1 & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Range("J32") & ", " & Range("J38") & ", " & Range("J44") & ", " & Range("J50") & ", " & Range("J56") & ", " & Range("J62") & ", " & Range("J68") & ", " & Range("J74")
+    TwentyOneState = TwentyOneState & ", " & Range("J80") & ", " & Range("J86") & ", " & Range("J92") & ", " & Range("J98") & ", " & Range("J104") & ", " & Range("J110") & ", " & Range("J116") & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str2
+    TwentyOneState = TwentyOneState & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Range("J32") & ", " & Range("J38") & ", " & Range("J44") & ", " & Range("J50") & ", " & Range("J56") & ", " & Range("J62") & ", " & Range("J68") & ", " & Range("J74") & ", " & Range("J80") & ", " & Range("J86") & ", " & Range("J92") & ", " & Range("J98") & ", " & Range("J104") & ", " & Range("J110") & ", " & Range("J116") & ", " & Number_20 & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str3
+
+    TwentyTwoState = Str1 & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Range("J32") & ", " & Range("J38") & ", " & Range("J44") & ", " & Range("J50") & ", " & Range("J56") & ", " & Range("J62") & ", " & Range("J68") & ", " & Range("J74")
+    TwentyTwoState = TwentyTwoState & ", " & Range("J80") & ", " & Range("J86") & ", " & Range("J92") & ", " & Range("J98") & ", " & Range("J104") & ", " & Range("J110") & ", " & Range("J116") & ", " & Range("J122") & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str2
+    TwentyTwoState = TwentyTwoState & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Range("J32") & ", " & Range("J38") & ", " & Range("J44") & ", " & Range("J50") & ", " & Range("J56") & ", " & Range("J62") & ", " & Range("J68") & ", " & Range("J74") & ", " & Range("J80") & ", " & Range("J86") & ", " & Range("J92") & ", " & Range("J98") & ", " & Range("J104") & ", " & Range("J110") & ", " & Range("J116") & ", " & Range("J122") & ", " & Number_21 & ", " & Number_22 & ", " & Number_23 & Str3
+
+    TwentyThreeState = Str1 & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Range("J32") & ", " & Range("J38") & ", " & Range("J44") & ", " & Range("J50") & ", " & Range("J56") & ", " & Range("J62") & ", " & Range("J68") & ", " & Range("J74")
+    TwentyThreeState = TwentyThreeState & ", " & Range("J80") & ", " & Range("J86") & ", " & Range("J92") & ", " & Range("J98") & ", " & Range("J104") & ", " & Range("J110") & ", " & Range("J116") & ", " & Range("J122") & ", " & Range("J128") & ", " & Number_22 & ", " & Number_23 & Str2
+    TwentyThreeState = TwentyThreeState & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Range("J32") & ", " & Range("J38") & ", " & Range("J44") & ", " & Range("J50") & ", " & Range("J56") & ", " & Range("J62") & ", " & Range("J68") & ", " & Range("J74") & ", " & Range("J80") & ", " & Range("J86") & ", " & Range("J92") & ", " & Range("J98") & ", " & Range("J104") & ", " & Range("J110") & ", " & Range("J116") & ", " & Range("J122") & ", " & Range("J128") & ", " & Number_22 & ", " & Number_23 & Str3
+
+    TwentyFourState = Str1 & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Range("J32") & ", " & Range("J38") & ", " & Range("J44") & ", " & Range("J50") & ", " & Range("J56") & ", " & Range("J62") & ", " & Range("J68") & ", " & Range("J74")
+    TwentyFourState = TwentyFourState & ", " & Range("J80") & ", " & Range("J86") & ", " & Range("J92") & ", " & Range("J98") & ", " & Range("J104") & ", " & Range("J110") & ", " & Range("J116") & ", " & Range("J122") & ", " & Range("J128") & ", " & Range("J134") & ", " & Number_23 & Str2
+    TwentyFourState = TwentyFourState & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Range("J32") & ", " & Range("J38") & ", " & Range("J44") & ", " & Range("J50") & ", " & Range("J56") & ", " & Range("J62") & ", " & Range("J68") & ", " & Range("J74") & ", " & Range("J80") & ", " & Range("J86") & ", " & Range("J92") & ", " & Range("J98") & ", " & Range("J104") & ", " & Range("J110") & ", " & Range("J116") & ", " & Range("J122") & ", " & Range("J128") & ", " & Range("J134") & ", " & Number_23 & Str3
+
+    TwentyFiveState = Str1 & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Range("J32") & ", " & Range("J38") & ", " & Range("J44") & ", " & Range("J50") & ", " & Range("J56") & ", " & Range("J62") & ", " & Range("J68") & ", " & Range("J74")
+    TwentyFiveState = TwentyFiveState & ", " & Range("J80") & ", " & Range("J86") & ", " & Range("J92") & ", " & Range("J98") & ", " & Range("J104") & ", " & Range("J110") & ", " & Range("J116") & ", " & Range("J122") & ", " & Range("J128") & ", " & Range("J134") & ", " & Range("J140") & Str2
+    TwentyFiveState = TwentyFiveState & Range("J2") & ", " & Range("J8") & ", " & Range("J14") & ", " & Range("J20") & ", " & Range("J26") & ", " & Range("J32") & ", " & Range("J38") & ", " & Range("J44") & ", " & Range("J50") & ", " & Range("J56") & ", " & Range("J62") & ", " & Range("J68") & ", " & Range("J74") & ", " & Range("J80") & ", " & Range("J86") & ", " & Range("J92") & ", " & Range("J98") & ", " & Range("J104") & ", " & Range("J110") & ", " & Range("J116") & ", " & Range("J122") & ", " & Range("J128") & ", " & Range("J134") & ", " & Range("J140") & Str3
+
+    
+    'MsgBox FirstState
+    'Range("K") = FirstState
+    Range("K2") = SecondState
+    Range("K8") = ThirdState
+    Range("K14") = FourthState
+    Range("K20") = FifthState
+    Range("K26") = SixthState
+    Range("K32") = SeventhState
+    Range("K38") = EighthState
+    Range("K44") = NinethState
+    Range("K50") = TenthState
+    Range("K56") = EleventhState
+    Range("K62") = TwelvethState
+    Range("K68") = ThirteenthState
+    Range("K74") = FourteenthState
+    Range("K80") = FifthteenthState
+    Range("K86") = SixteenthState
+    Range("K92") = SeventeenthState
+    Range("K98") = EightteenthState
+    Range("K104") = NineteenthState
+    Range("K110") = TwentyState
+    Range("K116") = TwentyOneState
+    Range("K122") = TwentyTwoState
+    Range("K128") = TwentyThreeState
+    Range("K134") = TwentyFourState
+    Range("K140") = TwentyFiveState
+    For i = 3 To Length2
+        Range("K" & i).Select
+        With Selection.Interior
+            .Pattern = xlLightDown
+            .PatternColorIndex = xlAutomatic
+            .ThemeColor = xlThemeColorDark1
+            .TintAndShade = -0.14996795556505
+            .PatternTintAndShade = 0
+        End With
+        i = i + 1
+        Range("K" & i).Select
+        With Selection.Interior
+            .Pattern = xlLightDown
+            .PatternColorIndex = xlAutomatic
+            .ThemeColor = xlThemeColorDark1
+            .TintAndShade = -0.14996795556505
+            .PatternTintAndShade = 0
+        End With
+        i = i + 1
+        Range("K" & i).Select
+        With Selection.Interior
+            .Pattern = xlLightDown
+            .PatternColorIndex = xlAutomatic
+            .ThemeColor = xlThemeColorDark1
+            .TintAndShade = -0.14996795556505
+            .PatternTintAndShade = 0
+        End With
+        i = i + 1
+        Range("K" & i).Select
+        With Selection.Interior
+            .Pattern = xlLightDown
+            .PatternColorIndex = xlAutomatic
+            .ThemeColor = xlThemeColorDark1
+            .TintAndShade = -0.14996795556505
+            .PatternTintAndShade = 0
+        End With
+        i = i + 1
+        Range("K" & i).Select
+        With Selection.Interior
+            .Pattern = xlLightDown
+            .PatternColorIndex = xlAutomatic
+            .ThemeColor = xlThemeColorDark1
+            .TintAndShade = -0.14996795556505
+            .PatternTintAndShade = 0
+        End With
+        i = i + 1
+    Next i
+Next k
+    'End of finding rolling 24 hour average
+End Sub
