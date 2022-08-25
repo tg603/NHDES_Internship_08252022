@@ -1,0 +1,851 @@
+                        elif(i == "stats" or i == "stats_a" or i == "stats_b" or i == "sensor" or i == "channel a" or i == "channel b"):
+                            temporary = ''
+                            arrayValues.append(temporary)
+                        elif(i == "time"):
+                            temporary = Timez
+                            d = str(datetime.fromtimestamp(temporary).strftime('%m-%d-%Y %H:%M:%S')) 
+                            arrayValues.append(d)
+                        elif(i == "Location"):
+                            temp_long = jsonObject1.get("longitude")
+                            #print(temp_long)
+                            temp_lat = jsonObject1.get("latitude")
+                            #print(temp_lat)
+                            loco = locationz(temp_long, temp_lat)
+                            arrayValues.append(loco)
+                            #print(loco['city'])
+                            clock = 1
+                        #Channel A 10 minute average
+                        elif(i == "A"):
+                            temporary = jsonObject3.get("pm2.5_10minute")
+                            arrayValues.append(temporary)
+                        #Channel B 10 minute average
+                        elif(i == "B"):
+                            temporary = jsonObject4.get("pm2.5_10minute")
+                            arrayValues.append(temporary)
+                        #Difference between channel A and B
+                        elif(i == "Diff"):
+                            temporary_a = jsonObject3.get("pm2.5_10minute")
+                            temporary_b = jsonObject4.get("pm2.5_10minute")
+                            value = abs(temporary_a - temporary_b)
+                            value = round(value, 2)
+                            arrayValues.append(value)
+                        #Standard Deviation 
+                        elif(i == "Rel Dif"):
+                            try:
+                                temporary_a = jsonObject3.get("pm2.5_10minute")
+                                temporary_b = jsonObject4.get("pm2.5_10minute")
+                                value_mean = float(temporary_a - temporary_b)
+                                #value_sum = ((temporary_a - value_mean) ** 2) + ((temporary_b - value_mean) ** 2)
+                                value_sum = float((temporary_a + temporary_b) / 2)
+                                value_final = float((value_mean / value_sum) * 100) 
+                                value_final = round(value_final,0)
+                                arrayValues.append(str(value_final))
+                                #print(str(value_final))
+                            except:
+                                if(value_sum == 0):
+                                    logging.error("Division by zero")
+                                    arrayValues.append(0)
+                        #Logic of JumpA is fixed
+                        elif(i =="JumpA"):
+                            try:
+                                #current_row = 0
+                                #clockz = -1
+                                #timer = 0
+                                num_a = ''
+                                jump_a = ''
+                                #with open('DESPurple' + Datee + '.csv', 'r') as f:
+                                    #reader = csv.reader(f, delimiter="\t")
+                                    #for k, line in enumerate(reader):
+                                        #current_row = k
+                                        #print('line[{}] = {}'.format(k,line))
+                                #f.close()
+                                with open('DESPurple' + Datee + '.csv', 'r') as f:
+                                    readingz = csv.DictReader(f, delimiter=",")
+                                    rowz = list(readingz)
+                                    #first = 0
+                                    current_index = jsonObject1.get('sensor_index')
+                                    for row in reversed(rowz):
+                                        #if(first == 0):
+                                            #current_index = row['sensor_index']
+                                        #clockz = clockz + 1
+                                        #if(clockz == (current_row - amount)):
+                                        if(str(current_index) == row['sensor_index']):
+                                            #print(row['sensor_index'])
+                                            jump_a = row['A']
+                                            #print(row['A'])
+                                            break
+                                            #arrayValues.append(row['A'])
+                                        #first = 1 
+                                    '''
+                                    for rowing in rowz:
+                                        print("Thing " + str(current_row - timer))
+                                        timer = timer + 1                                    
+                                        if(0 == (current_row - timer)):
+                                            num_a = rowing['A']
+                                            print(rowing['A'])
+                                    '''
+                                    num_a = jsonObject3.get("pm2.5_10minute")
+                                    #print("First number: " + str(num_a))
+                                    #print("Second number: " + jump_a)
+                                    ending = abs(float(jump_a) - float(num_a))
+                                    ending = round(ending, 2)
+                                    #print("End value: " + str(ending))
+                                    arrayValues.append(str(ending))
+                                    #print(arrayValues)
+                                f.close()
+                                #print("This row is: " + str(current_row))
+                            except:
+                                logging.info("Must be the first iteration for the day!")
+                                arrayValues.append(0)
+                                #print(amount)
+                        elif(i =="JumpB"):
+                            try:
+                                #current_row = 0
+                                #clockz = -1
+                                jump_b = ''
+                                num_b = ''
+                                #with open('DESPurple' + Datee + '.csv', 'r') as f:
+                                    #reader = csv.reader(f, delimiter="\t")
+                                    #for k, line in enumerate(reader):
+                                        #current_row = k
+                                        #print('line[{}] = {}'.format(k,line))
+                                #f.close()
+                                with open('DESPurple' + Datee + '.csv', 'r') as f:
+                                    readingz = csv.DictReader(f, delimiter=",")
+                                    rowz = list(readingz)
+                                    current_index = jsonObject1.get('sensor_index')
+                                    for row in reversed(rowz):
+                                        #clockz = clockz + 1
+                                        #if(clockz == (current_row - amount)):
+                                            #jump_b = row['B']
+                                            #arrayValues.append(row['B'])
+                                        if(str(current_index) == row['sensor_index']):
+                                            #print(row['sensor_index'])
+                                            jump_b = row['B']
+                                            #print(row['B'])
+                                            break
+                                    num_b = jsonObject2.get("pm2.5_10minute")
+                                    #print("2First number: " + str(num_b))
+                                    #print("2Second number: " + jump_b)
+                                    ending = abs(float(jump_b) - float(num_b))
+                                    ending = round(ending, 2)
+                                    #print("2End value: " + str(ending))
+                                    arrayValues.append(str(ending))
+                                    #print(arrayValues)
+                                #f.close()
+                                #print("This row is: " + str(current_row))
+                                #print(amount)
+                                f.close()
+                                #print("This row is: " + str(current_row))
+                            except:
+                                logging.info("Must be the first iteration for the day!")
+                                arrayValues.append(0)
+                        elif(i =="Jump Rel Dif"):
+                            #print(str(arrayKeys.index("JumpA")))
+                            #print(str(arrayKeys.index("JumpB")))
+                            try:
+                                jump_a_index = arrayKeys.index("JumpA")
+                                jump_b_index = arrayKeys.index("JumpB")
+                                #print("Jump_b's index " + str(jump_b_index))
+                                temporary_a = float(arrayValues[jump_a_index])
+                                #print("Jump_a " + str(arrayValues[jump_a_index]))
+                                temporary_b = float(arrayValues[jump_b_index])
+                                #print("Jump_b " + str(arrayValues[jump_b_index]))
+                                #value_mean = ((temporary_a + temporary_b) / 2)
+                                #value_sum = ((temporary_a - value_mean) ** 2) + ((temporary_b - value_mean) ** 2)
+                                #print("hey there")
+                                #value_final = float(sqrt((1/2) * value_sum))
+                                #arrayValues.append(value_final)
+                                #temporary_a = jsonObject3.get("pm2.5_10minute")
+                                #temporary_b = jsonObject4.get("pm2.5_10minute")
+                                value_mean = (temporary_a - temporary_b)
+                                #value_sum = ((temporary_a - value_mean) ** 2) + ((temporary_b - value_mean) ** 2)
+                                #print(str(float((temporary_a + temporary_b) / 2)))
+                                value_sum = ((temporary_a + temporary_b) / 2)
+                                #print(value_mean / value_sum)
+                                #value_final = ((float(value_mean) / float(value_sum)) * 100)
+                                #print("Final " + str(value_final))
+                                #value_final = round(value_final, 0)
+                                #print("Final " + str(value_sum))
+                                arrayValues.append(value_sum)
+                            except:
+                                if(value_sum == 0):
+                                    logging.error("Division by zero")
+                                    arrayValues.append(0)
+                        elif(i == "RH_Diff"):
+                            humidity_a_index = arrayKeys.index("humidity_a")
+                            humidity_b_index = arrayKeys.index("humidity_b")
+                            RH_A = arrayValues[humidity_a_index]
+                            RH_B = arrayValues[humidity_b_index]
+                            temporary = abs(float(RH_A) - float(RH_B))
+                            arrayValues.append(temporary)
+                        elif(i == "RH_JumpA"):
+                            try:
+                                #current_row = 0
+                                #clockz = -1
+                                RHjump_a = ''
+                                num_a = ''
+                                #with open('DESPurple' + Datee + '.csv', 'r') as f:
+                                    #reader = csv.reader(f, delimiter="\t")
+                                    #for k, line in enumerate(reader):
+                                        #current_row = k
+                                        #print('line[{}] = {}'.format(k,line))
+                                #f.close()
+                                with open('DESPurple' + Datee + '.csv', 'r') as f:
+                                    readingz = csv.DictReader(f, delimiter=",")
+                                    rowz = list(readingz)
+                                    current_index = jsonObject1.get('sensor_index')
+                                    for row in reversed(rowz):
+                                        #clockz = clockz + 1
+                                        #if(clockz == (current_row - amount)):
+                                            #jump_b = row['B']
+                                            #arrayValues.append(row['B'])
+                                        if(str(current_index) == row['sensor_index']):
+                                            #print(row['sensor_index'])
+                                            RHjump_a = row['humidity_a']
+                                            #print(row['B'])
+                                            break
+                                    num_a = jsonObject2.get("humidity_a")
+                                    #print("2First number: " + str(num_b))
+                                    #print("2Second number: " + jump_b)
+                                    ending = abs(float(RHjump_a) - float(num_a))
+                                    ending = round(ending, 2)
+                                    #print("2End value: " + str(ending))
+                                    arrayValues.append(str(ending))
+                                    #print(arrayValues)
+                                #f.close()
+                                #print("This row is: " + str(current_row))
+                                #print(amount)
+                                f.close()
+                            except:
+                                logging.info("Must be the first iteration for the day!")
+                                arrayValues.append(0)
+                        elif(i == "RH_JumpB"):
+                            try:
+                                #current_row = 0
+                                #clockz = -1
+                                RHjump_b = ''
+                                num_b = ''
+                                #with open('DESPurple' + Datee + '.csv', 'r') as f:
+                                    #reader = csv.reader(f, delimiter="\t")
+                                    #for k, line in enumerate(reader):
+                                        #current_row = k
+                                        #print('line[{}] = {}'.format(k,line))
+                                #f.close()
+                                with open('DESPurple' + Datee + '.csv', 'r') as f:
+                                    readingz = csv.DictReader(f, delimiter=",")
+                                    rowz = list(readingz)
+                                    current_index = jsonObject1.get('sensor_index')
+                                    for row in reversed(rowz):
+                                        #clockz = clockz + 1
+                                        #if(clockz == (current_row - amount)):
+                                            #jump_b = row['B']
+                                            #arrayValues.append(row['B'])
+                                        if(str(current_index) == row['sensor_index']):
+                                            #print(row['sensor_index'])
+                                            RHjump_b = row['humidity_b']
+                                            #print(row['B'])
+                                            break
+                                    num_b = jsonObject2.get("humidity_b")
+                                    #print("2First number: " + str(num_b))
+                                    #print("2Second number: " + jump_b)
+                                    ending = abs(float(RHjump_b) - float(num_b))
+                                    ending = round(ending, 2)
+                                    #print("2End value: " + str(ending))
+                                    arrayValues.append(str(ending))
+                                    #print(arrayValues)
+                                #f.close()
+                                #print("This row is: " + str(current_row))
+                                #print(amount)
+                                f.close()
+                            except:
+                                logging.info("Must be the first iteration for the day!")
+                                arrayValues.append(0)
+                        elif(i == "RH_JumpDiff"):
+                            RHhumidity_a_index = arrayKeys.index("RH_JumpA")
+                            RHhumidity_b_index = arrayKeys.index("RH_JumpB")
+                            RH_A = arrayValues[RHhumidity_a_index]
+                            RH_B = arrayValues[RHhumidity_b_index]
+                            temporary = abs(float(RH_A) - float(RH_B))
+                            arrayValues.append(temporary)
+                        elif(i =="PM_Q&A"):
+                            #variables for tests
+                            RD_threshold = 125
+                            #EPA one
+                            rd_threshold = 50
+                            A_threshold = 7
+                            B_threshold = 7
+                            Diff_threshold = 10
+                            time_threshold = 3
+                            #Four Tests
+                            jump_a_index = arrayKeys.index("JumpA")
+                            jump_b_index = arrayKeys.index("JumpB")
+                            jump_rd_index = arrayKeys.index("Jump Rel Dif")
+                            #humidity_index = arrayKeys.index("humidity")
+                            chan_a_index = arrayKeys.index("A")
+                            chan_b_index = arrayKeys.index("B")
+                            #diff_index = arrayKeys.index("Diff")
+                            #diff = arrayValues[diff_index]
+                            channel_a = arrayValues[chan_a_index]
+                            channel_b = arrayValues[chan_b_index]
+                            jump_a = arrayValues[jump_a_index]
+                            #print("jumpa " + str(jump_a))
+                            jump_b = arrayValues[jump_b_index]
+                            #print(arrayKeys)
+                            jump_rd = arrayValues[jump_rd_index]
+                            #humidity = arrayValues[humidity_index]
+                            value = ''
+                            guard = False
+                            #Test 1
+                            #Initiates when Jump_a is bigger than the threshold
+                            #print(jump_sd)
+                            #print(str(float(jump_rd)))
+                            time_index = arrayKeys.index("time")
+                            time = arrayValues[time_index]
+                            last_time_index = arrayKeys.index("last_seen")
+                            last_time = arrayValues[last_time_index]
+                            timez = Timez - jsonObject1.get('last_seen')
+                            timez = float((timez) / 60)
+                            timez = round(timez,2)
+                            print(str(timez) + " minutes old")
+                            if(timez >= time_threshold):
+                                guard = True
+                                value = "T"
+                                arrayValues.append(value)
+                            elif(float(channel_a) == 0 and float(channel_b) == 0 and guard == False):
+                                guard = True
+                                value = "ZAB"
+                                arrayValues.append(value)
+                            elif(float(channel_a) == 0 and float(channel_b) != 0 and guard == False):
+                                guard = True
+                                value = "ZA"
+                                arrayValues.append(value)
+                            elif(float(channel_a) != 0 and float(channel_b) == 0 and guard == False):
+                                guard = True
+                                value = "ZB"
+                                arrayValues.append(value)
+                            elif(float(jump_rd) > float(RD_threshold) and float(jump_a) > float(A_threshold) and float(jump_b) <= float(B_threshold) and guard == False):
+                                #print("Yehaw")
+                                value = 'JA'
+                                guard = True
+                                arrayValues.append(value)
+                            #Initiates when Jump_b is bigger than the threshold
+                            elif(float(jump_rd) > float(RD_threshold) and float(jump_a) <= float(A_threshold) and float(jump_b) > float(B_threshold) and guard == False):
+                                #print("horse")
+                                value = 'JB'
+                                guard = True
+                                arrayValues.append(value)
+                            else:
+                                try:
+                                    #print("Yahooooo")
+                                    #Gets the previous Q&A if it exists
+                                    #current_row = 0
+                                    #clockz = -1
+                                    jump_qa = ''
+                                    #with open('DESPurple' + Datee + '.csv', 'r') as f:
+                                        #reader = csv.reader(f, delimiter="\t")
+                                        #for k, line in enumerate(reader):
+                                            #current_row = k
+                                            #print('line[{}] = {}'.format(k,line))
+                                    #f.close()
+                                    with open('DESPurple' + Datee + '.csv', 'r') as f:
+                                        readingz = csv.DictReader(f, delimiter=",")
+                                        rowz = list(readingz)
+                                        current_index = jsonObject1.get('sensor_index')
+                                        for row in reversed(rowz):
+                                            #clockz = clockz + 1
+                                            #if(clockz == (current_row - amount)):
+                                                #jump_qa = row['Q&A']
+                                            if(str(current_index) == row['sensor_index']):
+                                                #print(row['sensor_index'])
+                                                jump_qa = row['PM_Q&A']
+                                                #print(row['Q&A'])
+                                                break
+                                    f.close()
+                                    diff_index = arrayKeys.index("Diff")
+                                    rd_index = arrayKeys.index("Rel Dif")
+                                    diff = arrayValues[diff_index]
+                                    rd = arrayValues[rd_index]
+                                    #print("Hey I'm here")
+                                    #print("Hey I'm here")
+                                    #humidity = arrayValues[10]
+                                    #print(humidity)
+                                    elif(jump_qa == 'JA' and float(jump_b) < float(B_threshold) and float(rd) > float(rd_threshold) and float(diff) > float(Diff_threshold) and guard == False):
+                                        value = 'JA'
+                                        guard = True
+                                        arrayValues.append(value)
+                                    elif(jump_qa == 'JB' and float(jump_a) < float(A_threshold) and float(rd) > float(rd_threshold) and float(diff) > float(Diff_threshold) and guard == False):
+                                        value = 'JB'
+                                        guard = True
+                                        arrayValues.append(value)  
+                                    elif(float(diff) > float(Diff_threshold) and float(rd) > float(rd_threshold) and guard == False):
+                                        value = 'QQ'
+                                        guard = True
+                                        arrayValues.append(value)                                     
+                                    elif(guard == False):
+                                        temporary = 'Passed'
+                                        arrayValues.append(temporary)
+                                except:
+                                    logging.info("Means there was no previous PM_Q&A yet")
+                                    temporary = 'Passed'
+                                    arrayValues.append(temporary)
+                                    pass
+                        elif(i == "Humid_Q&A"):
+                            try:
+                                RHDiff_threshold = 10
+                                RHJumpDiff_threshold = 10
+                                RH_A_index = arrayKeys.index("humidity_a")
+                                RH_A = arrayValues[RH_A_index]
+                                RH_B_index = arrayKeys.index("humidity_b")
+                                RH_B = arrayValues[RH_B_index]
+                                RH_JumpDiff_index = arrayKeys.index("RH_JumpDiff")
+                                RH_JumpDiff = arrayValues[RH_JumpDiff_index]
+                                RH_JumpA_index = arrayKeys.index("RH_JumpA")
+                                RH_JumpA = arrayValues[RH_JumpA]
+                                RH_JumpB_index = arrayKeys.index("RH_JumpB")
+                                RH_JumpB = arrayValues[RH_JumpB]
+                                RH_Diff_index = arrayKeys.index("RH_Diff")
+                                RH_Diff = arrayValues[RH_Diff_index]
+                                guard = False
+                                value = ''
+                                if(float(RH_A) == 0 and float(RH_B) == 0 and guard == False):
+                                    guard = True
+                                    value = "RHZAB"
+                                    arrayValues.append(value)
+                                elif(float(RH_A) == 0 and float(RH_B) != 0 and guard == False):
+                                    guard = True
+                                    value = "RHZA"
+                                    arrayValues.append(value)
+                                elif(float(RH_A) != 0 and float(RH_B) == 0 and guard == False):
+                                    guard = True
+                                    value = "RHZB"
+                                    arrayValues.append(value)
+                                elif(float(RH_JumpDiff) > float(RHJumpDiff_threshold) and abs(float(RH_JumpA)) <= float(RHJumpDiff_threshold) and abs(float(RH_JumpB)) > float(RHJumpDiff_threshold) and guard == False):
+                                    value = 'RHJB'
+                                    guard = True
+                                    arrayValues.append(value)
+                                elif(float(RH_JumpDiff) > float(RHJumpDiff_threshold) and abs(float(RH_JumpA)) > float(RHJumpDiff_threshold) and abs(float(RH_JumpB)) <= float(RHJumpDiff_threshold) and guard == False):
+                                    value = 'RHJA'
+                                    guard = True
+                                    arrayValues.append(value)
+                                elif(float(RH_Diff) > float(RHDiff_threshold) and guard == False):
+                                    value = 'RHQQ'
+                                    guard = True
+                                    arrayValues.append(value)
+                                elif(guard == False):
+                                    temporary = 'Passed'
+                                    arrayValues.append(temporary)
+                            except:
+                                logging.info("Means there was no previous Humid_Q&A yet")
+                                temporary = 'Passed'
+                                arrayValues.append(temporary)
+                                pass
+                        elif(i == "Humidity_Average"):
+                            qa_index = arrayKeys.index("Humid_Q&A")
+                            qa = arrayValues[qa_index]
+                            RH_A_index = arrayKeys.index("humidity_a")
+                            RH_A = arrayValues[RH_A_index]
+                            RH_B_index = arrayKeys.index("humidity_b")
+                            RH_B = arrayValues[RH_B_index]
+                            guard = False
+                            if(qa == "RHJA" or qa == "RHZA"):
+                                arrayValues.append(RH_B)
+                                guard = True
+                            elif(qa == "RHJB" or qa == "RHZB" and guard == False):
+                                arrayValues.append(RH_A)
+                                guard = True
+                            elif(qa == "RHZAB" or qa == "RHQQ" and guard == False):
+                                arrayValues.append('None')
+                                guard = True
+                            else:
+                                average = ((float(RH_A) + float(RH_B)) / 2)
+                                average = round(average, 1)
+                                arrayValues.append(average)
+                        elif(i == "Uncorrected Average"):
+                            a_index = arrayKeys.index("A")
+                            b_index = arrayKeys.index("B")
+                            qa_index = arrayKeys.index("PM_Q&A")
+                            a = arrayValues[a_index]
+                            b = arrayValues[b_index]
+                            qa = arrayValues[qa_index]
+                            #Needs Max otherwise in here
+                            if(qa == "JB"):
+                                temporary = a
+                                arrayValues.append(a)
+                            elif(qa == "JA"):
+                                temporary = b
+                                arrayValues.append(b)
+                            elif(qa == "Passed"):
+                                average = ((float(a) + float(b)) / 2)
+                                average = round(average, 2)
+                                arrayValues.append(average)
+                            elif(qa == "QQ" or qa == "ZA" or qa == "ZB" or qa == "ZAB" or qa == "T"):
+                                temporary = 'None'
+                                arrayValues.append(temporary)
+                            else:
+                                temporary = 'None'
+                                arrayValues.append(temporary)
+                        elif(i == "Corrected Value"):
+                            qa_index = arrayKeys.index("PM_Q&A")
+                            uncorrect_index = arrayKeys.index("Uncorrected Average")
+                            uncorrect = arrayValues[uncorrect_index]
+                            humidity_index = arrayKeys.index("Humidity_Average")
+                            qa = arrayValues[qa_index]
+                            humidity = arrayValues[humidity_index]
+                            lat_index = arrayKeys.index("latitude")
+                            long_index = arrayKeys.index("longitude")
+                            if(uncorrect == 'None'):
+                                temporary = 'None'
+                                value = '?'
+                                arrayValues.append(temporary)
+                                mapCSV(jsonObject1, value)
+                            #elif(qa == "JBRH" or qa == "JARH" or qa == "RH"):
+                                #print(arrayValues[3])
+                                #print(arrayValues[4])
+                                #humidity1 = airportData(float(arrayValues[lat_index]), float(arrayValues[long_index]))
+                                #final_value = round((((0.61 * float(uncorrect)) - (0.07 * float(humidity1))) + 2.16),2)
+                                #arrayValues.append(final_value)
+                                #mapCSV(jsonObject1, final_value)
+                            else:
+                                final_value = round((((0.61 * float(uncorrect)) - (0.07 * float(humidity))) + 2.16),2)
+                                arrayValues.append(final_value)
+                                mapCSV(jsonObject1, final_value)
+                        else:
+                            if(i == "humidity_b"):
+                                arrayValues.append(0)
+                            else:
+                                temporary = 'None'
+                                #We then add this string value to our array of values
+                                arrayValues.append(temporary)
+                    except:
+
+
+                        elif(i == "stats" or i == "stats_a" or i == "stats_b" or i == "sensor" or i == "channel a" or i == "channel b"):
+                            temporary = ''
+                            arrayValues.append(temporary)
+                        elif(i == "Location"):
+                            temp_long = jsonObject1.get("longitude")
+                            #print(temp_long)
+                            temp_lat = jsonObject1.get("latitude")
+                            #print(temp_lat)
+                            loco = locationz(temp_long, temp_lat)
+                            arrayValues.append(loco)
+                            #print(loco['city'])
+                            clock = 1
+                        #Channel A 10 minute average
+                        elif(i == "A"):
+                            temporary = jsonObject3.get("pm2.5_10minute")
+                            arrayValues.append(temporary)
+                        #Channel B 10 minute average
+                        elif(i == "B"):
+                            temporary = jsonObject4.get("pm2.5_10minute")
+                            arrayValues.append(temporary)
+                        #Difference between channel A and B
+                        elif(i == "Diff"):
+                            temporary_a = jsonObject3.get("pm2.5_10minute")
+                            temporary_b = jsonObject4.get("pm2.5_10minute")
+                            value = abs(temporary_a - temporary_b)
+                            value = round(value, 2)
+                            arrayValues.append(value)
+                        #Standard Deviation 
+                        elif(i == "Rel Dif"):
+                            temporary_a = jsonObject3.get("pm2.5_10minute")
+                            temporary_b = jsonObject4.get("pm2.5_10minute")
+                            value_mean = float(temporary_a - temporary_b)
+                            #value_sum = ((temporary_a - value_mean) ** 2) + ((temporary_b - value_mean) ** 2)
+                            value_sum = float((temporary_a + temporary_b) / 2)
+                            value_final = float((value_mean / value_sum) * 100) 
+                            value_final = round(value_final,0)
+                            arrayValues.append(value_final)
+                        elif(i =="JumpA"):
+                            try:
+                                #current_row = 0
+                                #clockz = -1
+                                #timer = 0
+                                num_a = ''
+                                jump_a = ''
+                                #with open('DESPurple' + Datee + '.csv', 'r') as f:
+                                    #reader = csv.reader(f, delimiter="\t")
+                                    #for k, line in enumerate(reader):
+                                        #current_row = k
+                                        #print('line[{}] = {}'.format(k,line))
+                                #f.close()
+                                with open('DESPurple' + Datee + '.csv', 'r') as f:
+                                    readingz = csv.DictReader(f, delimiter=",")
+                                    rowz = list(readingz)
+                                    #first = 0
+                                    current_index = jsonObject1.get('sensor_index')
+                                    for row in reversed(rowz):
+                                        #if(first == 0):
+                                            #current_index = row['sensor_index']
+                                        #clockz = clockz + 1
+                                        #if(clockz == (current_row - amount)):
+                                        if(str(current_index) == row['sensor_index']):
+                                            print(row['sensor_index'])
+                                            jump_a = row['A']
+                                            print(row['A'])
+                                            break
+                                            #arrayValues.append(row['A'])
+                                        #first = 1 
+                                    '''
+                                    for rowing in rowz:
+                                        print("Thing " + str(current_row - timer))
+                                        timer = timer + 1                                    
+                                        if(0 == (current_row - timer)):
+                                            num_a = rowing['A']
+                                            print(rowing['A'])
+                                    '''
+                                    num_a = jsonObject3.get("pm2.5_10minute")
+                                    #print("First number: " + str(num_a))
+                                    #print("Second number: " + jump_a)
+                                    ending = abs(float(jump_a) - float(num_a))
+                                    ending = round(ending, 2)
+                                    #print("End value: " + str(ending))
+                                    arrayValues.append(str(ending))
+                                    #print(arrayValues)
+                                f.close()
+                                #print("This row is: " + str(current_row))
+                            except:
+                                logging.info("Must be the first iteration for the day!")
+                                arrayValues.append(0)
+                                #print(amount)
+                        elif(i =="JumpB"):
+                            try:
+                                #current_row = 0
+                                #clockz = -1
+                                jump_b = ''
+                                num_b = ''
+                                #with open('DESPurple' + Datee + '.csv', 'r') as f:
+                                    #reader = csv.reader(f, delimiter="\t")
+                                    #for k, line in enumerate(reader):
+                                        #current_row = k
+                                        #print('line[{}] = {}'.format(k,line))
+                                #f.close()
+                                with open('DESPurple' + Datee + '.csv', 'r') as f:
+                                    readingz = csv.DictReader(f, delimiter=",")
+                                    rowz = list(readingz)
+                                    current_index = jsonObject1.get('sensor_index')
+                                    for row in reversed(rowz):
+                                        #clockz = clockz + 1
+                                        #if(clockz == (current_row - amount)):
+                                            #jump_b = row['B']
+                                            #arrayValues.append(row['B'])
+                                        if(str(current_index) == row['sensor_index']):
+                                            print(row['sensor_index'])
+                                            jump_b = row['B']
+                                            print(row['B'])
+                                            break
+                                    num_b = jsonObject4.get("pm2.5_10minute")
+                                    #print("2First number: " + str(num_b))
+                                    #print("2Second number: " + jump_b)
+                                    ending = abs(float(jump_b) - float(num_b))
+                                    ending = round(ending, 2)
+                                    #print("2End value: " + str(ending))
+                                    arrayValues.append(str(ending))
+                                    #print(arrayValues)
+                                #f.close()
+                                #print("This row is: " + str(current_row))
+                                #print(amount)
+                                f.close()
+                                #print("This row is: " + str(current_row))
+                            except:
+                                logging.info("Must be the first iteration for the day!")
+                                arrayValues.append(0)
+                        elif(i =="JumpSD"):
+                            #print(str(arrayKeys.index("JumpA")))
+                            #print(str(arrayKeys.index("JumpB")))
+                            jump_a_index = arrayKeys.index("JumpA")
+                            jump_b_index = arrayKeys.index("JumpB")
+                            temporary_a = float(arrayValues[jump_a_index])
+                            temporary_b = float(arrayValues[jump_b_index])
+                            #print(str(temporary_a))
+                            #print(str(temporary_b))
+                            value_mean = ((temporary_a + temporary_b) / 2)
+                            value_sum = ((temporary_a - value_mean) ** 2) + ((temporary_b - value_mean) ** 2)
+                            #print("hey there")
+                            value_final = float(sqrt((1/2) * value_sum))
+                            arrayValues.append(value_final)
+                        elif(i =="Q&A"):
+                            #variables for tests
+                            RD_threshold = 125
+                            #EPA one
+                            rd_threshold = 50
+                            A_threshold = 7
+                            B_threshold = 7
+                            Diff_threshold = 10
+                            #Four Tests
+                            jump_a_index = arrayKeys.index("JumpA")
+                            jump_b_index = arrayKeys.index("JumpB")
+                            jump_sd_index = arrayKeys.index("JumpSD")
+                            humidity_index = arrayKeys.index("humidity")
+                            jump_a = arrayValues[jump_a_index]
+                            #print("jumpa " + str(jump_a))
+                            jump_b = arrayValues[jump_b_index]
+                            #print(arrayKeys)
+                            jump_sd = arrayValues[jump_sd_index]
+                            humidity = arrayValues[humidity_index]
+                            value = ''
+                            guard = False
+                            #Test 1
+                            #Initiates when Jump_a is bigger than the threshold
+                            #print(jump_sd)
+                            #print("Yahooooo")
+                            if(float(jump_sd) > float(RD_threshold) and float(jump_a) > float(A_threshold) and float(jump_b) <= float(B_threshold)):
+                                #print("Yehaw")
+                                if(humidity == "None"):
+                                    value = "JARH"
+                                    guard = True
+                                    arrayValues.append(value)
+                                else:
+                                    value = 'JA'
+                                    guard = True
+                                    arrayValues.append(value)
+                            #Initiates when Jump_b is bigger than the threshold
+                            elif(float(jump_sd) > float(RD_threshold) and float(jump_a) <= float(A_threshold) and float(jump_b) > float(B_threshold)):
+                                #print("horse")
+                                if(humidity == "None"):
+                                    value = "JBRH"
+                                    guard = True
+                                    arrayValues.append(value)  
+                                else:
+                                    value = 'JB'
+                                    guard = True
+                                    arrayValues.append(value)
+                            else:
+                                try:
+                                    #print("Yahooooo")
+                                    #Gets the previous Q&A if it exists
+                                    #current_row = 0
+                                    #clockz = -1
+                                    jump_qa = ''
+                                    #with open('DESPurple' + Datee + '.csv', 'r') as f:
+                                        #reader = csv.reader(f, delimiter="\t")
+                                        #for k, line in enumerate(reader):
+                                            #current_row = k
+                                            #print('line[{}] = {}'.format(k,line))
+                                    #f.close()
+                                    with open('DESPurple' + Datee + '.csv', 'r') as f:
+                                        readingz = csv.DictReader(f, delimiter=",")
+                                        rowz = list(readingz)
+                                        current_index = jsonObject1.get('sensor_index')
+                                        for row in reversed(rowz):
+                                            #clockz = clockz + 1
+                                            #if(clockz == (current_row - amount)):
+                                                #jump_qa = row['Q&A']
+                                            if(str(current_index) == row['sensor_index']):
+                                                #print(row['sensor_index'])
+                                                jump_qa = row['Q&A']
+                                                #print(row['Q&A'])
+                                                break
+                                    f.close()
+                                    diff_index = arrayKeys.index("Diff")
+                                    rd_index = arrayKeys.index("Rel Dif")
+                                    diff = arrayValues[diff_index]
+                                    rd = arrayValues[sd_index]
+                                    #print("Hey I'm here")
+                                    #humidity = arrayValues[10]
+                                    #print(humidity)
+                                    if(jump_qa == 'JA' and float(jump_b) < float(Diff_threshold) and float(rd) > float(rd_threshold)):
+                                        value = 'JA'
+                                        guard = True
+                                        arrayValues.append(value)
+                                    elif(jump_qa == 'JB' and float(jump_a) < float(Diff_threshold) and float(rd) > float(rd_threshold)):
+                                        value = 'JB'
+                                        guard = True
+                                        arrayValues.append(value)  
+                                    #New Logic 07_27_2022
+                                    elif(jump_qa == 'JARH' and float(jump_b) < float(Diff_threshold) and float(rd) > float(rd_threshold)):
+                                        if(humidity == "None"):
+                                            value = 'JARH'
+                                            guard = True
+                                            arrayValues.append(value)
+                                        else:
+                                            value = 'JA'
+                                            guard = True
+                                            arrayValues.append(value)
+                                    elif(jump_qa == 'JARH' and humidity == "None"):
+                                            value = 'RH'
+                                            guard = True
+                                            arrayValues.append(value)
+                                    elif(jump_qa == 'JBRH' and float(jump_a) < float(Diff_threshold) and float(rd) > float(rd_threshold)):
+                                        if(humidity == "None"):
+                                            value = 'JBRH'
+                                            guard = True
+                                            arrayValues.append(value)
+                                        else:
+                                            value = 'JB'
+                                            guard = True
+                                            arrayValues.append(value)
+                                    elif(jump_qa == 'JBRH' and humidity == "None"):
+                                            value = 'RH'
+                                            guard = True
+                                            arrayValues.append(value)
+                                    #End of new logic
+                                    elif(float(diff) > float(Diff_threshold) and float(rd) > float(rd_threshold)):
+                                        value = 'QQ'
+                                        guard = True
+                                        arrayValues.append(value)
+                                    elif(humidity == "None"):
+                                        #print('Yo')
+                                        value = 'RH'
+                                        guard = True
+                                        arrayValues.append(value)                                      
+                                    elif(guard == False):
+                                        temporary = 'Passed'
+                                        arrayValues.append(temporary)
+                                except:
+                                    logging.info("Means there was no previous Q&A yet")
+                                    temporary = 'Passed'
+                                    arrayValues.append(temporary)
+                                    pass
+                        elif(i == "Uncorrected Average"):
+                            a_index = arrayKeys.index("A")
+                            b_index = arrayKeys.index("B")
+                            qa_index = arrayKeys.index("Q&A")
+                            a = arrayValues[a_index]
+                            b = arrayValues[b_index]
+                            qa = arrayValues[qa_index]
+                            #Needs Max otherwise in here
+                            if(qa == "JB" or qa == "JBRH"):
+                                temporary = a
+                                arrayValues.append(a)
+                            elif(qa == "JA" or qa == "JARH"):
+                                temporary = b
+                                arrayValues.append(b)
+                            elif(qa == "Passed" or qa == "RH"):
+                                average = ((float(a) + float(b)) / 2)
+                                average = round(average, 2)
+                                arrayValues.append(average)
+                            elif(qa == "QQ"):
+                                temporary = 'None'
+                                arrayValues.append(temporary)
+                        elif(i == "Corrected Value"):
+                            qa_index = arrayKeys.index("Q&A")
+                            uncorrect_index = arrayKeys.index("Uncorrected Average")
+                            uncorrect = arrayValues[uncorrect_index]
+                            humidity_index = arrayKeys.index("humidity")
+                            qa = arrayValues[qa_index]
+                            humidity = arrayValues[humidity_index]
+                            lat_index = arrayKeys.index("latitude")
+                            long_index = arrayKeys.index("longitude")
+                            if(uncorrect == 'None'):
+                                temporary = 'None'
+                                value = '?'
+                                arrayValues.append(temporary)
+                                mapCSV(jsonObject1, value)
+                            elif(qa == "JBRH" or qa == "JARH" or qa == "RH"):
+                                #print(arrayValues[3])
+                                #print(arrayValues[4])
+                                humidity1 = airportData(float(arrayValues[lat_index]), float(arrayValues[long_index]))
+                                final_value = round((((0.61 * float(uncorrect)) - (0.07 * float(humidity1))) + 2.16),2)
+                                arrayValues.append(final_value)
+                                mapCSV(jsonObject1, final_value)
+                            else:
+                                final_value = round((((0.61 * float(uncorrect)) - (0.07 * float(humidity))) + 2.16),2)
+                                arrayValues.append(final_value)
+                                mapCSV(jsonObject1, final_value)
+                        else:
+                            temporary = 'None'
+                            #We then add this string value to our array of values
+                            arrayValues.append(temporary)
+                    except:

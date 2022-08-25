@@ -1,0 +1,18 @@
+{
+  "Location0": {
+    "latitude": "43.192043",
+    "longitude": "-71.54158"
+  },
+  "Details0": {
+    "Name": "12 Noyes Street, Concord, NH",
+    "PM2.5": "?"
+  },
+  "Location1": {
+    "latitude": "43.08963",
+    "longitude": "-71.50244"
+  },
+  "Details1": {
+    "Name": "Junder22",
+    "PM2.5": "0.91"
+  }
+}

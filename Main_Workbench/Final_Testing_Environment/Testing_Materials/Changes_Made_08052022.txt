@@ -1,0 +1,13 @@
+Change time to Time Executed ~ Completed 
+Remove Location ~ Completed
+Change Diff to PM2.5_Diff ~ Completed
+Change Rel Dif to PM2.5_Rel%Diff ~ Completed
+Change JumpA to PM2.5_JumpA ~ Completed
+Change JumpB to PM2.5_JumpB ~ Completed
+Change Jump Rel Dif to PM2.5_JumpRel%Diff ~ Completed
+Remove channel a and channel b ~ Completed
+Change PM_Q&A to PM2.5 QA Flag ~ Completed
+Change Uncorrected Average to PM2.5 Uncorrected Avg ~ Completed
+Change Humid_Q&A to RH QA Flag ~ Completed
+Change Humidity_Average to RH Avg ~ Completed
+Change Corrected Value to PM2.5 Corrected ~ Completed

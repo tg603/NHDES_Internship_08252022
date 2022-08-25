@@ -1,0 +1,8 @@
+[DEFAULT]
+api = True
+units = 151708|143456|151702|151700|135984|151712|151710|151706|12212|12178|12188
+keywords = sensor_index,time_stamp,Location,name,latitude,longitude,altitude,model,firmware_version,last_seen,humidity,channel a,pm2.5,pm2.5_10minute,pm2.5_60minute,pm2.5_24hour,channel b,pm2.5,pm2.5_10minute,pm2.5_60minute,pm2.5_24hour,A,B,Diff,Rel Dif,JumpA,JumpB,JumpSD,Q&A,Uncorrected Average,Corrected Value
+duplicates = time_stamp:0:pm2.5:3:pm2.5:4:pm2.5_10minute:3:pm2.5_60minute:3:pm2.5_24hour:3:pm2.5_10minute:4:pm2.5_60minute:4:pm2.5_24hour:4
+
+[Main]
+

@@ -1,0 +1,3 @@
+Bug: Spacing when putting more units in
+Logic: Should it pass with older dates?
+in the Api() have the number amount of units be contingent on whether they can call the server at that time

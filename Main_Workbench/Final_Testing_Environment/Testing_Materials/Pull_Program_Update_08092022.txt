@@ -1,0 +1,11 @@
+Inside of else if statement: elif(i =="PM2.5_JumpRelDiff"): *THIS OCCURS TWICE*
+Underneath line of : value_sum = ((temporary_a + temporary_b) / 2)
+Add new line of: value_final = round((abs(float(value_mean) / float(value_sum)) * 100),0)
+Change line of: arrayValues.append(value_sum)
+To line of: arrayValues.append(value_final)
+*THE PROCEDURE ABOVE SHOULD BE DONE FOR BOTH OCCURANCES OF 'elif(i =="PM2.5_JumpRelDiff"):'*
+
+Inside of else if statement: elif(i == "PM2.5_RelDiff"): *THIS OCCURS TWICE*
+Change line of: value_final = round(value_final,0)
+To line of: value_final = round(abs(value_final),0)
+*THE PROCEDURE ABOVE SHOULD BE DONE FOR BOTH OCCURANCES OF 'elif(i == "PM2.5_RelDiff"):'*

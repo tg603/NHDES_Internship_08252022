@@ -1,0 +1,1 @@
+REMEMBER -- RH value put in needs to be replaced as the arrayValues('humidity')***

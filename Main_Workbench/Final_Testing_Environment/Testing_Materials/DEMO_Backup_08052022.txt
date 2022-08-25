@@ -1,0 +1,8 @@
+[DEFAULT]
+api = True
+units = 151708|143456|151702|151700|135984|151712|151710|151706|12212|12178|75981|115703|12050|23443|58135|148555|146644|12188|1224|1202|25985
+keywords = sensor_index,time,time_stamp,Location,name,latitude,longitude,altitude,model,firmware_version,last_seen,channel a,humidity_a,temperature_a,pm2.5_10minute,channel b,humidity_b,temperature_b,pm2.5_10minute,A,B,Diff,Rel Dif,JumpA,JumpB,Jump Rel Dif,RH_Diff,RH_JumpA,RH_JumpB,RH_Jump,Diff,PM_Q&A,Humid_Q&A,Humidity_Average,Uncorrected Average,Corrected Value
+duplicates = time_stamp:0:pm2.5_10minute:3:pm2.5_10minute:4
+
+[Main]
+
