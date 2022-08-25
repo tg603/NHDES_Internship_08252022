@@ -1,0 +1,8 @@
+[DEFAULT]
+jumpreldiffthreshold = 125
+units = 151708|143456|151702|151700|135984|151712|151710|151706|12212|12178|75981|115703|12050|23443|58135|148555|146644|12188|1224|1202|25985
+keywords = time_stamp,last_seen,sensor_index,name,model,firmware_version,latitude,longitude,altitude,temperature_a,temperature_b,Time Executed,pm2.5_10minute_a,pm2.5_10minute_b,PM2.5_Diff,PM2.5_RelDiff,PM2.5_JumpA,PM2.5_JumpB,PM2.5_JumpRelDiff,PM2.5 QA Flag,PM2.5 Uncorrected Avg,humidity_a,humidity_b,RH_Diff,RH_JumpA,RH_JumpB,RH_JumpDiff,RH QA Flag,RH Avg,PM2.5 Corrected
+duplicates = time_stamp:0:pm2.5_10minute:3:pm2.5_10minute:4
+
+[Main]
+

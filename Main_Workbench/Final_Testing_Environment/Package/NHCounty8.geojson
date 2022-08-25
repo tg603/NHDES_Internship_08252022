@@ -1,0 +1,1 @@
+{ "type": "Feature", "properties": { "Geo_ID": "0400000US33", "STATE": "33", "NAME": "New Hampshire", "LSAD": "", "CENSUSAREA": 8952.651000 }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -72.452100, 43.161414] ] ] } }
