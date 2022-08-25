@@ -1,0 +1,8 @@
+[DEFAULT]
+api = True
+units = 151708
+keywords = sensor_index,time_stamp,Location,name,latitude,longitude,altitude,model,firmware_version,last_seen,humidity,humidity_a,humidity_b
+duplicates = time_stamp:0
+
+[Main]
+

@@ -1,0 +1,21 @@
+INFO:root:Start timestamp for execution is: 08/02/2022 11:30:02
+INFO:root:Starting the execution of program Pull
+INFO:root:Starting readIni() method
+INFO:root:Trying to open .ini file to read
+INFO:root:File exists
+INFO:root:Populating .ini file now
+INFO:root:Finishing readIni() method
+INFO:root:Starting API() method
+INFO:root:Unit is 151708
+INFO:root:.CSV is already made for todays pulling
+INFO:root:The .CSV file exists currently: True
+INFO:root:Starting the createCSV() method
+INFO:root:Unit is 148555
+INFO:root:.CSV is already made for todays pulling
+INFO:root:The .CSV file exists currently: True
+INFO:root:Starting the createCSV() method
+INFO:root:Unit is 146644
+INFO:root:.CSV is already made for todays pulling
+INFO:root:The .CSV file exists currently: True
+INFO:root:Starting the createCSV() method
+INFO:root:Finishing API() method
